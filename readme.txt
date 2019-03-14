@@ -123,7 +123,6 @@ Finally type make. If you want a smaller program and do not care about error
 messages, you can comment out #DEBUG=1 and run strip sim resp. strip sim.exe
 after compile and linking.
 
-
 The following instructions are for MS Visual C Express:
 -------------------------------------------------------
 

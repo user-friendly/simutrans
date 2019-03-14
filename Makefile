@@ -687,7 +687,23 @@ ifeq ($(OSTYPE),mac)
 endif
 
 
-.PHONY: makeobj
+.PHONY: makeobj info
+
+info:
+	$(Q)echo "Build information\n\
+Config:        $(CFG)\n\
+CC:            $(HOSTCC)\n\
+CFLAGS:        $(CFLAGS)\n\
+CXX:           $(HOSTCXX)\n\
+CXXFLAGS:      $(CXXFLAGS)\n\
+LDFLAGS:       $(LDFLAGS)\n\
+LDLIBS:        $(LDLIBS)\n\
+LIBS:          $(LIBS)\n\
+Build dir:     $(BUILDDIR)\n\
+Program dir:   $(PROGDIR)\n\
+Program name:  $(PROG)\n\
+Program path:  $(PROGDIR)/$(PROG)\n\
+	"
 
 makeobj:
 	$(Q)$(MAKE) -e -C makeobj FLAGS="$(FLAGS)"
