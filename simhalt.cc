@@ -265,21 +265,24 @@ koord haltestelle_t::get_next_pos( koord start ) const
  * It is the avarage of all tiles' coordinate weighed by level of the building */
 void haltestelle_t::recalc_basis_pos()
 {
-	koord cent;
-	sint32 level_sum;
-	cent = koord();
+	sint64 cent_x, cent_y;
+	cent_x = cent_y = 0;
+	uint64 level_sum;
 	level_sum = 0;
 	FOR(slist_tpl<tile_t>, const& i, tiles) {
 		if(  gebaeude_t* const gb = i.grund->find<gebaeude_t>()  ) {
-			sint16 lv;
+			uint32 lv;
 			lv = gb->get_tile()->get_desc()->get_level() + 1;
-			cent += gb->get_pos().get_2d() * lv;
+			cent_x += gb->get_pos().get_2d().x * lv;
+			cent_y += gb->get_pos().get_2d().y * lv;
 			level_sum += lv;
 		}
 	}
+	koord cent;
+	cent = koord((sint16)(cent_x/level_sum),(sint16)(cent_y/level_sum));
 
 	if ( level_sum > 0 ) {
-		grund_t *new_center = get_ground_closest_to( cent/level_sum );
+		grund_t *new_center = get_ground_closest_to( cent );
 		if(  new_center != tiles.front().grund  &&  new_center->get_text()==NULL  ) {
 			// move the name to new center, if there is not yet a name on it
 			new_center->set_text( tiles.front().grund->get_text() );
@@ -428,7 +431,7 @@ haltestelle_t::haltestelle_t(loadsave_t* file)
 }
 
 
-haltestelle_t::haltestelle_t(koord k, player_t* player_)
+haltestelle_t::haltestelle_t(koord k, player_t* player)
 {
 	self = halthandle_t(this);
 	assert( !alle_haltestellen.is_contained(self) );
@@ -439,7 +442,7 @@ haltestelle_t::haltestelle_t(koord k, player_t* player_)
 	last_loading_step = welt->get_steps();
 
 	this->init_pos = k;
-	owner_p = player_;
+	owner = player;
 
 	enables = NOT_ENABLED;
 	// force total re-routing
@@ -964,10 +967,10 @@ bool haltestelle_t::step(uint8 what, sint16 &units_remaining)
  */
 void haltestelle_t::new_month()
 {
-	if(  welt->get_active_player()==owner_p  &&  status_color==color_idx_to_rgb(COL_RED)  ) {
+	if(  welt->get_active_player()==owner  &&  status_color==color_idx_to_rgb(COL_RED)  ) {
 		cbuffer_t buf;
 		buf.printf( translator::translate("%s\nis crowded."), get_name() );
-		welt->get_message()->add_message(buf, get_basis_pos(),message_t::full, PLAYER_FLAG|owner_p->get_player_nr(), IMG_EMPTY );
+		welt->get_message()->add_message(buf, get_basis_pos(),message_t::full, PLAYER_FLAG|owner->get_player_nr(), IMG_EMPTY );
 		enables &= (PAX|POST|WARE);
 	}
 
@@ -2294,7 +2297,7 @@ sint64 haltestelle_t::calc_maintenance() const
 void haltestelle_t::change_owner( player_t *player )
 {
 	// check if already public
-	if(  owner_p == player  ) {
+	if(  owner == player  ) {
 		return;
 	}
 
@@ -2350,7 +2353,6 @@ void haltestelle_t::change_owner( player_t *player )
 		}
 
 		// make way object public if any suitable
-		wayobj_t *wo = NULL;
 		for(  uint8 i = 1;  i < gr->get_top();  i++  ) {
 			if(  wayobj_t *const wo = obj_cast<wayobj_t>(gr->obj_bei(i))  ) {
 				player_t *woplayer = wo->get_owner();
@@ -2359,19 +2361,17 @@ void haltestelle_t::change_owner( player_t *player )
 					// change ownership
 					wo->set_owner( player );
 					wo->set_flag(obj_t::dirty);
-					player_t *const woowner = wo->get_owner();
 					waytype_t const financetype = wo->get_desc()->get_waytype();
 					player_t::add_maintenance( woplayer, -cost, financetype);
 					player_t::add_maintenance( player, cost, financetype);
-					sint64 const workcost = -welt->scale_with_month_length(cost * welt->get_settings().cst_make_public_months);
 					player_t::book_construction_costs( woplayer, cost, koord::invalid, financetype);
 				}
 			}
 		}
 	}
 
-	// now finallz change owner
-	owner_p = player;
+	// now finally change owner
+	owner = player;
 	rebuild_connections();
 	rebuild_linked_connections();
 
@@ -2391,7 +2391,7 @@ void haltestelle_t::merge_halt( halthandle_t halt_merged )
 		return;
 	}
 
-	halt_merged->change_owner( owner_p );
+	halt_merged->change_owner( owner );
 
 	// add statistics
 	for(  int month=0;  month<MAX_MONTHS;  month++  ) {
@@ -2417,7 +2417,7 @@ void haltestelle_t::merge_halt( halthandle_t halt_merged )
 	}
 
 	assert(!halt_merged->existiert_in_welt());
-	
+
 	// transfer goods
 	halt_merged->transfer_goods(self);
 	destroy(halt_merged);
@@ -2606,7 +2606,7 @@ void haltestelle_t::rdwr(loadsave_t *file)
 	koord3d k;
 
 	// will restore halthandle_t after loading
-	if(file->get_version() > 110005) {
+	if(file->is_version_atleast(110, 6)) {
 		if(file->is_saving()) {
 			uint16 halt_id = self.is_bound() ? self.get_id() : 0;
 			file->rdwr_short(halt_id);
@@ -2625,15 +2625,15 @@ void haltestelle_t::rdwr(loadsave_t *file)
 	}
 
 	if(file->is_saving()) {
-		owner_n = welt->sp2num( owner_p );
+		owner_n = welt->sp2num( owner );
 	}
 
-	if(file->get_version()<99008) {
+	if(file->is_version_less(99, 8)) {
 		init_pos.rdwr( file );
 	}
 	file->rdwr_long(owner_n);
 
-	if(file->get_version()<=88005) {
+	if(file->is_version_less(88, 6)) {
 		bool dummy;
 		file->rdwr_bool(dummy); // pax
 		file->rdwr_bool(dummy); // mail
@@ -2641,7 +2641,7 @@ void haltestelle_t::rdwr(loadsave_t *file)
 	}
 
 	if(file->is_loading()) {
-		owner_p = welt->get_player(owner_n);
+		owner = welt->get_player(owner_n);
 		k.rdwr( file );
 		while(k!=koord3d::invalid) {
 			grund_t *gr = welt->lookup(k);
@@ -2685,7 +2685,7 @@ void haltestelle_t::rdwr(loadsave_t *file)
 			if(warray) {
 				s = "y";	// needs to be non-empty
 				file->rdwr_str(s);
-				if(  file->get_version() <= 112002  ) {
+				if(  file->is_version_less(112, 3)  ) {
 					uint16 count = warray->get_count();
 					file->rdwr_short(count);
 				}
@@ -2707,7 +2707,7 @@ void haltestelle_t::rdwr(loadsave_t *file)
 		file->rdwr_str(s, lengthof(s));
 		while(*s) {
 			uint32 count;
-			if(  file->get_version() <= 112002  ) {
+			if(  file->is_version_less(112, 3)  ) {
 				uint16 scount;
 				file->rdwr_short(scount);
 				count = scount;
@@ -2739,7 +2739,7 @@ void haltestelle_t::rdwr(loadsave_t *file)
 
 		// old games save the list with stations
 		// however, we have to rebuilt them anyway for the new format
-		if(file->get_version()<99013) {
+		if(file->is_version_less(99, 13)) {
 			uint16 count;
 			file->rdwr_short(count);
 			for(int i=0; i<count; i++) {
@@ -2749,7 +2749,7 @@ void haltestelle_t::rdwr(loadsave_t *file)
 
 	}
 
-	if(  file->get_version()>=111001  ) {
+	if(  file->is_version_atleast(111, 1)  ) {
 		for (int j = 0; j<MAX_HALT_COST; j++) {
 			for (size_t k = MAX_MONTHS; k-- != 0;) {
 				file->rdwr_longlong(financial_history[k][j]);

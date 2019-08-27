@@ -188,11 +188,11 @@ void grund_t::rdwr(loadsave_t *file)
 	uint8 climate_data = plan->get_climate() + (plan->get_climate_corners() << 4);
 
 	xml_tag_t g( file, "grund_t" );
-	if(file->get_version()<101000) {
+	if(file->is_version_less(101, 0)) {
 		pos.rdwr(file);
 		z_w = welt->get_groundwater();
 	}
-	else if(  file->get_version() < 112007  ) {
+	else if(  file->is_version_less(112, 7)  ) {
 		file->rdwr_byte(z);
 		pos.z = get_typ() == grund_t::wasser ? welt->get_groundwater() : z;
 		z_w = welt->get_groundwater();
@@ -213,7 +213,7 @@ void grund_t::rdwr(loadsave_t *file)
 		plan->set_climate_corners((climate_data >> 4));
 	}
 
-	if(  file->is_loading()  &&  file->get_version() < 112007  ) {
+	if(  file->is_loading()  &&  file->is_version_less(112, 7)  ) {
 		// convert heights from old single height saved game - water already at correct height
 		pos.z = get_typ() == grund_t::wasser ? pos.z : pos.z * env_t::pak_height_conversion_factor;
 		z = z * env_t::pak_height_conversion_factor;
@@ -232,7 +232,7 @@ void grund_t::rdwr(loadsave_t *file)
 		}
 	}
 
-	if(file->get_version()<99007) {
+	if(file->is_version_less(99, 7)) {
 		bool label;
 		file->rdwr_bool(label);
 		if(label) {
@@ -241,13 +241,13 @@ void grund_t::rdwr(loadsave_t *file)
 	}
 
 	sint8 owner_n=-1;
-	if(file->get_version()<99005) {
+	if(file->is_version_less(99, 5)) {
 		file->rdwr_byte(owner_n);
 	}
 
-	if(file->get_version()>=88009) {
+	if(file->is_version_atleast(88, 9)) {
 		uint8 sl = slope;
-		if(  file->get_version() < 112007  &&  file->is_saving()  ) {
+		if(  file->is_version_less(112, 7)  &&  file->is_saving()  ) {
 			// truncate double slopes to single slopes, better than nothing
 			sl = min( corner_sw(slope), 1 ) + min( corner_se(slope), 1 ) * 2 + min( corner_ne(slope), 1 ) * 4 + min( corner_nw(slope), 1 ) * 8;
 		}
@@ -262,7 +262,7 @@ void grund_t::rdwr(loadsave_t *file)
 	}
 
 	if(  file->is_loading()  ) {
-		if(  file->get_version() < 112007  ) {
+		if(  file->is_version_less(112, 7)  ) {
 			// convert slopes from old single height saved game
 			slope = (scorner_sw(slope) + scorner_se(slope) * 3 + scorner_ne(slope) * 9 + scorner_nw(slope) * 27) * env_t::pak_height_conversion_factor;
 		}
@@ -377,7 +377,7 @@ void grund_t::rdwr(loadsave_t *file)
 
 					case water_wt:
 						// ignore old type dock ...
-						if(file->get_version()>=87000) {
+						if(file->is_version_atleast(87, 0)) {
 							weg = new kanal_t(file);
 						}
 						else {
@@ -1412,7 +1412,7 @@ void grund_t::display_obj_all(const sint16 xpos, const sint16 ypos, const sint16
 		}
 	}
 	else if (is_water()) {
-		ribi = (static_cast<const wasser_t*>(this))->get_weg_ribi(water_wt);
+		ribi = (static_cast<const wasser_t*>(this))->get_display_ribi();
 	}
 
 	// no ways? - no clipping needed, avoid all the ribi-checks
@@ -1947,7 +1947,7 @@ int grund_t::get_max_speed() const
 }
 
 
-bool grund_t::remove_everything_from_way(player_t* player_, waytype_t wt, ribi_t::ribi rem)
+bool grund_t::remove_everything_from_way(player_t* player, waytype_t wt, ribi_t::ribi rem)
 {
 	// check, if the way must be totally removed?
 	weg_t *weg = get_weg(wt);
@@ -1957,7 +1957,7 @@ bool grund_t::remove_everything_from_way(player_t* player_, waytype_t wt, ribi_t
 		const koord here = pos.get_2d();
 
 		// stops
-		if(flags&is_halt_flag  &&  (get_halt()->get_owner()==player_  || player_==welt->get_public_player())) {
+		if(flags&is_halt_flag  &&  (get_halt()->get_owner()==player  || player==welt->get_public_player())) {
 			bool remove_halt = get_typ()!=boden;
 			// remove only if there is no other way
 			if(get_weg_nr(1)==NULL) {
@@ -1978,7 +1978,7 @@ bool grund_t::remove_everything_from_way(player_t* player_, waytype_t wt, ribi_t
 #endif
 			}
 			if (remove_halt) {
-				if (!haltestelle_t::remove(player_, pos)) {
+				if (!haltestelle_t::remove(player, pos)) {
 					return false;
 				}
 			}
@@ -2046,7 +2046,7 @@ bool grund_t::remove_everything_from_way(player_t* player_, waytype_t wt, ribi_t
 					if((flags&has_way2)==0) {
 						if (add==ribi_t::none) {
 							// last way was belonging to this tunnel
-							tunnel->cleanup(player_);
+							tunnel->cleanup(player);
 							delete tunnel;
 						}
 					}
@@ -2074,7 +2074,7 @@ bool grund_t::remove_everything_from_way(player_t* player_, waytype_t wt, ribi_t
 				// make tunnel portals to normal ground
 				if (get_typ()==tunnelboden  &&  (flags&has_way1)==0) {
 					// remove remaining objs
-					obj_loesche_alle( player_ );
+					obj_loesche_alle( player );
 					// set to normal ground
 					welt->access(here)->kartenboden_setzen( new boden_t( pos, slope ) );
 					// now this is already deleted !
@@ -2089,7 +2089,7 @@ DBG_MESSAGE("tool_wayremover()","change remaining way to ribi %d",add);
 		}
 		// we have to pay?
 		if(costs) {
-			player_t::book_construction_costs(player_, costs, here, finance_wt);
+			player_t::book_construction_costs(player, costs, here, finance_wt);
 		}
 	}
 	return true;

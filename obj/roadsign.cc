@@ -139,11 +139,7 @@ void roadsign_t::set_dir(ribi_t::ribi dir)
 		if(  desc->get_wtyp()!=track_wt  &&  desc->get_wtyp()!=monorail_wt  &&  desc->get_wtyp()!=maglev_wt  &&  desc->get_wtyp()!=narrowgauge_wt  ) {
 			weg->count_sign();
 		}
-		if(desc->is_single_way() ||
-           desc->is_signal() ||
-           desc->is_pre_signal() ||
-           desc->is_priority_signal() ||
-           desc->is_longblock_signal()) {
+		if(desc->is_single_way()  ||  desc->is_signal_type()) {
 			// set mask, if it is a single way ...
 			weg->count_sign();
 			weg->set_ribi_maske(calc_mask());
@@ -544,7 +540,7 @@ void roadsign_t::rdwr(loadsave_t *file)
 	obj_t::rdwr(file);
 
 	uint8 dummy=0;
-	if(  file->get_version()<=102002  ) {
+	if(  file->is_version_less(102, 3)  ) {
 		file->rdwr_byte(dummy);
 		if(  file->is_loading()  ) {
 			ticks_ns = ticks_ow = 16;
@@ -554,7 +550,7 @@ void roadsign_t::rdwr(loadsave_t *file)
 		file->rdwr_byte(ticks_ns);
 		file->rdwr_byte(ticks_ow);
 	}
-	if(  file->get_version()>=110007  ) {
+	if(  file->is_version_atleast(110, 7)  ) {
 		file->rdwr_byte(ticks_offset);
 	}
 	else {
@@ -569,7 +565,7 @@ void roadsign_t::rdwr(loadsave_t *file)
 	dummy = dir;
 	file->rdwr_byte(dummy);
 	dir = dummy;
-	if(file->get_version()<89000) {
+	if(file->is_version_less(89, 0)) {
 		dir = ribi_t::backward(dir);
 	}
 
@@ -593,7 +589,7 @@ void roadsign_t::rdwr(loadsave_t *file)
 			}
 		}
 		// init ownership of private ways signs
-		if(  file->get_version()<110007  &&  desc  &&  desc->is_private_way()  ) {
+		if(  file->is_version_less(110, 7)  &&  desc  &&  desc->is_private_way()  ) {
 			ticks_ns = 0xFD;
 			ticks_ow = 0xFF;
 		}

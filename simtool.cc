@@ -2865,7 +2865,7 @@ uint8 tool_build_tunnel_t::is_valid_pos(  player_t *player, const koord3d &pos, 
 	if(  gr  ) {
 		if( gr->hat_wege() ) {
 			const tunnel_desc_t *desc = tunnel_builder_t::get_desc(default_param);
-			// use the check_owner routine of way_builder_t (not spieler_t!), needs an instance
+			// use the check_owner routine of way_builder_t (not player_t!), needs an instance
 			weg_t *w = gr->get_weg_nr(0);
 			if(  w==NULL  ||  w->get_desc()->get_wtyp()!=desc->get_waytype()  ) {
 				error = NOTICE_UNSUITABLE_GROUND;
@@ -3499,7 +3499,7 @@ const char *tool_build_station_t::tool_station_building_aux(player_t *player, bo
 	}
 DBG_MESSAGE("tool_station_building_aux()", "building mail office/station building on square %d,%d", k.x, k.y);
 
-	// Player pays for the construction
+	// Player player pays for the construction
 	// but we try to extend stations of Player new_owner that may be the public player
 	player_t *new_owner = extend_public_halt ? welt->get_public_player() : player;
 
@@ -4612,7 +4612,7 @@ const char *tool_build_station_t::work( player_t *player, koord3d pos )
 		}
 
 		default:
-			dbg->warning("tool_station_t::work()","tool called for illegal desc \"%\"", default_param );
+			dbg->warning("tool_build_station_t::work()","tool called for illegal desc \"%\"", default_param );
 			msg = "Illegal station tool";
 	}
 	return msg;
@@ -4745,7 +4745,7 @@ const char* tool_build_roadsign_t::check_pos_intern(player_t *player, koord3d po
 			return error;
 		}
 
-		if(desc->is_signal()  &&  gr->find<roadsign_t>())  {
+		if(desc->is_signal_type()  &&  gr->find<roadsign_t>())  {
 			// only one sign per tile
 			return error;
 		}
@@ -4769,14 +4769,11 @@ const char* tool_build_roadsign_t::check_pos_intern(player_t *player, koord3d po
 			return error;
 		}
 
-		const bool two_way = desc->is_single_way() ||
-                        desc->is_signal() ||
-                        desc->is_pre_signal() ||
-                        desc->is_priority_signal();
+		const bool two_way = desc->is_single_way()  ||  desc->is_signal_type();
 
 		if(!(desc->is_traffic_light() || two_way)  ||  (two_way  &&  ribi_t::is_twoway(dir))  ||  (desc->is_traffic_light()  &&  ribi_t::is_threeway(dir))) {
 			roadsign_t* rs;
-			if (desc->is_signal_type()) {
+			if(  desc->is_signal_type()  ) {
 				// if there is already a signal, we might need to inverse the direction
 				rs = gr->find<signal_t>();
 				if (rs) {
@@ -5039,7 +5036,7 @@ void tool_build_roadsign_t::get_values( player_t *player, uint8 &spacing, bool &
 
 const char *tool_build_roadsign_t::place_sign_intern( player_t *player, grund_t* gr, const roadsign_desc_t*)
 {
-	const char * error = "Hier kann kein\nSignal aufge-\nstellt werden!\n";
+	const char *error = "Hier kann kein\nSignal aufge-\nstellt werden!\n";
 	// search for starting ground
 	if(gr) {
 		// get the sign direction
@@ -5054,10 +5051,7 @@ const char *tool_build_roadsign_t::place_sign_intern( player_t *player, grund_t*
 		}
 		ribi_t::ribi dir = weg->get_ribi_unmasked();
 
-		const bool two_way = desc->is_single_way() ||
-                        desc->is_signal() ||
-                        desc->is_pre_signal() ||
-                        desc->is_priority_signal();
+		const bool two_way = desc->is_single_way() || desc->is_signal_type();
 
 		if(!(desc->is_traffic_light() || two_way)  ||  (two_way  &&  ribi_t::is_twoway(dir))  ||  (desc->is_traffic_light()  &&  ribi_t::is_threeway(dir))) {
 			roadsign_t* rs;
@@ -5290,7 +5284,7 @@ const char *tool_build_depot_t::work( player_t *player, koord3d pos )
 		case tram_wt:
 			return tool_build_depot_t::tool_depot_aux(player, pos, desc, track_wt);
 		default:
-			dbg->warning("tool_depot()","called with unknown desc %s",desc->get_name() );
+			dbg->warning("tool_build_depot()","called with unknown desc %s",desc->get_name() );
 			return "Unknown depot object";
 	}
 	return NULL;
@@ -5352,7 +5346,7 @@ const char *tool_build_house_t::work( player_t *player, koord3d pos )
 	else if(  default_param[1]=='A'  ) {
 		if(  desc->get_type()!=building_desc_t::attraction_land  &&  desc->get_type()!=building_desc_t::attraction_city  ) {
 			// auto rotation only valid for city buildings
-			rotation = stadt_t::orient_city_building( k, desc );
+			rotation = stadt_t::orient_city_building( k, desc, desc->get_size() );
 			if(  rotation < 0 ) {
 				return NOTICE_UNSUITABLE_GROUND;
 			}
@@ -6369,7 +6363,7 @@ void tool_merge_stop_t::mark_tiles(  player_t *player, const koord3d &start, con
 
 	if(  distance  < welt->get_settings().allow_merge_distant_halt  ) {
 		distance = clamp(distance,2,33)-2;
-		workcost = -welt->scale_with_month_length( (1<<distance) * welt->get_settings().cst_multiply_merge_halt );
+		workcost = welt->scale_with_month_length( (1<<distance) * welt->get_settings().cst_multiply_merge_halt );
 		win_set_static_tooltip( tooltip_with_price("Building costs estimates", workcost) );
 	}
 	else {
@@ -6401,9 +6395,9 @@ const char *tool_merge_stop_t::do_work( player_t *player, const koord3d &last_po
 
 	if(  distance  < welt->get_settings().allow_merge_distant_halt  ) {
 		distance = clamp(distance,2,33)-2;
-		workcost = -welt->scale_with_month_length( (1<<distance) * welt->get_settings().cst_multiply_merge_halt );
+		workcost = welt->scale_with_month_length( (1<<distance) * welt->get_settings().cst_multiply_merge_halt );
 		win_set_static_tooltip( tooltip_with_price("Building costs estimates", workcost) );
-		if(  player != welt->get_public_player()  ||  !player->can_afford(workcost)  ) {
+		if(  player != welt->get_public_player()  &&  !player->can_afford(workcost)  ) {
 			return NOTICE_INSUFFICIENT_FUNDS;
 		}
 	}
@@ -7161,7 +7155,7 @@ bool tool_change_line_t::init( player_t *player )
 bool tool_change_depot_t::init( player_t *player )
 {
 	char tool=0;
-	koord3d pos = koord3d::invalid;
+	koord pos2d;
 	sint16 z;
 	uint16 convoi_id;
 
@@ -7170,8 +7164,9 @@ bool tool_change_depot_t::init( player_t *player )
 	while(  *p  &&  *p<=' '  ) {
 		p++;
 	}
-	sscanf( p, "%c,%hi,%hi,%hi,%hi", &tool, &pos.x, &pos.y, &z, &convoi_id );
-	pos.z = (sint8)z;
+	sscanf( p, "%c,%hi,%hi,%hi,%hi", &tool, &pos2d.x, &pos2d.y, &z, &convoi_id );
+
+	koord3d pos(pos2d, z);
 
 	// skip to the commands ...
 	z = 5;
@@ -7449,12 +7444,12 @@ bool tool_change_player_t::init( player_t *player_in)
  */
 bool tool_change_traffic_light_t::init( player_t *player )
 {
-	koord3d pos;
+	koord pos2d;
 	sint16 z, ns, ticks;
-	if(  5!=sscanf( default_param, "%hi,%hi,%hi,%hi,%hi", &pos.x, &pos.y, &z, &ns, &ticks )  ) {
+	if(  5!=sscanf( default_param, "%hi,%hi,%hi,%hi,%hi", &pos2d.x, &pos2d.y, &z, &ns, &ticks )  ) {
 		return false;
 	}
-	pos.z = (sint8)z;
+	koord3d pos(pos2d, z);
 	if(  grund_t *gr = welt->lookup(pos)  ) {
 		if( roadsign_t *rs = gr->find<roadsign_t>()  ) {
 			if(  (  rs->get_desc()->is_traffic_light()  ||  rs->get_desc()->is_private_way()  )  &&  player_t::check_owner(rs->get_owner(),player)  ) {
@@ -7544,8 +7539,9 @@ bool tool_rename_t::init(player_t *player)
 			}
 			break;
 		case 'm':
-		case 'f':
-			if(  3!=sscanf( p, "%hi,%hi,%hi", &pos.x, &pos.y, &id )  ) {
+		case 'f': {
+			koord pos2d;
+			if(  3!=sscanf( p, "%hi,%hi,%hi", &pos2d.x, &pos2d.y, &id )  ) {
 				dbg->error( "tool_rename_t::init", "no position given for marker/factory! (%s)", default_param );
 				return false;
 			}
@@ -7555,9 +7551,10 @@ bool tool_rename_t::init(player_t *player)
 			}
 			while(  *p>0  &&  *p++!=','  ) {
 			}
-			pos.z = (sint8)id;
+			pos = koord3d(pos2d, id);
 			id = 0;
 			break;
+		}
 		default:
 			dbg->error( "tool_rename_t::init", "illegal request! (%s)", default_param );
 			return false;
