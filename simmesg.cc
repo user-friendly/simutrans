@@ -1,10 +1,6 @@
 /*
- * Manages all gameplay-related messages of the games
- *
- * Copyright (c) 2005 Markus Pristovsek
- *
- * This file is part of the Simutrans project under the artistic license.
- * (see license.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "macros.h"
@@ -113,7 +109,6 @@ void message_t::set_message_flags( sint32 t, sint32 w, sint32 a, sint32 i)
  * @param color  message color
  * @param where type of message
  * @param image image associated with message (will be ignored if pos!=koord::invalid)
- * @author prissi
  */
 void message_t::add_message(const char *text, koord pos, uint16 what_flags, FLAGGED_PIXVAL color, image_id image )
 {
@@ -192,7 +187,6 @@ DBG_MESSAGE("message_t::add_msg()","%40s (at %i,%i)", text, pos.x, pos.y );
 	}
 	// check if some window has focus
 	gui_frame_t *old_top = win_get_top();
-	gui_component_t *focus = win_get_focus();
 
 	// should we open a window?
 	if (  art & (auto_win_flags | win_flags)  ) {
@@ -208,7 +202,7 @@ DBG_MESSAGE("message_t::add_msg()","%40s (at %i,%i)", text, pos.x, pos.y );
 	}
 
 	// restore focus
-	if(  old_top  &&  focus  ) {
+	if(  old_top    ) {
 		top_win( old_top, true );
 	}
 }

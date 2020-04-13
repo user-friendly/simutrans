@@ -1,9 +1,6 @@
 /*
- * Scrollbar class
- * Niel Roest
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "../../simdebug.h"
@@ -161,8 +158,6 @@ bool scrollbar_t::infowin_event(const event_t *ev)
 	const int y = ev->cy;
 	int i;
 
-	// 2003-11-04 hsiegeln added wheel support
-	// prissi: repaired it, was never doing something ...
 	if(  IS_WHEELUP(ev)  &&  (type == vertical) != IS_SHIFT_PRESSED(ev)  ) {
 		scroll( -knob_scroll_amount );
 		return true;
@@ -214,7 +209,7 @@ bool scrollbar_t::infowin_event(const event_t *ev)
 			if(  knobarea.contains( scr_coord(x,y) )  ||  dragging  ) {
 				sint32 delta, change;
 
-				// Hajo: added vertical/horizontal check
+				// added vertical/horizontal check
 				if(type == vertical) {
 					delta = ev->my - ev->cy;
 					change = (sint32)(delta*( (double)total_size / (double) sliderarea.h ) + 0.5);

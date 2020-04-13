@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artisic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -334,9 +332,9 @@ ribi_t::ribi ribi_type(const koord3d& dir)
 }
 
 
-/* check, if two directions are orthogonal
+/**
+ * check, if two directions are orthogonal
  * works with diagonals too
- * @author prissi
  */
 bool ribi_t::is_perpendicular(ribi x, ribi y)
 {

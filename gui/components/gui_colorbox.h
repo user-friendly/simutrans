@@ -1,5 +1,11 @@
-#ifndef gui_colorbox_h
-#define gui_colorbox_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef GUI_COMPONENTS_GUI_COLORBOX_H
+#define GUI_COMPONENTS_GUI_COLORBOX_H
+
 
 #include "gui_component.h"
 #include "../../simcolor.h"

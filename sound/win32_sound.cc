@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic license.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -14,7 +13,7 @@
 
 
 /*
- * Hajo: flag if sound module should be used
+ * flag if sound module should be used
  * with Win32 the number+1 of the device used
  */
 static int use_sound = 0;
@@ -39,7 +38,6 @@ bool dr_init_sound()
 /**
  * loads a single sample
  * @return a handle for that sample or -1 on failure
- * @author Hj. Malthaner
  */
 int dr_load_sample(char const* filename)
 {
@@ -68,7 +66,6 @@ int dr_load_sample(char const* filename)
 /**
  * plays a sample
  * @param key the key for the sample to be played
- * @author Hj. Malthaner
  */
 void dr_play_sample(int sample_number, int volume)
 {

@@ -1,14 +1,17 @@
-#ifndef boden_wasser_h
-#define boden_wasser_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef BODEN_WASSER_H
+#define BODEN_WASSER_H
+
 
 #include "grund.h"
 
 /**
  * The water ground models rivers and lakes in Simutrans.
- *
- * @author Hj. Malthaner
  */
-
 class wasser_t : public grund_t
 {
 protected:
@@ -36,6 +39,12 @@ public:
 
 	const char *get_name() const OVERRIDE {return "Water";}
 	grund_t::typ get_typ() const OVERRIDE {return wasser;}
+
+	// recalculates the water-specific ribis
+	void recalc_ribis();
+
+	// recalculates the water-specific ribis for this and all neighbouring water tiles
+	void recalc_water_neighbours();
 
 	// map rotation
 	void rotate90() OVERRIDE;

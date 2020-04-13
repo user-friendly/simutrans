@@ -1,19 +1,18 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef __simtunnel_h
-#define __simtunnel_h
+#ifndef BAUER_TUNNELBAUER_H
+#define BAUER_TUNNELBAUER_H
+
 
 #include "../simtypes.h"
 #include "../dataobj/koord.h"
 #include "../dataobj/koord3d.h"
 
 class karte_ptr_t;
-class player_t;               // Hajo: 22-Nov-01: Added forward declaration
+class player_t;
 class tunnel_desc_t;
 class way_desc_t;
 class tool_selector_t;
@@ -23,8 +22,6 @@ class tool_selector_t;
  * sondern immer vom tunnel_builder_t erzeugt werden.
  *
  * Es gibt keine Instanz - nur statische Methoden.
- *
- * @author V. Meyer
  */
 class tunnel_builder_t {
 private:

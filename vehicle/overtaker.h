@@ -1,20 +1,17 @@
-#ifndef _overtaker_h
-#define _overtaker_h
-
-/**
- * All vehicles that can overtake must include this class
- * These are convois and city cars
- *
- * Oct 2008
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
+
+#ifndef VEHICLE_OVERTAKER_H
+#define VEHICLE_OVERTAKER_H
+
 
 #include "../simtypes.h"
 
 /**
  * Class dealing with overtaking
  * It is the superclass of convois and city cars (private_car_t)
- *
- * @author isidoro
  */
 class overtaker_t
 {

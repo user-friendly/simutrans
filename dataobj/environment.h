@@ -1,5 +1,11 @@
-#ifndef dataobj_environment_h
-#define dataobj_environment_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef DATAOBJ_ENVIRONMENT_H
+#define DATAOBJ_ENVIRONMENT_H
+
 
 #include <string>
 #include "../simtypes.h"
@@ -18,8 +24,6 @@
  * Class to save all environment parameters, ie everything that changes
  * the look and feel of the game. Most of them can be changed by command-line
  * parameters or simuconf.tab files.
- *
- * @author Hj. Malthaner
  */
 class env_t
 {
@@ -170,12 +174,14 @@ public:
 	/// default behavior of the map-window
 	static uint32 default_mapmode;
 
+	/// cut through the map when following convois?
+	static uint8 follow_convoi_underground;
+
 	///which messages to display where?
 	/**
 	 * message_flags[i] is bitfield, where bit is set if message should be show at location i,
 	 * where 0 = show message in ticker, 1 = open auto-close window, 2 = open persistent window, 3 = ignore message
 	 * @see message_option_t
-	 * @author prissi
 	 */
 	static sint32 message_flags[4];
 
@@ -183,7 +189,6 @@ public:
 
 	/**
 	 * window button at right corner (like Windows)
-	 * @author prissi
 	 */
 	static bool window_buttons_right;
 
@@ -271,8 +276,6 @@ public:
 	/**
 	 * Set to true to hide all trees. "Hiding" is implemented by showing the
 	 * first pic which should be very small.
-	 * @author Volker Meyer
-	 * @date  10.06.2003
 	 */
 	static bool hide_trees;
 
@@ -287,7 +290,7 @@ public:
 	static uint32 cursor_overlay_color_rgb;
 	static PIXVAL cursor_overlay_color;
 
-	static sint8 show_money_message; 
+	static sint8 show_money_message;
 
 	/// color used for solid background draw
 	static uint32 background_color_rgb;
@@ -348,8 +351,6 @@ public:
 
 	/**
 	 * show month in date?
-	 *
-	 * @author hsiegeln
 	 */
 	static uint8 show_month;
 
@@ -395,7 +396,6 @@ public:
 
 	/**
 	 * Name of rivers; first the river with the lowest number
-	 * @author prissi
 	 */
 	static plainstring river_type[10];
 
@@ -407,13 +407,11 @@ public:
 	/**
 	* Produce more debug info:
 	* can be set by command-line switch '-debug'
-	* @author Hj. Malthaner
 	*/
 	static uint8 verbose_debug;
 
 
 	/// do autosave every month?
-	/// @author prissi
 	static sint32 autosave;
 
 
@@ -423,7 +421,12 @@ public:
 	/// @{
 
 	static sint16 global_volume, midi_volume;
-	static bool mute_sound, mute_midi, shuffle_midi;
+	static bool mute_midi, shuffle_midi;
+	static bool global_mute_sound;
+	static uint16 specific_volume[MAX_SOUND_TYPES];
+
+	/// how dast are distant sounds fading (1: very fast 25: very little)
+	static uint32 sound_distance_scaling;
 
 	/// @}
 

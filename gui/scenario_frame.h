@@ -1,12 +1,10 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_scenario_frame_h
-#define gui_scenario_frame_h
+#ifndef GUI_SCENARIO_FRAME_H
+#define GUI_SCENARIO_FRAME_H
 
 
 #include "savegame_frame.h"
@@ -22,13 +20,11 @@ private:
 protected:
 	/**
 	 * Action that's started by the press of a button.
-	 * @author Hansjörg Malthaner
 	 */
 	bool item_action(const char *fullpath) OVERRIDE;
 
 	/**
 	 * Action, started after X-Button pressing
-	 * @author V. Meyer
 	 */
 	bool del_action(const char *f) OVERRIDE { return item_action(f); }
 
@@ -42,7 +38,6 @@ public:
 	/**
 	* Set the window associated helptext
 	* @return the filename for the helptext, or NULL
-	* @author Hj. Malthaner
 	*/
 	const char * get_help_filename() const OVERRIDE { return "scenario.txt"; }
 

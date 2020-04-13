@@ -1,13 +1,8 @@
 /*
- * Copyright (c) 1997 - 2004 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-/*
- * This class defines all toolbar dialogues, i.e. the part the user will see
- */
 
 #include "../dataobj/environment.h"
 #include "../display/simimg.h"
@@ -44,7 +39,6 @@ tool_selector_t::tool_selector_t(const char* title, const char *help_file, uint3
 /**
  * Add a new tool with values and tooltip text.
  * tool_in must be created by new tool_t(copy_tool)!
- * @author Hj. Malthaner
  */
 void tool_selector_t::add_tool_selector(tool_t *tool_in)
 {

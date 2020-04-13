@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "../simdebug.h"
@@ -63,18 +61,19 @@ void sve_info_t::rdwr(loadsave_t *file)
 
 /**
  * Action that's started with a button click
- * @author Hansjörg Malthaner
  */
 bool loadsave_frame_t::item_action(const char *filename)
 {
 	if(do_load) {
 		welt->switch_server( easy_server.pressed, true );
+		long start_load = dr_time();
 		if(  !welt->load(filename)  ) {
 			welt->switch_server( false, true );
 		}
 		else if(  env_t::server  ) {
 			welt->announce_server(0);
 		}
+		DBG_MESSAGE( "loadsave_frame_t::item_action", "load world %li ms", dr_time() - start_load );
 	}
 	else {
 		// saving a game
@@ -89,7 +88,9 @@ bool loadsave_frame_t::item_action(const char *filename)
 			// and now we need to copy the servergame to the map ...
 #endif
 		}
-		welt->save( filename, loadsave_t::save_mode, env_t::savegame_version_str, false );
+		long start_save = dr_time();
+		welt->save( filename, false, env_t::savegame_version_str, false );
+		DBG_MESSAGE( "loadsave_frame_t::item_action", "save world %li ms", dr_time() - start_save );
 		welt->set_dirty();
 		welt->reset_timer();
 	}
@@ -160,7 +161,6 @@ loadsave_frame_t::loadsave_frame_t(bool do_load) : savegame_frame_t(".sve",false
 /**
  * Set the window associated helptext
  * @return the filename for the helptext, or NULL
- * @author Hj. Malthaner
  */
 const char *loadsave_frame_t::get_help_filename() const
 {
@@ -225,7 +225,7 @@ loadsave_frame_t::~loadsave_frame_t()
 	// save hashtable
 	loadsave_t file;
 	const char *cache_file = SAVE_PATH_X "_cached.xml";
-	if(  file.wr_open(cache_file, loadsave_t::xml, "cache", SAVEGAME_VER_NR)  ) {
+	if(  file.wr_open(cache_file, loadsave_t::xml, 0, "cache", SAVEGAME_VER_NR)  ) {
 		const char *text="Automatically generated file. Do not edit. An invalid file may crash the game. Deleting is allowed though.";
 		file.rdwr_str(text);
 		FOR(stringhashtable_tpl<sve_info_t*>, const& i, cached_info) {

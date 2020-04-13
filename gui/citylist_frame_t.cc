@@ -1,12 +1,6 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- */
-
- /*
- * The citylist dialog
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "citylist_frame_t.h"
@@ -23,7 +17,6 @@
 /**
  * This variable defines the sort order (ascending or descending)
  * Values: 1 = ascending, 2 = descending)
- * @author Markus Weber
  */
 bool citylist_frame_t::sortreverse = false;
 
@@ -157,6 +150,7 @@ citylist_frame_t::citylist_frame_t() :
 	update_label();
 
 	set_resizemode(diagonal_resize);
+	scrolly.set_maximize(true);
 	reset_min_windowsize();
 }
 

@@ -1,5 +1,11 @@
-#ifndef GUI_COMPONENTS_FLOWTEXT_H
-#define GUI_COMPONENTS_FLOWTEXT_H
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef GUI_COMPONENTS_GUI_FLOWTEXT_H
+#define GUI_COMPONENTS_GUI_FLOWTEXT_H
+
 
 #include "action_listener.h"
 #include "gui_action_creator.h"
@@ -26,7 +32,6 @@ public:
 
 	/**
 	 * Sets the text to display.
-	 * @author Hj. Malthaner
 	 */
 	void set_text(const char* text);
 

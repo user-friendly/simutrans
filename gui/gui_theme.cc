@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 /* this file has all functions for variable gui elements */
 
 
 #include "gui_theme.h"
+#include "../simworld.h"
 #include "../simskin.h"
 #include "../simmenu.h"
 #include "../simsys.h"
@@ -80,6 +79,8 @@ scr_size gui_theme_t::gui_label_size;
 scr_size gui_theme_t::gui_edit_size;
 scr_size gui_theme_t::gui_gadget_size;
 scr_size gui_theme_t::gui_indicator_size;
+KOORD_VAL gui_theme_t::gui_waitingbar_width;
+
 scr_coord gui_theme_t::gui_focus_offset;
 scr_coord gui_theme_t::gui_button_text_offset_right;
 scr_coord gui_theme_t::gui_color_button_text_offset_right;
@@ -123,7 +124,6 @@ bool gui_theme_t::gui_drop_shadows;
 
 /**
  * Initializes theme related parameters to hard coded default values.
- * @author  Max Kielland
  */
 void gui_theme_t::init_gui_defaults()
 {
@@ -195,6 +195,7 @@ void gui_theme_t::init_gui_defaults()
 	gui_frame_bottom     = 10;
 	gui_hspace           = 4;
 	gui_vspace           = 4;
+	gui_waitingbar_width = 4;
 	gui_divider_size.h   = D_V_SPACE*2;
 
 	gui_drop_shadows     = false;
@@ -350,16 +351,14 @@ void gui_theme_t::init_gui_from_images()
 
 /**
  * Reads theme configuration data, still not final
- * @author prissi
  *
- * Max Kielland:
  * Note, there will be a theme manager later on and
  * each gui object will find their own parameters by
  * themselves after registering its class to the theme
  * manager. This will be done as the last step in
  * the chain when loading a theme.
  */
-bool gui_theme_t::themes_init(const char *file_name, bool init_fonts )
+bool gui_theme_t::themes_init(const char *file_name, bool init_fonts, bool init_tools )
 {
 	tabfile_t themesconf;
 
@@ -500,6 +499,8 @@ bool gui_theme_t::themes_init(const char *file_name, bool init_fonts )
 	gui_theme_t::gui_highlight_color                    = (PIXVAL)contents.get_color("gui_highlight_color", SYSCOL_HIGHLIGHT);
 	gui_theme_t::gui_shadow_color                       = (PIXVAL)contents.get_color("gui_shadow_color", SYSCOL_SHADOW);
 
+	gui_theme_t::gui_waitingbar_width = (uint32)contents.get_int("gui_waitingbar_width", gui_theme_t::gui_waitingbar_width);
+
 	// those two may be rather an own control later on?
 	gui_theme_t::gui_indicator_size = contents.get_scr_size("gui_indicator_size",  gui_theme_t::gui_indicator_size );
 
@@ -528,7 +529,7 @@ bool gui_theme_t::themes_init(const char *file_name, bool init_fonts )
 	env_t::toolbar_max_width =    contents.get_int("toolbar_max_width",          env_t::toolbar_max_width );
 	env_t::toolbar_max_height =   contents.get_int("toolbar_max_height",         env_t::toolbar_max_height );
 
-	if(  toolbar_last_used_t::last_used_tools  ) {
+	if(  toolbar_last_used_t::last_used_tools  &&  init_tools  ) {
 		// only re-init if already inited
 		tool_t::update_toolbars();
 	}

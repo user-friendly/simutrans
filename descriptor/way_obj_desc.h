@@ -1,13 +1,11 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- *
- *  Description:
- *      This files describes way objects like electrifications
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
-#ifndef __WAY_OBJ_DESC_H
-#define __WAY_OBJ_DESC_H
+
+#ifndef DESCRIPTOR_WAY_OBJ_DESC_H
+#define DESCRIPTOR_WAY_OBJ_DESC_H
+
 
 #include "image_list.h"
 #include "obj_base_desc.h"
@@ -29,8 +27,6 @@ class checksum_t;
  *	3	Image on sloped ways
  *	4	Image on diagonal ways
  *	5	Skin (cursor and icon)
- *
- * @author  Volker Meyer, Hj. Malthaner
  */
 class way_obj_desc_t : public obj_desc_transport_infrastructure_t {
     friend class way_obj_reader_t;
@@ -179,7 +175,6 @@ public:
 
 	/**
 	* Skin: cursor (index 0) and icon (index 1)
-	* @author Hj. Malthaner
 	*/
 	skin_desc_t const* get_cursor() const { return get_child<skin_desc_t>(8); }
 

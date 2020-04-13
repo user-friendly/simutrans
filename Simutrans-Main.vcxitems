@@ -146,6 +146,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\curiositylist_frame_t.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\curiositylist_stats_t.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\depot_frame.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)gui\depotlist_frame.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\display_settings.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\enlarge_map_frame_t.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\extend_edit.cc" />
@@ -166,7 +167,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\headquarter_info.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\help_frame.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\jump_frame.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)gui\karte.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\kennfarbe.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\label_info.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\labellist_frame_t.cc" />
@@ -181,6 +181,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\message_option_t.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\message_stats_t.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\messagebox.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)gui\minimap.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\money_frame.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\obj_info.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\optionen.cc" />
@@ -204,6 +205,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\themeselector.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\tool_selector.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\trafficlight_info.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)gui\vehiclelist_frame.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\welt.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\components\gui_aligned_container.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)gui\components\gui_building.cc" />
@@ -488,6 +490,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\curiositylist_frame_t.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\curiositylist_stats_t.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\depot_frame.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)gui\depotlist_frame.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\display_settings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\enlarge_map_frame_t.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\extend_edit.h" />
@@ -508,7 +511,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\headquarter_info.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\help_frame.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\jump_frame.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)gui\karte.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\kennfarbe.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\label_info.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\labellist_frame_t.h" />
@@ -523,6 +525,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\message_option_t.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\message_stats_t.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\messagebox.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)gui\minimap.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\money_frame.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\obj_info.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\optionen.h" />
@@ -546,6 +549,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\themeselector.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\tool_selector.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\trafficlight_info.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)gui\vehiclelist_frame.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\welt.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\components\action_listener.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)gui\components\gui_action_creator.h" />

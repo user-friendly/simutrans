@@ -1,7 +1,6 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string>
@@ -22,10 +21,9 @@
 #include "sound_desc.h"
 #include "ground_desc.h"
 
-/* sound of the program *
- * @author prissi
+/*
+ * sound of the program
  */
-
 class sound_ids {
 public:
 	std::string filename;

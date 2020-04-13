@@ -1,9 +1,11 @@
 /*
- * Dialogue to increase map size.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef bigger_map_gui_h
-#define bigger_map_gui_h
+#ifndef GUI_ENLARGE_MAP_FRAME_T_H
+#define GUI_ENLARGE_MAP_FRAME_T_H
+
 
 #include "gui_frame.h"
 #include "components/gui_label.h"
@@ -13,6 +15,9 @@
 
 class settings_t;
 
+/*
+ * Dialogue to increase map size.
+ */
 class enlarge_map_frame_t  : public gui_frame_t, private action_listener_t
 {
 private:
@@ -21,7 +26,6 @@ private:
 
 	/**
 	* Mini Map-Preview
-	* @author Hj. Malthaner
 	*/
 	array2d_tpl<PIXVAL> map;
 	gui_map_preview_t
@@ -35,7 +39,7 @@ private:
 		inp_number_of_towns,
 		inp_town_size;
 
-	/* 
+	/*
 	 * Label to display current map seed number.
 	 */
 	gui_label_buf_t	map_number_label;
@@ -56,7 +60,6 @@ public:
 	/**
 	* Calculate the new Map-Preview. Initialize the new RNG!
 	* public, because also the climate dialog need it
-	* @author Hj. Malthaner
 	*/
 	void update_preview();
 
@@ -65,7 +68,6 @@ public:
 	/**
 	 * Set the window associated helptext
 	 * @return the filename for the helptext, or NULL
-	 * @author Hj. Malthaner
 	 */
 	const char * get_help_filename() const OVERRIDE { return "enlarge_map.txt";}
 
@@ -73,7 +75,6 @@ public:
 	 * Draw new component. The values to be passed refer to the window
 	 * i.e. It's the screen coordinates of the window where the
 	 * component is displayed.
-	 * @author Hj. Malthaner
 	 */
 	void draw(scr_coord pos, scr_size size) OVERRIDE;
 };

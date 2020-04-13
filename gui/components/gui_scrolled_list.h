@@ -1,16 +1,11 @@
 /*
- * Scrollable list.
- * Displays list, scrollbuttons up/down, dragbar.
- * Has a min and a max size, and can be displayed with any size in between.
- * Does ONLY cater for vertical offset (yet).
- * two possible types:
- * -list.      simply lists some items.
- * -selection. is a list, but additionally, one item can be selected.
- * @author Niels Roest, additions by Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_scrolled_list_h
-#define gui_scrolled_list_h
+#ifndef GUI_COMPONENTS_GUI_SCROLLED_LIST_H
+#define GUI_COMPONENTS_GUI_SCROLLED_LIST_H
+
 
 #include "gui_aligned_container.h"
 #include "gui_scrollpane.h"
@@ -29,8 +24,16 @@ public:
 	vector_tpl <gui_component_t *>& get_components() { return components; }
 };
 
+
 /**
  * Scrollable list of components that can be sorted, and has component selection.
+ *
+ * Displays list, scrollbuttons up/down, dragbar.
+ * Has a min and a max size, and can be displayed with any size in between.
+ * Does ONLY cater for vertical offset (yet).
+ * two possible types:
+ * -list.      simply lists some items.
+ * -selection. is a list, but additionally, one item can be selected.
  */
 class gui_scrolled_list_t :
 	public gui_action_creator_t,
@@ -38,7 +41,6 @@ class gui_scrolled_list_t :
 {
 public:
 	enum type { windowskin, listskin };
-
 
 	/**
 	 * Base class for elements in lists. Virtual inheritance.
@@ -92,10 +94,10 @@ public:
 private:
 	enum type type;
 
-	scr_coord_val max_width; // need for overlength entries
+	bool maximize;	// true if to expand to bottom right corner
 
 	item_compare_func compare;
-	
+
 	bool multiple_selection; // true when multiple selection is enabled.
 	void calc_selection(scrollitem_t*, scrollitem_t*, event_t);
 
@@ -105,12 +107,12 @@ protected:
 
 	void reset_container_size();
 
-	void set_cmp(item_compare_func cmp) { compare = cmp; }
-
 	/// deletes invalid elements from list
 	void cleanup_elements();
 
 public:
+	void set_cmp(item_compare_func cmp) { compare = cmp; }
+
 	gui_scrolled_list_t(enum type, item_compare_func cmp = 0);
 
 	~gui_scrolled_list_t() { clear_elements(); }
@@ -120,10 +122,10 @@ public:
 	void set_selection(int s);
 	sint32 get_selection() const;
 	vector_tpl<sint32> get_selections() const;
-	
+
 	scrollitem_t* get_selected_item() const;
 	sint32 get_count() const { return item_list.get_count(); }
-	
+
 	void enable_multiple_selection() { multiple_selection = true; }
 
 	/*  when rebuilding a list, be sure to call recalculate the slider
@@ -155,7 +157,8 @@ public:
 
 	void draw(scr_coord pos) OVERRIDE;
 
-	void set_max_width(scr_coord_val mw) { max_width = mw; }
+	bool is_marginless() const OVERRIDE { return maximize; }
+	void set_maximize(bool b) { maximize = b; }
 };
 
 #endif

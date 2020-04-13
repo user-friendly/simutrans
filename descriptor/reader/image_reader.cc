@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <stdio.h>
 #include <string.h>
 
@@ -24,7 +29,7 @@ obj_desc_t *image_reader_t::read_node(FILE *fp, obj_node_info_t &node)
 	ALLOCA(char, desc_buf, node.size);
 	image_t* desc=NULL;
 
-	// Hajo: Read data
+	// Read data
 	fread(desc_buf, node.size, 1, fp);
 	char * p = desc_buf+6;
 
@@ -104,7 +109,7 @@ obj_desc_t *image_reader_t::read_node(FILE *fp, obj_node_info_t &node)
 		}
 	}
 	else {
-		dbg->fatal("image_reader_t::read_node()","illegal versions %d", version );
+		dbg->fatal( "image_reader_t::read_node()", "Cannot handle too new node version %i", version );
 	}
 
 #if COLOUR_DEPTH == 0

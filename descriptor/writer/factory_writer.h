@@ -1,12 +1,18 @@
-#ifndef FACTORY_WRITER_H
-#define FACTORY_WRITER_H
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef DESCRIPTOR_WRITER_FACTORY_WRITER_H
+#define DESCRIPTOR_WRITER_FACTORY_WRITER_H
+
 
 #include <string>
 #include "obj_writer.h"
 #include "../objversion.h"
 
 
-// Knightly : new writer class for field class desc
+// new writer class for field class desc
 class factory_field_class_writer_t : public obj_writer_t {
 	private:
 		static factory_field_class_writer_t the_instance;

@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <assert.h>
 #include <math.h>
 #include "simrandom.h"
@@ -239,11 +244,11 @@ static double linear_interpolate(const double a, const double b, const double x)
 
 static double interpolated_noise(const double x, const double y)
 {
-// The function floor is needed because (int) rounds always towards zero,
-// but we need integer_x be the biggest integer not bigger than x.
-// So  (int)      -1.5  = -1.0
-// But (int)floor(-1.5) = -2.0
-// Modified 2008/10/17 by Gerd Wachsmuth
+	// The function floor is needed because (int) rounds always towards zero,
+	// but we need integer_x be the biggest integer not bigger than x.
+	// So  (int)      -1.5  = -1.0
+	// But (int)floor(-1.5) = -2.0
+
 	const int    integer_X    = (int)floor(x);
 	const int    integer_Y    = (int)floor(y);
 

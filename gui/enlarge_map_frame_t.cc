@@ -1,15 +1,12 @@
 /*
- * Dialogue to increase map size.
- *
- * Gerd Wachsmuth
- *
- * October 2008
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
 
 #include "enlarge_map_frame_t.h"
-#include "karte.h"
+#include "minimap.h"
 #include "welt.h"
 #include "components/gui_divider.h"
 
@@ -130,7 +127,6 @@ enlarge_map_frame_t::~enlarge_map_frame_t()
 
 /**
  * This method is called if an action is triggered
- * @author Hj. Malthaner
  */
 bool enlarge_map_frame_t::action_triggered( gui_action_creator_t *comp,value_t v)
 {
@@ -176,7 +172,6 @@ void enlarge_map_frame_t::draw(scr_coord pos, scr_size size)
 
 /**
  * Calculate the new Map-Preview. Initialize the new RNG!
- * @author Hj. Malthaner
  */
 void enlarge_map_frame_t::update_preview()
 {
@@ -204,13 +199,13 @@ void enlarge_map_frame_t::update_preview()
 				}
 				else {
 					const sint16 height = welt->lookup_hgt( pos );
-					color = reliefkarte_t::calc_hoehe_farbe(height, sets->get_groundwater());
+					color = minimap_t::calc_height_color(height, sets->get_groundwater());
 				}
 			}
 			else {
 				// new part
 				const sint16 height = karte_t::perlin_hoehe(sets, pos, koord(old_x,old_y) );
-				color = reliefkarte_t::calc_hoehe_farbe(height, sets->get_groundwater());
+				color = minimap_t::calc_height_color(height, sets->get_groundwater());
 			}
 			map.at(i,j) = color;
 		}

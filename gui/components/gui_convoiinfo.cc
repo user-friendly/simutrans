@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 /*
@@ -99,7 +97,6 @@ gui_convoiinfo_t::gui_convoiinfo_t(convoihandle_t cnv)
 /**
  * Events werden hiermit an die GUI-Komponenten
  * gemeldet
- * @author Hj. Malthaner
  */
 bool gui_convoiinfo_t::infowin_event(const event_t *ev)
 {
@@ -149,7 +146,6 @@ void gui_convoiinfo_t::update_label()
 
 /**
  * Draw the component
- * @author Hj. Malthaner
  */
 void gui_convoiinfo_t::draw(scr_coord offset)
 {

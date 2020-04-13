@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 /*
@@ -54,7 +52,6 @@ gui_combobox_t::gui_combobox_t(gui_scrolled_list_t::item_compare_func cmp) :
 /**
  * Events werden hiermit an die GUI-components
  * gemeldet
- * @author Hj. Malthaner
  */
 bool gui_combobox_t::infowin_event(const event_t *ev)
 {
@@ -162,7 +159,11 @@ DBG_MESSAGE("event","HOWDY!");
 				int old_selection = droplist.get_selection();
 				if(  droplist.infowin_event(&ev2)  ) {
 					if(  droplist.get_selection() !=  old_selection  ) {
-						call_listeners( droplist.get_selection() );
+						// close box will anyway call
+						if( !IS_LEFTRELEASE( ev ) ) {
+							// in case of LEFTRELEASE, close_box will call it again
+							call_listeners( droplist.get_selection() );
+						}
 						finish = true;
 					}
 					// we selected something?
@@ -217,7 +218,6 @@ DBG_MESSAGE("gui_combobox_t::infowin_event()","scroll selected %i",p.i);
 
 /**
  * Draw the component
- * @author Hj. Malthaner
  */
 void gui_combobox_t::draw(scr_coord offset)
 {
@@ -260,7 +260,6 @@ void gui_combobox_t::disable()
 
 /**
  * sets the selection
- * @author hsiegeln
  */
 void gui_combobox_t::set_selection(int s)
 {
@@ -364,7 +363,6 @@ void gui_combobox_t::set_size(scr_size size)
 
 /**
 * set maximum size for control
-* @author hsiegeln, Dwachs
 */
 void gui_combobox_t::set_max_size(scr_size max)
 {

@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <math.h>
@@ -244,8 +242,7 @@ DBG_MESSAGE("verteile_baeume()","distributing single trees");
 
 static bool compare_tree_desc(const tree_desc_t* a, const tree_desc_t* b)
 {
-	/* Gleiches Level - wir führen eine künstliche, aber eindeutige Sortierung
-	 * über den Namen herbei. */
+	// same level - we do an artificial but unique sorting by (untranslated) name
 	return strcmp(a->get_name(), b->get_name())<0;
 }
 
@@ -419,8 +416,8 @@ uint32 baum_t::get_age() const
 }
 
 
-/* also checks for distribution values
- * @author prissi
+/**
+ * also checks for distribution values
  */
 uint16 baum_t::random_tree_for_climate_intern(climate cl)
 {
@@ -585,10 +582,6 @@ void baum_t::finish_rd()
 }
 
 
-/**
- * Öffnet ein neues Beobachtungsfenster für das Objekt.
- * @author Hj. Malthaner
- */
 void baum_t::show_info()
 {
 	if(env_t::tree_info) {
@@ -597,11 +590,6 @@ void baum_t::show_info()
 }
 
 
-/**
- * @return Einen Beschreibungsstring für das Objekt, der z.B. in einem
- * Beobachtungsfenster angezeigt wird.
- * @author Hj. Malthaner
- */
 void baum_t::info(cbuffer_t & buf) const
 {
 	obj_t::info(buf);

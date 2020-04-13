@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include "image.h"
 #include "../display/simgraph.h"
 #include "../simtypes.h"
@@ -8,9 +13,8 @@
 #include <stdlib.h>
 
 
-/*
+/**
  * Definition of special colors
- * @author Hj. Malthaner
  */
 const uint32 image_t::rgbtab[SPECIAL] = {
 	0x244B67, // Player color 1

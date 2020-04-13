@@ -1,5 +1,11 @@
-#ifndef KOORD3D_H
-#define KOORD3D_H
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef DATAOBJ_KOORD3D_H
+#define DATAOBJ_KOORD3D_H
+
 
 #include "koord.h"
 #include "ribi.h"
@@ -19,11 +25,11 @@ public:
 
 	koord3d() : x(0), y(0), z(0) {}
 
-	const char *get_str() const;
-	const char *get_fullstr() const;	// including brackets
-
 	koord3d(sint16 xp, sint16 yp, sint8 zp) : x(xp), y(yp), z(zp) {}
 	koord3d(koord xyp, sint8 zp) : x(xyp.x), y(xyp.y), z(zp) {}
+
+	const char *get_str() const;
+	const char *get_fullstr() const;	// including brackets
 
 	void rotate90( sint16 y_diff );
 
@@ -126,12 +132,10 @@ static inline uint32 koord_distance(koord3d a, koord3d b)
 	return abs(a.x - b.x) + abs(a.y - b.y);
 }
 
-/*
+/**
  * This class defines a vector_tpl<koord3d> with some
  * helper functions
- * @author Gerd Wachsmuth
  */
-
 class koord3d_vector_t : public vector_tpl< koord3d > {
 public:
 	// computes ribi at position i

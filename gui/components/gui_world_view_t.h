@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef world_view_t_h
-#define world_view_t_h
+#ifndef GUI_COMPONENTS_GUI_WORLD_VIEW_T_H
+#define GUI_COMPONENTS_GUI_WORLD_VIEW_T_H
+
 
 #include "gui_component.h"
 
@@ -19,7 +18,6 @@ class obj_t;
 
 /**
  * Displays a little piece of the world
- * @author Hj. Malthaner
  */
 class world_view_t : public gui_world_component_t
 {
@@ -85,11 +83,8 @@ public:
 	/**
 	 * resize window in response to a resize event
 	 * need to recalculate the list of offsets
-	 * @author prissi
 	 */
 	void set_size(scr_size size) OVERRIDE;
-
-
 
 	scr_size get_min_size() const OVERRIDE { return min_size; }
 

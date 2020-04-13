@@ -1,5 +1,11 @@
-#ifndef __SIMSKIN_H
-#define __SIMSKIN_H
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef SIMSKIN_H
+#define SIMSKIN_H
+
 
 #include "simcolor.h"
 
@@ -38,7 +44,6 @@ public:
 
 	/**
 	 * Different GUI elements
-	 * @author prissi
 	 */
 	static const skin_desc_t* button;
 	static const skin_desc_t* round_button;

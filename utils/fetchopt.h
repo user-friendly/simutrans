@@ -1,8 +1,6 @@
-/* fetchopt.h
- *
- * Options parsing class
- * May 2011
- * by Timothy Baldock
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 /*
@@ -75,8 +73,9 @@ while ((ch = fetchopt.next()) != -1) {
 
 */
 
-#ifndef FETCHOPT_H
-#define FETCHOPT_H
+#ifndef UTILS_FETCHOPT_H
+#define UTILS_FETCHOPT_H
+
 
 class Fetchopt_t {
 	const char *optstr; // Options definition string

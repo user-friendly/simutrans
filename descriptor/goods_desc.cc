@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include "goods_desc.h"
 
 
@@ -42,7 +47,6 @@ static const char * catg_names[32] = {
 
 /**
  * @return Name of the category of the good
- * @author Hj. Malthaner
  */
 const char * goods_desc_t::get_catg_name() const
 {

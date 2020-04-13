@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 2008 by Markus Pristovsek
- *
- * This file is part of the Simutrans project under the artistic license.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -74,8 +73,7 @@ bool movingobj_t::register_desc(groundobj_desc_t *desc)
 
 
 
-/* also checks for distribution values
- * @author prissi
+/** also checks for distribution values
  */
 const groundobj_desc_t *movingobj_t::random_movingobj_for_climate(climate cl)
 {
@@ -237,11 +235,6 @@ void movingobj_t::rdwr(loadsave_t *file)
 }
 
 
-
-/**
- * Open a new observation window for the object.
- * @author Hj. Malthaner
- */
 void movingobj_t::show_info()
 {
 	if(env_t::tree_info) {
@@ -250,12 +243,6 @@ void movingobj_t::show_info()
 }
 
 
-
-/**
- * @return Einen Beschreibungsstring für das Objekt, der z.B. in einem
- * Beobachtungsfenster angezeigt wird.
- * @author Hj. Malthaner
- */
 void movingobj_t::info(cbuffer_t & buf) const
 {
 	obj_t::info(buf);
@@ -273,14 +260,11 @@ void movingobj_t::info(cbuffer_t & buf) const
 }
 
 
-
 void movingobj_t::cleanup(player_t *player)
 {
 	player_t::book_construction_costs(player, -get_desc()->get_price(), get_pos().get_2d(), ignore_wt);
 	mark_image_dirty( get_image(), 0 );
 }
-
-
 
 
 sync_result movingobj_t::sync_step(uint32 delta_t)
@@ -289,7 +273,6 @@ sync_result movingobj_t::sync_step(uint32 delta_t)
 	weg_next -= do_drive( weg_next );
 	return SYNC_OK;
 }
-
 
 
 /* essential to find out about next step

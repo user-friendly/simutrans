@@ -1,6 +1,6 @@
 /*
- * Base class for grounds in simutrans.
- * by Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
@@ -42,7 +42,7 @@
 #include "../obj/wayobj.h"
 
 #include "../gui/ground_info.h"
-#include "../gui/karte.h"
+#include "../gui/minimap.h"
 
 #include "../tpl/inthashtable_tpl.h"
 
@@ -68,7 +68,6 @@
 /**
  * Pointer to the world of this ground. Static to conserve space.
  * Change to instance variable once more than one world is available.
- * @author Hj. Malthaner
  */
 karte_ptr_t grund_t::welt;
 volatile bool grund_t::show_grid = false;
@@ -84,7 +83,6 @@ uint8 grund_t::underground_mode = ugm_none;
 
 /**
  * Table of ground texts
- * @author Hj. Malthaner
  */
 static inthashtable_tpl<uint64, char*> ground_texts;
 
@@ -228,7 +226,7 @@ void grund_t::rdwr(loadsave_t *file)
 		file->rdwr_str(text);
 		if(text) {
 			set_text(text);
-			guarded_free(const_cast<char *>(text));
+			free(const_cast<char *>(text));
 		}
 	}
 
@@ -1253,7 +1251,7 @@ void grund_t::display_if_visible(sint16 xpos, sint16 ypos, const sint16 raster_t
 {
 	if(  !is_karten_boden_visible()  ) {
 		// only check for forced redraw (of marked ... )
-		if(dirty) {
+		if(  get_flag(grund_t::dirty)  ) {
 			mark_rect_dirty_clip( xpos, ypos + raster_tile_width / 2, xpos + raster_tile_width - 1, ypos + raster_tile_width - 1 CLIP_NUM_PAR );
 		}
 		return;
@@ -1712,7 +1710,6 @@ ribi_t::ribi grund_t::get_weg_ribi_unmasked(waytype_t typ) const
 
 /**
 * If there's a depot here, return this
-* @author Volker Meyer
 */
 depot_t* grund_t::get_depot() const
 {
@@ -1880,7 +1877,7 @@ sint32 grund_t::weg_entfernen(waytype_t wegtyp, bool ribi_rem)
 		}
 
 		calc_image();
-		reliefkarte_t::get_karte()->calc_map_pixel(get_pos().get_2d());
+		minimap_t::get_instance()->calc_map_pixel(get_pos().get_2d());
 
 		return costs;
 	}

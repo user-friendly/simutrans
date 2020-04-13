@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "../../simdebug.h"
@@ -25,7 +24,6 @@ gui_image_list_t::gui_image_list_t(vector_tpl<image_data_t*> *images) :
 /**
  * Events werden hiermit an die GUI-Komponenten
  * gemeldet
- * @author Hj. Malthaner
  */
 bool gui_image_list_t::infowin_event(const event_t *ev)
 {

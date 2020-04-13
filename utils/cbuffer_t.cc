@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -87,7 +92,7 @@ void cbuffer_t::append(const char* text, size_t maxchars)
 
 void cbuffer_t::append(double n,int decimals)
 {
-	char tmp[32];
+	char tmp[128];
 	number_to_string( tmp, n, decimals );
 	append(tmp);
 }

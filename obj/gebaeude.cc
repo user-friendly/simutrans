@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
@@ -52,8 +50,7 @@ static pthread_mutex_t add_to_city_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 /**
- * Initializes all variables with save, usable values
- * @author Hj. Malthaner
+ * Initializes all variables with safe, usable values
  */
 void gebaeude_t::init()
 {
@@ -112,8 +109,6 @@ gebaeude_t::gebaeude_t(koord3d pos, player_t *player, const building_tile_desc_t
 
 /**
  * Destructor. Removes this from the list of sync objects if necessary.
- *
- * @author Hj. Malthaner
  */
 gebaeude_t::~gebaeude_t()
 {
@@ -203,8 +198,7 @@ void gebaeude_t::rotate90()
 }
 
 
-/* sets the corresponding pointer to a factory
- * @author prissi
+/** sets the corresponding pointer to a factory
  */
 void gebaeude_t::set_fab(fabrik_t *fd)
 {
@@ -222,8 +216,7 @@ void gebaeude_t::set_fab(fabrik_t *fd)
 }
 
 
-/* sets the corresponding city
- * @author prissi
+/** sets the corresponding city
  */
 void gebaeude_t::set_stadt(stadt_t *s)
 {
@@ -479,7 +472,6 @@ int gebaeude_t::get_mail_level() const
 
 /**
  * @return eigener Name oder Name der Fabrik falls Teil einer Fabrik
- * @author Hj. Malthaner
  */
 const char *gebaeude_t::get_name() const
 {
@@ -555,6 +547,27 @@ void gebaeude_t::show_info()
 
 	if(!tile->get_desc()->no_info_window()) {
 		if(!special  ||  (env_t::townhall_info  &&  old_count==win_get_open_count()) ) {
+			// iterate over all places to check if there is already an open window
+			const building_desc_t* const building_desc = tile->get_desc();
+			const uint8 layout = tile->get_layout();
+			koord k;
+			for (k.x = 0; k.x<building_desc->get_x(layout); k.x++) {
+				for (k.y = 0; k.y<building_desc->get_y(layout); k.y++) {
+					const building_tile_desc_t *tile = building_desc->get_tile(layout, k.x, k.y);
+					if (tile == NULL || !tile->has_image()) {
+						continue;
+					}
+					if (grund_t *gr = welt->lookup(get_pos() - get_tile()->get_offset() + k)) {
+						gebaeude_t *gb = gr->find<gebaeude_t>();
+						if (gb  &&  gb->get_tile() == tile) {
+							if (win_get_magic((ptrdiff_t)gb)) {
+								// already open
+								return;
+							}
+						}
+					}
+				}
+			}
 			// open info window for the first tile of our building (not relying on presence of (0,0) tile)
 			get_first_tile()->obj_t::show_info();
 		}
@@ -867,7 +880,7 @@ void gebaeude_t::rdwr(loadsave_t *file)
 		anim_time = 0;
 		sync = false;
 
-		// Hajo: rebuild tourist attraction list
+		// rebuild tourist attraction list
 		if(tile && tile->get_desc()->is_attraction()) {
 			welt->add_attraction( this );
 		}
@@ -875,12 +888,6 @@ void gebaeude_t::rdwr(loadsave_t *file)
 }
 
 
-/**
- * Wird nach dem Laden der Welt aufgerufen - üblicherweise benutzt
- * um das Aussehen des Dings an Boden und Umgebung anzupassen
- *
- * @author Hj. Malthaner
- */
 void gebaeude_t::finish_rd()
 {
 	player_t::add_maintenance(get_owner(), tile->get_desc()->get_maintenance(welt), tile->get_desc()->get_finance_waytype());

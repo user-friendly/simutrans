@@ -1,21 +1,17 @@
 /*
- * Copyright (c) 1997 - 2001 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef boden_boden_h
-#define boden_boden_h
+#ifndef BODEN_BODEN_H
+#define BODEN_BODEN_H
+
 
 #include "grund.h"
 
 /**
  * boden_t are nature tiles (maybe with ways, powerlines, trees and beware: harbor buildings)
- *
- * @author Hj. Malthaner
  */
-
 class boden_t : public grund_t
 {
 protected:

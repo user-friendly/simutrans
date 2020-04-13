@@ -1,16 +1,11 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-/*
- * Where factory stats are calculated for list dialog
- */
+#ifndef GUI_FACTORYLIST_STATS_T_H
+#define GUI_FACTORYLIST_STATS_T_H
 
-#ifndef factorylist_stats_t_h
-#define factorylist_stats_t_h
 
 #include "components/gui_colorbox.h"
 #include "components/gui_image.h"
@@ -27,7 +22,7 @@ namespace factorylist {
 
 /**
  * Factory list stats display
- * @author Hj. Malthaner
+ * Where factory stats are calculated for list dialog
  */
 class factorylist_stats_t : public gui_aligned_container_t, public gui_scrolled_list_t::scrollitem_t
 {

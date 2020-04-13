@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2002 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
@@ -20,7 +18,7 @@
 #include "../obj/tunnel.h"
 #include "../obj/zeiger.h"
 
-#include "../gui/karte.h"
+#include "../gui/minimap.h"
 #include "../gui/tool_selector.h"
 
 #include "../simcity.h"
@@ -445,8 +443,10 @@ void hausbauer_t::remove( player_t *player, gebaeude_t *gb )
 							ground_recalc = false;
 						}
 						else if(  new_hgt <= welt->get_water_hgt(newk)  &&  new_slope == slope_t::flat  ) {
-							welt->access(newk)->kartenboden_setzen( new wasser_t( koord3d( newk, new_hgt ) ) );
+							wasser_t* sea = new wasser_t( koord3d( newk, new_hgt) );
+							welt->access(newk)->kartenboden_setzen( sea );
 							welt->calc_climate( newk, true );
+							sea->recalc_water_neighbours();
 						}
 						else {
 							if(  gr->get_grund_hang() == new_slope  ) {
@@ -464,6 +464,9 @@ void hausbauer_t::remove( player_t *player, gebaeude_t *gb )
 								gr->calc_image();
 							}
 						}
+					}
+					else if (wasser_t* sea = dynamic_cast<wasser_t*>(gr)) {
+						sea->recalc_water_neighbours();
 					}
 				}
 			}
@@ -507,7 +510,7 @@ gebaeude_t* hausbauer_t::build(player_t* player, koord3d pos, int org_layout, co
 			}
 			// try to fake old building
 			else if(welt->get_ticks() < 2) {
-				// Hajo: after staring a new map, build fake old buildings
+				// after staring a new map, build fake old buildings
 				gb->add_alter(10000);
 			}
 
@@ -569,10 +572,14 @@ gebaeude_t* hausbauer_t::build(player_t* player, koord3d pos, int org_layout, co
 				if(  desc->get_type() == building_desc_t::dock  ||  desc->get_type() == building_desc_t::flat_dock  ) {
 					// its a dock!
 					gb->set_yoff(0);
+
+					if (wasser_t* sea = dynamic_cast<wasser_t*>(gr)) {
+						sea->recalc_water_neighbours();
+					}
 				}
 			}
 			gr->calc_image();
-			reliefkarte_t::get_karte()->calc_map_pixel(gr->get_pos().get_2d());
+			minimap_t::get_instance()->calc_map_pixel(gr->get_pos().get_2d());
 		}
 	}
 	// remove only once ...
@@ -739,7 +746,7 @@ gebaeude_t *hausbauer_t::build_station_extension_depot(player_t *player, koord3d
 	}
 
 	// update minimap
-	reliefkarte_t::get_karte()->calc_map_pixel(gb->get_pos().get_2d());
+	minimap_t::get_instance()->calc_map_pixel(gb->get_pos().get_2d());
 
 	return gb;
 }

@@ -1,11 +1,11 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef __SOUND_DESC_H
-#define __SOUND_DESC_H
+#ifndef DESCRIPTOR_SOUND_DESC_H
+#define DESCRIPTOR_SOUND_DESC_H
+
 
 #include "obj_base_desc.h"
 #include "../simtypes.h"
@@ -15,13 +15,9 @@
 
 #define AMBIENT_SOUND_INTERVALL (13000)
 
-/*
- *  Author:
- *      prissi
- *
- *  Description:
- *      Sounds in the game; name is the file name
- *      ingame, sounds are referred to by their number
+/**
+ * Sounds in the game; name is the file name
+ * ingame, sounds are referred to by their number
  *
  *  Child nodes:
  *	0   Name

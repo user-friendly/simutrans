@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <stdio.h>
 #include "../../simdebug.h"
 
@@ -13,7 +18,7 @@ obj_desc_t * imagelist2d_reader_t::read_node(FILE *fp, obj_node_info_t &node)
 
 	image_array_t *desc = new image_array_t();
 
-	// Hajo: Read data
+	// Read data
 	fread(desc_buf, node.size, 1, fp);
 	char * p = desc_buf;
 

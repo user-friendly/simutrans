@@ -1,11 +1,6 @@
 /*
- * This file is part of the Simutrans project under the artistic license.
- * (see license.txt)
- */
-
-/*
- * High-Level soundschnittstelle
- * von Hj. Maltahner, 1998, 2000
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -30,49 +25,52 @@ static plainstring midi_title[MAX_MIDI];
 
 static int max_midi = -1; // number of MIDI files
 
-static int current_midi = -1;  // Hajo: init with error condition, reset during loading
+static int current_midi = -1;  // init with error condition, reset during loading
 
 
-
-/**
- * setzt lautstärke für alle effekte
- * @author Hj. Malthaner
- */
 void sound_set_global_volume(int volume)
 {
 	env_t::global_volume = volume;
 }
 
 
-/**
- * ermittelt lautstaärke für alle effekte
- * @author Hj. Malthaner
- */
+void sound_set_specific_volume( int volume, sound_type_t t)
+{
+	env_t::specific_volume[t] = volume;
+}
+
+
 int sound_get_global_volume()
 {
 	return env_t::global_volume;
 }
 
 
-void sound_set_mute(bool on)
+int sound_get_specific_volume( sound_type_t t )
 {
-	env_t::mute_sound = on;
+	return env_t::specific_volume[t];
 }
+
+
+void sound_set_mute(bool f)
+{
+	env_t::global_mute_sound = f;
+}
+
 
 bool sound_get_mute()
 {
-	return (  env_t::mute_sound  ||  SFX_CASH == NO_SOUND  );
+	return (  env_t::global_mute_sound  );
 }
 
 
-void sound_play(uint16 const idx, uint8 const volume)
+void sound_play(uint16 const idx, uint8 const v, sound_type_t t)
 {
-	if(  idx != (uint16)NO_SOUND  &&  !env_t::mute_sound  ) {
-		dr_play_sample(idx, volume * env_t::global_volume >> 8);
+	uint32 volume = v;
+	if(  idx != (uint16)NO_SOUND  &&  !env_t::global_mute_sound  ) {
+		dr_play_sample(idx, ( (volume  * env_t::global_volume * env_t::specific_volume[t] ) >> 16) );
 	}
 }
-
-
 
 
 bool sound_get_shuffle_midi()
@@ -80,18 +78,13 @@ bool sound_get_shuffle_midi()
 	return env_t::shuffle_midi;
 }
 
+
 void sound_set_shuffle_midi( bool shuffle )
 {
 	env_t::shuffle_midi = shuffle;
 }
 
 
-
-/**
- * setzt Lautstärke für MIDI playback
- * @param volume volume in range 0..255
- * @author Hj. Malthaner
- */
 void sound_set_midi_volume(int volume)
 {
 	if(  !env_t::mute_midi  &&  max_midi > -1  ) {
@@ -102,11 +95,6 @@ void sound_set_midi_volume(int volume)
 
 
 
-/**
- * ermittelt Lautstärke für MIDI playback
- * @return volume in range 0..255
- * @author Hj. Malthaner
- */
 int sound_get_midi_volume()
 {
 	return env_t::midi_volume;
@@ -116,7 +104,6 @@ int sound_get_midi_volume()
 
 /**
  * gets midi title
- * @author Hj. Malthaner
  */
 const char *sound_get_midi_title(int index)
 {
@@ -131,7 +118,6 @@ const char *sound_get_midi_title(int index)
 
 /**
  * gets current midi number
- * @author Hj. Malthaner
  */
 int get_current_midi()
 {
@@ -142,7 +128,6 @@ int get_current_midi()
 
 /**
  * Load MIDI files
- * By Owen Rudge
  */
 int midi_init(const char *directory)
 {
@@ -280,7 +265,6 @@ void check_midi()
 
 /**
  * shuts down midi playing
- * @author Owen Rudge
  */
 void close_midi()
 {

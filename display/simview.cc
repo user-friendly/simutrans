@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic license.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -321,7 +320,7 @@ void main_view_t::display(bool force_dirty)
 					}
 				}
 				break;
-			
+
 			case 1:
 				// show message of active player
 				int x = welt->get_active_player_nr();

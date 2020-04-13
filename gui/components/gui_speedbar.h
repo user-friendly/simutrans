@@ -1,22 +1,16 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_components_gui_speedbar_h
-#define gui_components_gui_speedbar_h
+#ifndef GUI_COMPONENTS_GUI_SPEEDBAR_H
+#define GUI_COMPONENTS_GUI_SPEEDBAR_H
+
 
 #include "gui_component.h"
 #include "../../tpl/slist_tpl.h"
 
 
-/**
- *
- * @author Volker Meyer
- * @date  12.06.2003
- */
 class gui_speedbar_t : public gui_component_t
 {
 private:

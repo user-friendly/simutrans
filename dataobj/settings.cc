@@ -1,9 +1,6 @@
 /*
- * Game settings
- *
- * Hj. Malthaner
- *
- * April 2000
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string>
@@ -41,7 +38,6 @@ settings_t::settings_t() :
 	map_number = 33;
 
 	/* new setting since version 0.85.01
-	 * @author prissi
 	 */
 	factory_count = 12;
 	tourist_attractions = 16;
@@ -67,10 +63,10 @@ settings_t::settings_t() :
 	// default climate zones
 	set_default_climates( );
 	winter_snowline = 7;	// not mediterranean
-	groundwater = -2;            //25-Nov-01        Markus Weber    Added
+	groundwater = -2;
 
-	max_mountain_height = 160;                  //can be 0-160.0  01-Dec-01        Markus Weber    Added
-	map_roughness = 0.6;                        //can be 0-1      01-Dec-01        Markus Weber    Added
+	max_mountain_height = 160;                  //can be 0-160.0
+	map_roughness = 0.6;                        //can be 0-1
 
 	river_number = 16;
 	min_river_length = 16;
@@ -148,11 +144,11 @@ settings_t::settings_t() :
 	electric_promille = 330;
 
 #ifdef OTTD_LIKE
-	/* prissi: crossconnect all factories (like OTTD and similar games) */
+	// crossconnect all factories (like OTTD and similar games)
 	crossconnect_factories=true;
 	crossconnect_factor=100;
 #else
-	/* prissi: crossconnect a certain number */
+	/* crossconnect a certain number */
 	crossconnect_factories=false;
 	crossconnect_factor=33;
 #endif
@@ -911,6 +907,7 @@ void settings_t::parse_simuconf(tabfile_t& simuconf, sint16& disp_width, sint16&
 	env_t::simple_drawing_fast_forward = contents.get_int("simple_drawing_fast_forward",env_t::simple_drawing_fast_forward );
 	env_t::visualize_schedule = contents.get_int("visualize_schedule",env_t::visualize_schedule ) != 0;
 	env_t::show_vehicle_states = contents.get_int("show_vehicle_states",env_t::show_vehicle_states );
+	env_t::follow_convoi_underground = contents.get_int("follow_convoi_underground",env_t::follow_convoi_underground );
 
 	env_t::hide_rail_return_ticket = contents.get_int("hide_rail_return_ticket",env_t::hide_rail_return_ticket ) != 0;
 	env_t::show_delete_buttons = contents.get_int("show_delete_buttons",env_t::show_delete_buttons ) != 0;
@@ -930,7 +927,12 @@ void settings_t::parse_simuconf(tabfile_t& simuconf, sint16& disp_width, sint16&
 	env_t::reload_and_save_on_quit = contents.get_int("reload_and_save_on_quit", env_t::reload_and_save_on_quit );
 
 	env_t::server_announce = contents.get_int("announce_server", env_t::server_announce );
-	env_t::server_port = contents.get_int("server_port", env_t::server_port );
+	if (!env_t::server) {
+		env_t::server_port = contents.get_int("server_port", env_t::server_port);
+	}
+	else {
+		env_t::server_port = env_t::server;
+	}
 	env_t::server_announce = contents.get_int("server_announce", env_t::server_announce );
 	env_t::server_announce_interval = contents.get_int("server_announce_intervall", env_t::server_announce_interval );
 	env_t::server_announce_interval = contents.get_int("server_announce_interval", env_t::server_announce_interval );
@@ -1409,6 +1411,12 @@ void settings_t::parse_simuconf(tabfile_t& simuconf, sint16& disp_width, sint16&
 	else if(strcmp(str, "xml_bzip2") == 0) {
 		loadsave_t::set_savemode(loadsave_t::xml_bzip2 );
 	}
+	else if(strcmp(str, "zstd") == 0) {
+		loadsave_t::set_savemode(loadsave_t::zstd );
+	}
+	else if(strcmp(str, "xml_zstd") == 0) {
+		loadsave_t::set_savemode(loadsave_t::xml_zstd );
+	}
 
 	str = contents.get("autosaveformat" );
 	while (*str == ' ') str++;
@@ -1430,6 +1438,15 @@ void settings_t::parse_simuconf(tabfile_t& simuconf, sint16& disp_width, sint16&
 	else if(strcmp(str, "xml_bzip2") == 0) {
 		loadsave_t::set_autosavemode(loadsave_t::xml_bzip2 );
 	}
+	else if(strcmp(str, "zstd") == 0) {
+		loadsave_t::set_autosavemode(loadsave_t::zstd );
+	}
+	else if(strcmp(str, "xml_zstd") == 0) {
+		loadsave_t::set_autosavemode(loadsave_t::xml_zstd );
+	}
+
+	loadsave_t::save_level = contents.get_int("save_level", loadsave_t::save_level );
+	loadsave_t::autosave_level = contents.get_int("autosave_level", loadsave_t::autosave_level );
 
 	/*
 	 * Default resolution

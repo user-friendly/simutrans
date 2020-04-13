@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 1997 - 2004 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef banner_h
-#define banner_h
+#ifndef GUI_BANNER_H
+#define GUI_BANNER_H
+
 
 #include "../dataobj/environment.h"
 #include "components/gui_button.h"
@@ -37,14 +36,12 @@ public:
 
 	/**
 	* Window Title
-	* @author Hj. Malthaner
 	*/
 	const char *get_name() const {return ""; }
 
 	/**
 	* get color information for the window title
 	* -borders and -body background
-	* @author Hj. Malthaner
 	*/
 	FLAGGED_PIXVAL get_titlecolor() const OVERRIDE {return env_t::default_window_title_color; }
 
@@ -56,7 +53,6 @@ public:
 	* Draw new component. The values to be passed refer to the window
 	* i.e. It's the screen coordinates of the window where the
 	* component is displayed.
-	* @author Hj. Malthaner
 	*/
 	void draw(scr_coord pos, scr_size size) OVERRIDE;
 

@@ -1,20 +1,16 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef __IMAGELIST2D_DESC_H
-#define __IMAGELIST2D_DESC_H
+#ifndef DESCRIPTOR_IMAGE_ARRAY_H
+#define DESCRIPTOR_IMAGE_ARRAY_H
+
 
 #include "image_list.h"
 
-/*
- *  Author:
- *      Volker Meyer
- *
- *  Description:
- *      Two-dimensional array of images
+/**
+ * Two-dimensional array of images
  *
  *  Child nodes:
  *	0   1st Image-list

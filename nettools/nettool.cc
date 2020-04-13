@@ -1,9 +1,10 @@
-/* nettool.cc
- *
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+/*
  * Network server control tool for Simutrans
- * Created April 2011
- * dwachs
- * Timothy Baldock <tb@entropy.me.uk>
  */
 
 #include <stdlib.h>

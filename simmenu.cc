@@ -1,9 +1,6 @@
 /*
- * Copyright (c) 2008 prissi
- *
- * This file is part of the Simutrans project under the artistic license.
- *
- * New configurable OOP tool system
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string>
@@ -214,6 +211,8 @@ tool_t *create_dialog_tool(int toolnr)
 		case DIALOG_THEMES:         tool = new dialog_themes_t(); break;
 		case DIALOG_SCENARIO:       tool = new dialog_scenario_t(); break;
 		case DIALOG_SCENARIO_INFO:  tool = new dialog_scenario_info_t(); break;
+		case DIALOG_LIST_DEPOT:     tool = new dialog_list_depot_t(); break;
+		case DIALOG_LIST_VEHICLE:   tool = new dialog_list_vehicle_t(); break;
 		default:                 dbg->error("create_dialog_tool()","cannot satisfy request for dialog_tool[%i]!",toolnr);
 		                         return NULL;
 	}

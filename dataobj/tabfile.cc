@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
@@ -53,7 +51,6 @@ const char *tabfileobj_t::get(const char *key)
 /**
  * Get the string value for a key - key must be lowercase
  * @return def if key isn't found, value otherwise
- * @author Hj. Malthaner
  */
 const char *tabfileobj_t::get_string(const char *key, const char * def)
 {

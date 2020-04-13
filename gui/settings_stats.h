@@ -1,17 +1,15 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef settings_passenger_stats_h
-#define settings_passenger_stats_h
+#ifndef GUI_SETTINGS_STATS_H
+#define GUI_SETTINGS_STATS_H
+
 
 #include <math.h>
 
 #include "../tpl/vector_tpl.h"
-#include "../tpl/array_tpl.h"
 #include "../utils/cbuffer_t.h"
 
 #include "components/gui_container.h"
@@ -107,14 +105,13 @@ class settings_t;
 
 
 /**
- * Settings for property lists ...
- * @author Hj. Malthaner
+ * Settings for property lists
  */
 class settings_stats_t
 {
 protected:
 	bool new_world;
-	// since the copy constructor will no copy the right action listener => pointer
+	// since the copy constructor will not copy the right action listener => pointer
 	slist_tpl<gui_numberinput_t *> numinp;
 	slist_tpl<button_t *> button;
 

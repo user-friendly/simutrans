@@ -1,12 +1,6 @@
 /*
- * Scrollable list.
- * Displays list, scrollbuttons up/down, dragbar.
- * Has a min and a max size, and can be displayed with any size in between
- * Does ONLY cater for vertical offset (yet).
- * two possible types:
- * -list.      simply lists some items.
- * -selection. is a list, but additionally, one item can be selected.
- * @author Niels Roest, additions by Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <algorithm>
@@ -81,8 +75,8 @@ gui_scrolled_list_t::gui_scrolled_list_t(enum type type, item_compare_func cmp) 
 	compare = cmp;
 	size = scr_size(0,0);
 	pos = scr_coord(0,0);
-	max_width = scr_size::inf.w;
 	multiple_selection = false;
+	maximize = false;
 }
 
 
@@ -101,7 +95,7 @@ void gui_scrolled_list_t::set_selection(int s)
 		return;
 	}
 	gui_component_t* new_focus = item_list[s];
-	
+
 	// reset selected status
 	FOR(vector_tpl<gui_component_t*>, v, item_list) {
 		scrollitem_t* item = dynamic_cast<scrollitem_t*>(v);
@@ -185,7 +179,6 @@ void gui_scrolled_list_t::reset_container_size()
 {
 	// reset element positioning
 	scr_size csize = container.get_min_size();
-	csize.w = min(max_width, csize.w);
 	container.set_size( csize );
 }
 

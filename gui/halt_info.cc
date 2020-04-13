@@ -1,13 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- */
-
-/*
- * Window with destination information for a stop
- * @author Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "halt_info.h"
@@ -43,7 +36,9 @@
 
 #define CHART_HEIGHT (100)
 
-// class to compute and fill the departure board
+/**
+ * Window with destination information for a stop
+ */
 class gui_departure_board_t : public gui_aligned_container_t
 {
 	// helper class to compute departure board
@@ -326,11 +321,11 @@ void halt_info_t::init(halthandle_t halt)
 			{
 				add_component(&lb_capacity[0]);
 				if (welt->get_settings().is_separate_halt_capacities()) {
-					new_component<gui_image_t>(skinverwaltung_t::passengers->get_image_id(0));
+					new_component<gui_image_t>(skinverwaltung_t::passengers->get_image_id(0), 0, ALIGN_NONE, true);
 					add_component(&lb_capacity[1]);
-					new_component<gui_image_t>(skinverwaltung_t::mail->get_image_id(0));
+					new_component<gui_image_t>(skinverwaltung_t::mail->get_image_id(0), 0, ALIGN_NONE, true);
 					add_component(&lb_capacity[2]);
-					new_component<gui_image_t>(skinverwaltung_t::goods->get_image_id(0));
+					new_component<gui_image_t>(skinverwaltung_t::goods->get_image_id(0), 0, ALIGN_NONE, true);
 				}
 			}
 			end_table();
@@ -356,7 +351,7 @@ void halt_info_t::init(halthandle_t halt)
 	container_freight.add_table(2,1);
 	container_freight.new_component<gui_label_t>("Sort waiting list by");
 
-	// hsiegeln: added sort_button
+	// added sort_button
 	sort_button.init(button_t::roundbox, sort_text[env_t::default_sortmode]);
 	sort_button.set_tooltip("Sort waiting list by");
 	sort_button.add_listener(this);
@@ -482,7 +477,6 @@ void halt_info_t::update_components()
  * Draw new component. The values to be passed refer to the window
  * i.e. It's the screen coordinates of the window where the
  * component is displayed.
- * @author Hj. Malthaner
  */
 void halt_info_t::draw(scr_coord pos, scr_size size)
 {
@@ -519,12 +513,12 @@ void gui_halt_detail_t::update_connections( halthandle_t halt )
 
 	if (!fab_list.empty()) {
 		FOR(slist_tpl<fabrik_t*>, const fab, fab_list) {
-			const koord pos = fab->get_pos().get_2d();
+			const koord3d pos = fab->get_pos();
 
 			// target button ...
 			button_t *pb = new_component<button_t>();
 			pb->init( button_t::posbutton_automatic, NULL);
-			pb->set_targetpos( pos );
+			pb->set_targetpos3d( pos );
 
 			// .. name
 			gui_label_buf_t *lb = new_component<gui_label_buf_t>();
@@ -581,7 +575,7 @@ void gui_halt_detail_t::update_connections( halthandle_t halt )
 	}
 
 	insert_empty_row();
-	// Knightly : add lineless convoys which serve this stop
+	// add lineless convoys which serve this stop
 	new_component_span<gui_label_t>("Lineless convoys serving this stop", 2);
 	if(  !halt->registered_convoys.empty()  ) {
 		for(  uint32 i=0;  i<halt->registered_convoys.get_count();  ++i  ) {
@@ -634,7 +628,7 @@ void gui_halt_detail_t::update_connections( halthandle_t halt )
 
 				button_t *pb = new_component<button_t>();
 				pb->init( button_t::posbutton_automatic, NULL);
-				pb->set_targetpos( conn.halt->get_basis_pos() );
+				pb->set_targetpos3d( conn.halt->get_basis_pos3d() );
 
 				gui_label_buf_t *lb = new_component<gui_label_buf_t>();
 				lb->buf().printf("%s <%u>", conn.halt->get_name(), conn.weight);
@@ -718,6 +712,9 @@ void gui_departure_board_t::update_departures(halthandle_t halt)
 
 	// iterate over all convoys stopping here
 	FOR(  slist_tpl<convoihandle_t>, cnv, halt->get_loading_convois() ) {
+		if( !cnv.is_bound()) {
+			continue;
+		}
 		halthandle_t next_halt = cnv->get_schedule()->get_next_halt(cnv->get_owner(),halt);
 		if(  next_halt.is_bound()  ) {
 			dest_info_t next( next_halt, 0, cnv );
@@ -863,11 +860,10 @@ void gui_departure_board_t::insert_image(convoihandle_t cnv)
 
 /**
  * This method is called if an action is triggered
- * @author Hj. Malthaner
  */
 bool halt_info_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 {
-	if (comp == &sort_button) { 	// @author hsiegeln sort button pressed
+	if (comp == &sort_button) {
 		env_t::default_sortmode = ((int)(halt->get_sortby())+1)%4;
 		halt->set_sortby((freight_list_sorter_t::sort_mode_t) env_t::default_sortmode);
 		sort_button.set_text(sort_text[env_t::default_sortmode]);

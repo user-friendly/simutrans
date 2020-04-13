@@ -1,10 +1,11 @@
 /*
- * This file is part of the Simutrans project under the artistic license.
- * (see license.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #ifndef SIMTYPES_H
 #define SIMTYPES_H
+
 
 #include "utils/for.h"
 #include <limits.h>
@@ -112,9 +113,10 @@ enum climate_bits
 	all_but_arctic_climate = ALL_CLIMATES & ~arctic_climate_bit
 };
 
+enum sound_type_t { TOOL_SOUND=0, TRAFFIC_SOUND=1, AMBIENT_SOUND=2, FACTORY_SOUND=3, CROSSING_SOUND=4, CASH_SOUND=5, MAX_SOUND_TYPES, ALL_SOUND=255 };
+
 /**
  * Vordefinierte Wegtypen.
- * @author Hj. Malthaner
  */
 enum waytype_t {
 	invalid_wt       =  -1,
@@ -150,7 +152,7 @@ enum systemtype_t {
 
 #define CLIP(wert,mini,maxi)  min(max((wert),(mini)),(maxi))
 
-// Hajo: define machine independent types
+// define machine independent types
 typedef unsigned int        uint;
 typedef   signed char       sint8;
 typedef unsigned char       uint8;
@@ -242,7 +244,6 @@ static inline sint64 endian(sint64 const v) { return sint64(endian(uint64(v))); 
  * a helper type to avoid cast operations.  This isn't very clean, but if used
  * with care it seems better than using "long" and casting to a pointer type.
  * In all cases it ensures that no bits are lost.
- * @author Hj. Malthaner
  */
 union value_t
 {

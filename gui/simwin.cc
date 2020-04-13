@@ -1,21 +1,6 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic license.
- * (see license.txt)
- */
-
-/*
- * Sub-window for Sim
- * keine Klasse, da die funktionen von C-Code aus aufgerufen werden koennen
- *
- * The function implements a WindowManager 'Object'
- * There's only one WindowManager
- *
- * 17.11.97, Hj. Malthaner
- *
- * Window now typified
- * 21.06.98, Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -74,6 +59,7 @@
 #include "goods_frame_t.h"
 #include "loadfont_frame.h"
 #include "scenario_info.h"
+#include "depot_frame.h"
 
 #include "../simversion.h"
 
@@ -84,7 +70,6 @@ class inthashtable_tpl<ptrdiff_t, scr_size> saved_windowsizes;
 
 #define dragger_size 12
 
-// (Mathew Hounsell)
 // I added a button to the map window to fix it's size to the best one.
 // This struct is the flow back to the object of the refactoring.
 class simwin_gadget_flags_t
@@ -105,7 +90,7 @@ public:
 class simwin_t
 {
 public:
-	scr_coord pos;              // Window position
+	scr_coord pos;          // Window position
 	uint32 dauer;           // How long should the window stay open?
 	uint8 wt;               // the flags for the window type
 	ptrdiff_t magic_number; // either magic number or this pointer (which is unique too)
@@ -115,7 +100,7 @@ public:
 	bool rollup;
 	bool dirty;
 
-	simwin_gadget_flags_t flags; // (Mathew Hounsell) See Above.
+	simwin_gadget_flags_t flags; // See Above.
 
 	simwin_t() : flags() {}
 
@@ -135,20 +120,21 @@ static int top_win(int win, bool keep_state );
 static void display_win(int win);
 
 
-// Hajo: tooltip data
+// tooltip data
 static int tooltip_xpos = 0;
 static int tooltip_ypos = 0;
 static const char * tooltip_text = 0;
 static const char * static_tooltip_text = 0;
-// Knightly :	For timed tooltip with initial delay and finite visible duration.
-//				Valid owners are required for timing. Invalid (NULL) owners disable timing.
+
+// For timed tooltip with initial delay and finite visible duration.
+// Valid owners are required for timing. Invalid (NULL) owners disable timing.
 static const void * tooltip_owner = 0;	// owner of the registered tooltip
 static const void * tooltip_group = 0;	// group to which the owner belongs
 static uint32 tooltip_register_time = 0;	// time at which a tooltip is initially registered
 
 static bool show_ticker=0;
 
-/* Hajo: if we are inside the event handler,
+/* if we are inside the event handler,
  * the window handler has gui pointer as value,
  * to defer destruction if this window
  */
@@ -166,7 +152,6 @@ static bool destroy_framed_win(simwin_t *win);
 
 /**
  * Display a window gadget
- * @author Hj. Malthaner
  */
 static int display_gadget_box(sint8 code,
 			      int const x, int const y,
@@ -177,7 +162,7 @@ static int display_gadget_box(sint8 code,
 	// If we have a skin, get gadget image data
 	const image_t *img = NULL;
 	if(  skinverwaltung_t::gadget  ) {
-		// "x", "?", "=", "«", "»"
+		// "x", "?", "=", "<<", ">>"
 		img = skinverwaltung_t::gadget->get_image(code);
 	}
 
@@ -216,13 +201,11 @@ static int display_gadget_box(sint8 code,
 	display_vline_wh_clip_rgb(side+1, y+1, D_TITLEBAR_HEIGHT-2, lighter, false);
 	display_vline_wh_clip_rgb(side,   y+1, D_TITLEBAR_HEIGHT-2, darker,  false);
 
-	// Hajo: return width of gadget
+	// return width of gadget
 	return D_GADGET_WIDTH;
 }
 
 
-//-------------------------------------------------------------------------
-// (Mathew Hounsell) Created
 static int display_gadget_boxes(
 	simwin_gadget_flags_t* flags,
 	int x, int y,
@@ -321,8 +304,7 @@ static sint8 decode_gadget_boxes(
 	return SKIN_GADGET_COUNT;
 }
 
-//-------------------------------------------------------------------------
-// (Mathew Hounsell) Re-factored
+
 static void win_draw_window_title(const scr_coord pos, const scr_size size,
 		const FLAGGED_PIXVAL title_color,
 		const char * const text,
@@ -361,7 +343,6 @@ static void win_draw_window_title(const scr_coord pos, const scr_size size,
 
 /**
  * Draw dragger widget
- * @author Hj. Malthaner
  */
 static void win_draw_window_dragger(scr_coord pos, scr_size size)
 {
@@ -379,19 +360,39 @@ static void win_draw_window_dragger(scr_coord pos, scr_size size)
 
 // Functions to save & restore windowsize
 
-ptrdiff_t guess_magic_number(simwin_t *win)
+ptrdiff_t guess_magic_number(simwin_t *win, ptrdiff_t magic = magic_none)
 {
-	ptrdiff_t magic = win->magic_number;
-	// reduce player-wise magic numbers
+	if (win) {
+		magic = win->magic_number;
+	}
+	// reduce player-wise magic numbers and magic numbers derived from handles
 	const ptrdiff_t magic_pl[] = {
 		magic_finances_t, magic_convoi_list, magic_convoi_list_filter, magic_line_list, magic_halt_list,
-		magic_line_management_t, magic_ai_options_t, magic_ai_selector, magic_pwd_t, magic_jump, magic_headquarter};
+		magic_line_management_t, magic_ai_options_t, magic_ai_selector, magic_pwd_t, magic_jump, magic_headquarter, magic_headquarter + MAX_PLAYER_COUNT,
+		magic_none,
+		magic_convoi_info, magic_halt_info, magic_toolbar,
+	};
 
 	for (uint i=1; i<lengthof(magic_pl); i++) {
-		if (magic_pl[i-1] <= magic  &&  magic < magic_pl[i]) {
-			magic = magic_pl[i-1];
-			break;
+		if (magic_pl[i-1] == magic_none) {
+			continue;
 		}
+		if (magic_pl[i-1] <= magic  &&  magic < magic_pl[i]) {
+			return magic_pl[i-1];
+		}
+	}
+	if (win == NULL) {
+		return magic;
+	}
+	// try rdwr_id
+	uint32 id = win->gui->get_rdwr_id();
+	if (id != magic_reserved) {
+		return id;
+	}
+
+	// anything outside the magic number's ranges will be ignored
+	if (magic <= magic_reserved  ||  magic >= magic_max) {
+		magic = magic_none;
 	}
 	return magic;
 }
@@ -424,7 +425,10 @@ void rdwr_win_settings(loadsave_t *file)
 				scr_size s;
 				file->rdwr_long(s.w);
 				file->rdwr_long(s.h);
-				saved_windowsizes.put(magic, s);
+				// ignore stuff that will not be used anymore
+				if (magic == guess_magic_number(NULL, magic)) {
+					saved_windowsizes.put(magic, s);
+				}
 			}
 		} while (magic != magic_none);
 	}
@@ -478,7 +482,6 @@ bool win_set_magic( gui_frame_t *gui, ptrdiff_t magic )
 
 /**
  * Returns top window
- * @author prissi
  */
 gui_frame_t *win_get_top()
 {
@@ -488,7 +491,6 @@ gui_frame_t *win_get_top()
 
 /**
  * returns the focused component of the top window
- * @author Knightly
  */
 gui_component_t *win_get_focus()
 {
@@ -518,7 +520,6 @@ bool top_win( const gui_frame_t *gui, bool keep_rollup )
 
 /**
  * Checks if a window is a top level window
- * @author Hj. Malthaner
  */
 bool win_is_top(const gui_frame_t *ig)
 {
@@ -575,6 +576,7 @@ void rdwr_all_win(loadsave_t *file)
 					case magic_goodslist:      w = new goods_frame_t(); break;
 					case magic_font:           w = new loadfont_frame_t(); break;
 					case magic_scenario_info:  w = new scenario_info_t(); break;
+					case magic_depot:          w = new depot_frame_t(); break;
 
 					default:
 						if(  id>=magic_finances_t  &&  id<magic_finances_t+MAX_PLAYER_COUNT  ) {
@@ -681,7 +683,7 @@ int create_win(int x, int y, gui_frame_t* const gui, wintype const wt, ptrdiff_t
 
 		sint16 const menu_height = env_t::iconsize.h;
 
-		// (Mathew Hounsell) Make Sure Closes Aren't Forgotten.
+		// Make Sure Closes Aren't Forgotten.
 		// Must Reset as the entries and thus flags are reused
 		win.flags.close = true;
 		win.flags.title = gui->has_title();
@@ -701,7 +703,7 @@ int create_win(int x, int y, gui_frame_t* const gui, wintype const wt, ptrdiff_t
 		win.sticky = false;
 		win.dirty = true;
 
-		// Hajo: Notify window to be shown
+		// Notify window to be shown
 		assert(gui);
 		event_t ev;
 
@@ -720,7 +722,17 @@ int create_win(int x, int y, gui_frame_t* const gui, wintype const wt, ptrdiff_t
 
 		// restore windowsize
 		scr_size stored = get_stored_windowsize(&win);
-		if (stored != scr_size()  &&  stored != gui->get_windowsize()) {
+
+		if (stored == scr_size()) {
+			// not stored, take current
+			stored = gui->get_windowsize();
+		}
+		// use default width
+		stored.clip_lefttop(scr_size(D_DEFAULT_WIDTH, D_DEFAULT_HEIGHT));
+		// clip to display size
+		stored.clip_rightbottom( scr_size(display_get_width(), display_get_height() - env_t::iconsize.h - win_get_statusbar_height() ) );
+
+		if (stored != gui->get_windowsize()) {
 			// send tailored resize event
 			scr_size delta = stored - gui->get_windowsize();
 			event_t wev;
@@ -772,6 +784,9 @@ int create_win(int x, int y, gui_frame_t* const gui, wintype const wt, ptrdiff_t
 		return wins.get_count();
 	}
 	else {
+		if(  !( wt & w_do_not_delete )  ) {
+			delete gui;
+		}
 		return -1;
 	}
 }
@@ -793,7 +808,6 @@ static void process_kill_list()
 
 /**
  * Destroy a framed window
- * @author Hj. Malthaner
  */
 static bool destroy_framed_win(simwin_t *wins)
 {
@@ -806,7 +820,9 @@ static bool destroy_framed_win(simwin_t *wins)
 	// save windowsize for later
 	save_windowsize(wins);
 
-	gui_frame_t* gui = wins->gui; // save pointer to gui window: might be modified in event handling, or could be modified if wins points to value in kill_list and kill_list is modified! nasty surprise
+	// save pointer to gui window: might be modified in event handling,
+	// or could be modified if wins points to value in kill_list and kill_list is modified! nasty surprise
+	gui_frame_t* gui = wins->gui;
 	if(  gui  ) {
 		event_t ev;
 
@@ -974,7 +990,7 @@ void display_win(int win)
 	}
 	bool need_dragger = comp->get_resizemode() != gui_frame_t::no_resize;
 
-	// %HACK (Mathew Hounsell) So draw will know if gadget is needed.
+	// HACK  So draw will know if gadget is needed.
 	wins[win].flags.help = ( comp->get_help_filename() != NULL );
 	if(  wins[win].flags.title  ) {
 		win_draw_window_title(wins[win].pos,
@@ -1297,9 +1313,8 @@ void win_set_pos(gui_frame_t *gui, int x, int y)
 }
 
 
-/* main window event handler
- * renovated may 2005 by prissi to take care of irregularly shaped windows
- * also remove some unnecessary calls
+/*
+ * main window event handler
  */
 bool check_pos_win(event_t *ev)
 {
@@ -1322,13 +1337,13 @@ bool check_pos_win(event_t *ev)
 		is_resizing = -1;
 		is_moving = -1;
 		if(  IS_LEFTRELEASE(ev)  ) {
-			// Knightly :	should not proceed, otherwise the left release event will be fed to other components;
-			//				return true (i.e. event swallowed) to prevent propagation back to the main view
+			// should not proceed, otherwise the left release event will be fed to other components;
+			// return true (i.e. event swallowed) to prevent propagation back to the main view
 			return true;
 		}
 	}
 
-	// Knightly : disable any active tooltip upon mouse click by forcing expiration of tooltip duration
+	// disable any active tooltip upon mouse click by forcing expiration of tooltip duration
 	if(  ev->ev_class==EVENT_CLICK  ) {
 		tooltip_register_time = 0;
 	}
@@ -1404,14 +1419,14 @@ bool check_pos_win(event_t *ev)
 				i = top_win(i,false);
 			}
 
-			// Hajo: if within title bar && window needs decoration
+			// if within title bar && window needs decoration
 			// Max Kielland: Use title height
 			if(  y<wins[i].pos.y+D_TITLEBAR_HEIGHT  &&  wins[i].flags.title  ) {
 				// no more moving
 				is_moving = -1;
 				wins[i].dirty = true;
 
-				// %HACK (Mathew Hounsell) So decode will know if gadget is needed.
+				// HACK So decode will know if gadget is needed.
 				wins[i].flags.help = ( wins[i].gui->get_help_filename() != NULL );
 
 				// Where Was It ?
@@ -1539,7 +1554,7 @@ void win_poll_event(event_t* const ev)
 	if(  ev->ev_class==EVENT_SYSTEM  &&  ev->ev_code==SYSTEM_RELOAD_WINDOWS  ) {
 		dr_chdir( env_t::user_dir );
 		loadsave_t dlg;
-		if(  dlg.wr_open( "dlgpos.xml", loadsave_t::xml_zipped, "temp", SERVER_SAVEGAME_VER_NR )  ) {
+		if(  dlg.wr_open( "dlgpos.xml", loadsave_t::xml_zipped, 1, "temp", SERVER_SAVEGAME_VER_NR )  ) {
 			// save all
 			rdwr_all_win( &dlg );
 			dlg.close();
@@ -1637,9 +1652,9 @@ void win_display_flush(double konto)
 		remove_old_win();
 
 		if(env_t::show_tooltips) {
-			// Hajo: check if there is a tooltip to display
+			// check if there is a tooltip to display
 			if(  tooltip_text  &&  *tooltip_text  ) {
-				// Knightly : display tooltip when current owner is invalid or when it is within visible duration
+				// display tooltip when current owner is invalid or when it is within visible duration
 				uint32 elapsed_time;
 				if(  !tooltip_owner  ||  ((elapsed_time=dr_time()-tooltip_register_time)>env_t::tooltip_delay  &&  elapsed_time<=env_t::tooltip_delay+env_t::tooltip_duration)  ) {
 					const sint16 width = proportional_string_width(tooltip_text)+7;
@@ -1656,12 +1671,12 @@ void win_display_flush(double konto)
 					wl->set_background_dirty();
 				}
 			}
-			// Knightly : reset owner and group if no tooltip has been registered
+			// reset owner and group if no tooltip has been registered
 			if(  !tooltip_text  ) {
 				tooltip_owner = 0;
 				tooltip_group = 0;
 			}
-			// Hajo : clear tooltip text to avoid sticky tooltips
+			// clear tooltip text to avoid sticky tooltips
 			tooltip_text = 0;
 		}
 
@@ -1826,7 +1841,7 @@ void win_load_font(const char *fname, uint16 fontsize)
 
 	if (display_load_font(fname, force_reload) ) {
 		// successfull
-		gui_theme_t::themes_init( env_t::default_theme, false );
+		gui_theme_t::themes_init( env_t::default_theme, false, false );
 
 		event_t *ev = new event_t();
 		ev->ev_class = EVENT_SYSTEM;
@@ -1845,7 +1860,6 @@ void win_load_font(const char *fname, uint16 fontsize)
  * Sets the tooltip to display.
  * Has to be called from within gui_frame_t::draw
  * @param owner : owner==NULL disables timing (initial delay and visible duration)
- * @author Hj. Malthaner, Knightly
  */
 void win_set_tooltip(int xpos, int ypos, const char *text, const void *const owner, const void *const group)
 {
@@ -1894,7 +1908,6 @@ void win_set_tooltip(int xpos, int ypos, const char *text, const void *const own
 
 /**
  * Sets the tooltip to display.
- * @author Hj. Malthaner
  */
 void win_set_static_tooltip(const char *text)
 {

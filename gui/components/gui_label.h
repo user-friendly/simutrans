@@ -1,14 +1,11 @@
 /*
- * just displays a text, will be auto-translated
- *
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_gui_label_h
-#define gui_gui_label_h
+#ifndef GUI_COMPONENTS_GUI_LABEL_H
+#define GUI_COMPONENTS_GUI_LABEL_H
+
 
 #include "gui_component.h"
 #include "../../simcolor.h"
@@ -19,13 +16,7 @@
 
 /**
  * The label component
- *
- * @author Hj. Malthaner
- * @date 04-Mar-01
- *
- * Added Alignment support
- * @author: Volker Meyer
- * @date 25.05.03
+ * just displays a text, will be auto-translated
  */
 class gui_label_t : virtual public gui_component_t
 {
@@ -42,7 +33,6 @@ private:
 
 	/**
 	 * Color of the Labels
-	 * @author Hansjörg Malthaner
 	 */
 	PIXVAL color;
 
@@ -67,19 +57,16 @@ public:
 
 	/**
 	 * Sets the text to display, after translating it.
-	 * @author Hansjörg Malthaner
 	 */
 	void set_text(const char *text, bool autosize=true);
 
 	/**
 	 * Sets the text without translation.
-	 * @author Hansjörg Malthaner
 	 */
 	void set_text_pointer(const char *text, bool autosize=true);
 
 	/**
 	 * returns the pointer (i.e. for freeing untranslated contents)
-	 * @author Hansjörg Malthaner
 	 */
 	const char * get_text_pointer() const { return text; }
 
@@ -90,13 +77,11 @@ public:
 
 	/**
 	 * Draws the component.
-	 * @author Hj. Malthaner
 	 */
 	void draw(scr_coord offset) OVERRIDE;
 
 	/**
 	 * Sets the colour of the label
-	 * @author Owen Rudge
 	 */
 	void set_color(PIXVAL colour) { this->color = colour; }
 	virtual PIXVAL get_color() const { return color; }
@@ -112,13 +97,11 @@ public:
 
 	/**
 	 * Sets the alignment of the label
-	 * @author Volker Meyer
 	 */
 	void set_align(align_t align) { this->align = align; }
 
 	/**
 	 * Sets the tooltip of this component.
-	 * @author Hj. Malthaner
 	 */
 	void set_tooltip(const char * t);
 

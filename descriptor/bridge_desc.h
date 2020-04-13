@@ -1,18 +1,10 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- *
- *  BEWARE: non-standard node structure!
- *	0   Foreground-images
- *	1   Background-images
- *	2   Cursor/Icon (Hajo: 14-Feb-02: now also icon image)
- *	3   Foreground-images - snow
- *	4   Background-images - snow
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef __BRIDGE_DESC_H
-#define __BRIDGE_DESC_H
+#ifndef DESCRIPTOR_BRIDGE_DESC_H
+#define DESCRIPTOR_BRIDGE_DESC_H
 
 
 #include "skin_desc.h"
@@ -27,6 +19,14 @@ class tool_t;
 class checksum_t;
 
 
+/*
+ *  BEWARE: non-standard node structure!
+ *  0   Foreground-images
+ *  1   Background-images
+ *  2   Cursor/Icon
+ *  3   Foreground-images - snow
+ *  4   Background-images - snow
+ */
 class bridge_desc_t : public obj_desc_transport_infrastructure_t {
     friend class bridge_reader_t;
 
@@ -107,25 +107,21 @@ public:
 
 	/**
 	 * Distance of pillars (=0 for no pillars)
-	 * @author prissi
 	 */
 	uint8  get_pillar() const { return pillars_every; }
 
 	/**
 	 * skips lowest pillar on south/west slopes?
-	 * @author prissi
 	 */
 	bool  has_pillar_asymmetric() const { return pillars_asymmetric; }
 
 	/**
 	 * maximum bridge span (=0 for infinite)
-	 * @author prissi
 	 */
 	uint8  get_max_length() const { return max_length; }
 
 	/**
 	 * maximum bridge height (=0 for infinite)
-	 * @author prissi
 	 */
 	uint8  get_max_height() const { return max_height; }
 

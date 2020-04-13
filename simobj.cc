@@ -1,14 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic license.
- * (see license.txt)
- */
-
-/*
- * Basic class of all visible things
- *
- * Hj. Maltahner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
@@ -37,7 +29,6 @@
 /**
  * Pointer to the world of this thing. Static to conserve space.
  * Change to instance variable once more than one world is available.
- * @author Hj. Malthaner
  */
 karte_ptr_t obj_t::welt;
 
@@ -257,11 +248,9 @@ void obj_t::rotate90()
 {
 	// most basic: rotate coordinate
 	pos.rotate90( welt->get_size().y-1 );
-	if(xoff!=0) {
-		sint8 new_dx = -2*yoff;
-		yoff = xoff/2;
-		xoff = new_dx;
-	}
+	sint8 new_dx = -2*yoff;
+	yoff = xoff/2;
+	xoff = new_dx;
 }
 
 
@@ -305,7 +294,6 @@ void obj_t::display_after(int xpos, int ypos, bool) const
 /*
  * when a vehicle moves or a cloud moves, it needs to mark the old spot as dirty (to copy to screen)
  * sometimes they have an extra offset, this is the yoff parameter
-* @author prissi
  */
 void obj_t::mark_image_dirty(image_id image, sint16 yoff) const
 {

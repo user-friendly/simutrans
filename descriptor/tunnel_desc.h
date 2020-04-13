@@ -1,9 +1,21 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- *
- *  node structure:
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef DESCRIPTOR_TUNNEL_DESC_H
+#define DESCRIPTOR_TUNNEL_DESC_H
+
+
+#include "../display/simimg.h"
+#include "../simtypes.h"
+#include "obj_base_desc.h"
+#include "skin_desc.h"
+#include "image_array.h"
+#include "way_desc.h"
+
+/*
+ * node structure:
  *  0   Name
  *  1   Copyright
  *  2   Image-list Background
@@ -13,18 +25,6 @@
  *[ 6   Image-list Foreground - snow ] (if present)
  *[ 7 (or 5 if no snow image) underground way ] (if present)
  */
-
-#ifndef __TUNNEL_DESC_H
-#define __TUNNEL_DESC_H
-
-#include "../display/simimg.h"
-#include "../simtypes.h"
-#include "obj_base_desc.h"
-#include "skin_desc.h"
-#include "image_array.h"
-#include "way_desc.h"
-
-
 class tunnel_desc_t : public obj_desc_transport_infrastructure_t {
 	friend class tunnel_reader_t;
 	friend class tunnel_builder_t;	// to convert the old tunnels to new ones

@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 /*
@@ -67,7 +65,6 @@ station_building_select_t::station_building_select_t(const building_desc_t *desc
 
 /**
  * This method is called if an action is triggered
- * @author V. Meyer
  */
 bool station_building_select_t::action_triggered( gui_action_creator_t *comp, value_t v)
 {

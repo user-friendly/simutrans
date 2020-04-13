@@ -1,13 +1,6 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- */
-
-/**
- * Curiosity list window
- * @author Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "curiositylist_frame_t.h"
@@ -45,11 +38,13 @@ curiositylist_frame_t::curiositylist_frame_t() :
 	add_component(&sorteddir);
 	end_table();
 
+	set_alignment(ALIGN_STRETCH_V | ALIGN_STRETCH_H);
 	add_component(&scrolly);
 	fill_list();
 
-	reset_min_windowsize();
 	set_resizemode(diagonal_resize);
+	scrolly.set_maximize(true);
+	reset_min_windowsize();
 }
 
 
@@ -74,7 +69,6 @@ void curiositylist_frame_t::fill_list()
 
 /**
  * This method is called if an action is triggered
- * @author Markus Weber/Volker Meyer
  */
 bool curiositylist_frame_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 {

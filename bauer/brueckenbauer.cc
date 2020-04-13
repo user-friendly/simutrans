@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
@@ -22,7 +20,7 @@
 #include "../boden/brueckenboden.h"
 
 #include "../gui/tool_selector.h"
-#include "../gui/karte.h"
+#include "../gui/minimap.h"
 
 #include "../descriptor/bridge_desc.h"
 
@@ -938,7 +936,7 @@ const char *bridge_builder_t::remove(player_t *player, koord3d pos_start, waytyp
 	do {
 		pos = tmp_list.remove_first();
 
-		// V.Meyer: weg_position_t changed to grund_t::get_neighbour()
+		// weg_position_t changed to grund_t::get_neighbour()
 		grund_t *from = welt->lookup(pos);
 		grund_t *to;
 		koord zv = koord::invalid;
@@ -1077,7 +1075,7 @@ const char *bridge_builder_t::remove(player_t *player, koord3d pos_start, waytyp
 			delete p;
 		}
 		// refresh map
-		reliefkarte_t::get_karte()->calc_map_pixel(pos.get_2d());
+		minimap_t::get_instance()->calc_map_pixel(pos.get_2d());
 	}
 
 	// finally delete the bridge ends (all are kartenboden)

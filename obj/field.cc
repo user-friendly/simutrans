@@ -1,7 +1,6 @@
 /*
- * field, which can extend factories
- *
- * Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
@@ -79,12 +78,6 @@ image_id field_t::get_image() const
 }
 
 
-
-/**
- * @return Einen Beschreibungsstring für das Objekt, der z.B. in einem
- * Beobachtungsfenster angezeigt wird.
- * @author Hj. Malthaner
- */
 void field_t::show_info()
 {
 	// show the info of the corresponding factory

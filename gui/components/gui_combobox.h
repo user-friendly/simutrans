@@ -1,18 +1,11 @@
 /*
- * with a connected edit field
- *
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-/*
- * Defines a drop-down list with left/right arrows
- */
+#ifndef GUI_COMPONENTS_GUI_COMBOBOX_H
+#define GUI_COMPONENTS_GUI_COMBOBOX_H
 
-#ifndef gui_components_gui_combobox_h
-#define gui_components_gui_combobox_h
 
 #include "../../simcolor.h"
 #include "gui_action_creator.h"
@@ -23,6 +16,9 @@
 
 class loadsave_t;
 
+/*
+ * Defines a drop-down list with left/right arrows
+ */
 class gui_combobox_t :
 	public gui_action_creator_t,
 	public gui_component_t,
@@ -40,7 +36,6 @@ private:
 
 	/**
 	 * the drop box list
-	 * @author hsiegeln
 	 */
 	gui_scrolled_list_t droplist;
 	bool opened_above:1;
@@ -56,9 +51,9 @@ private:
 
 	// offset of last draw call, needed to decide, where to open droplist
 	scr_coord last_draw_offset;
+
 	/**
 	 * the max size this component can have
-	 * @author hsiegeln
 	 */
 	scr_size max_size;
 
@@ -90,13 +85,11 @@ public:
 
 	/**
 	 * Draw the component
-	 * @author Hj. Malthaner
 	 */
 	void draw(scr_coord offset) OVERRIDE;
 
 	/**
 	 * add element to droplist
-	 * @author hsiegeln
 	 */
 	template<class C>
 	void new_component() { droplist.new_component<C>(); }
@@ -107,44 +100,37 @@ public:
 
 	/**
 	 * remove all elements from droplist
-	 * @author hsiegeln
 	 */
 	void clear_elements() { droplist.clear_elements(); }
 
 	/**
 	 * return number of elements in droplist
-	 * @author hsiegeln
 	 */
 	int count_elements() const { return droplist.get_count(); }
 
 	/**
 	 * return element at index from droplist
-	 * @author hsiegeln
 	 */
 	gui_scrolled_list_t::scrollitem_t *get_element(sint32 idx) const { return droplist.get_element(idx); }
 
 	/**
 	 * set maximum size for control
-	 * @author hsiegeln
 	 */
 	void set_max_size(scr_size max);
 
 	/**
 	 * returns the selection id
-	 * @author hsiegeln
 	 */
 	int get_selection() { return droplist.get_selection(); }
 
 	gui_scrolled_list_t::scrollitem_t* get_selected_item() const { return droplist.get_selected_item(); }
 	/**
 	 * sets the selection
-	 * @author hsiegeln
 	 */
 	void set_selection(int s);
 
 	/**
 	* Set this component's position.
-	* @author Hj. Malthaner
 	*/
 	void set_pos(scr_coord pos_par) OVERRIDE;
 
@@ -153,7 +139,6 @@ public:
 	/**
 	 * called when the focus should be released
 	 * does some cleanup before releasing
-	 * @author hsiegeln
 	 */
 	void close_box();
 

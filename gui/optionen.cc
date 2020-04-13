@@ -1,13 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- */
-
-/*
- * Dialog for game options
- * Niels Roest, Hj. Malthaner, 2000
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "gui_frame.h"
@@ -88,7 +81,6 @@ optionen_gui_t::optionen_gui_t() :
 
 /**
  * This method is called if an action is triggered
- * @author Hj. Malthaner
  */
 bool optionen_gui_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 {

@@ -1,16 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-/*
- * [Mathew Hounsell] Min Size Button On Map Window 20030313
- */
+#ifndef GUI_MAP_FRAME_H
+#define GUI_MAP_FRAME_H
 
-#ifndef gui_map_frame_h
-#define gui_map_frame_h
 
 #include "gui_frame.h"
 #include "simwin.h"
@@ -30,9 +25,6 @@ class karte_ptr_t;
 
 /**
  * Minimap window
- *
- * @author Hj. Malthaner
- * @date 03-Mar-01
  */
 class map_frame_t :
 	public gui_frame_t,
@@ -45,7 +37,6 @@ private:
 	 * This is kind of hack: we know there can only be one map frame
 	 * at a time, and we want to save the current size for the next object
 	 * so we use a static variable here.
-	 * @author Hj. Malthaner
 	 */
 	static scr_size window_size;
 	static scr_coord screenpos;
@@ -59,7 +50,6 @@ private:
 
 	/**
 	 * We need to keep track of drag/click events
-	 * @author Hj. Malthaner
 	 */
 	bool is_dragging;
 
@@ -105,20 +95,17 @@ public:
 	/**
 	 * Set the window associated helptext
 	 * @return the filename for the helptext, or NULL
-	 * @author Hj. Malthaner
 	 */
 	const char * get_help_filename() const OVERRIDE {return "map.txt";}
 
 	/**
 	 * Does this window need a min size button in the title bar?
 	 * @return true if such a button is needed
-	 * @author Hj. Malthaner
 	 */
 	bool has_min_sizer() const OVERRIDE {return true;}
 
 	/**
 	 * Constructor. Adds all necessary Subcomponents.
-	 * @author Hj. Malthaner
 	 */
 	map_frame_t();
 
@@ -130,8 +117,6 @@ public:
 
 	/**
 	 * Sets the window sizes
-	 * @author (Mathew Hounsell)
-	 * @date   11-Mar-2003
 	 */
 	void set_windowsize(scr_size size) OVERRIDE;
 
@@ -139,7 +124,6 @@ public:
 	 * Draw new component. The values to be passed refer to the window
 	 * i.e. It's the screen coordinates of the window where the
 	 * component is displayed.
-	 * @author Hj. Malthaner
 	 */
 	void draw(scr_coord pos, scr_size size) OVERRIDE;
 

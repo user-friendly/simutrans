@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "labellist_stats_t.h"
@@ -114,7 +112,6 @@ const char* labellist_stats_t::get_text() const
 /**
  * Events werden hiermit an die GUI-Komponenten
  * gemeldet
- * @author Hj. Malthaner
  */
 bool labellist_stats_t::infowin_event(const event_t * ev)
 {
@@ -134,7 +131,6 @@ bool labellist_stats_t::infowin_event(const event_t * ev)
 
 /**
  * Draw the component
- * @author Hj. Malthaner
  */
 void labellist_stats_t::draw(scr_coord offset)
 {

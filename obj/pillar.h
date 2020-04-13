@@ -1,17 +1,21 @@
-#ifndef obj_pillar_h
-#define obj_pillar_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef OBJ_PILLAR_H
+#define OBJ_PILLAR_H
+
 
 #include "../simobj.h"
 #include "../descriptor/bridge_desc.h"
 
-/**
- * Bridge piece (visible)
- *
- * Hj. Malthaner
- */
 class loadsave_t;
 class karte_t;
 
+/**
+ * Bridge piece (visible)
+ */
 class pillar_t : public obj_t
 {
 	const bridge_desc_t *desc;
@@ -43,7 +47,6 @@ public:
 	/**
 	 * @return Einen Beschreibungsstring fuer das Objekt, der z.B. in einem
 	 * Beobachtungsfenster angezeigt wird.
-	 * @author Hj. Malthaner
 	 */
 	void show_info() OVERRIDE;
 

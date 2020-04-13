@@ -1,11 +1,11 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef __IMAGE_DESC_H
-#define __IMAGE_DESC_H
+#ifndef DESCRIPTOR_IMAGE_H
+#define DESCRIPTOR_IMAGE_H
+
 
 #include "../display/simgraph.h"
 #include "../display/simimg.h"
@@ -19,12 +19,8 @@
 
 
 
-/*
- *  Author:
- *      Volker Meyer
- *
- *  Description:
- *      Data of one image
+/**
+ * Data of one image
  *
  *  Child nodes:
  *	(none)

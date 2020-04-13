@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef labellist_stats_t_h
-#define labellist_stats_t_h
+#ifndef GUI_LABELLIST_STATS_T_H
+#define GUI_LABELLIST_STATS_T_H
+
 
 #include "components/gui_aligned_container.h"
 #include "components/gui_label.h"
@@ -38,7 +37,6 @@ public:
 
 	/**
 	* Draw the component
-	* @author Hj. Malthaner
 	*/
 	void draw(scr_coord offset) OVERRIDE;
 

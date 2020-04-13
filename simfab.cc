@@ -1,11 +1,6 @@
 /*
- * Fabrikfunktionen und Fabrikbau
- *
- * Hansjörg Malthaner
- *
- *
- * 25.03.00 Anpassung der Lagerkapazitäten: min. 5 normale Lieferungen
- *          sollten an Lager gehalten werden.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <math.h>
@@ -991,7 +986,6 @@ void fabrik_t::build(sint32 rotate, bool build_fields, bool force_initial_prodba
 
 
 /* field generation code
- * @author Kieron Green
  */
 bool fabrik_t::add_random_field(uint16 probability)
 {
@@ -1047,7 +1041,7 @@ bool fabrik_t::add_random_field(uint16 probability)
 		const koord k = gr->get_pos().get_2d();
 		field_data_t new_field(k);
 		assert(!fields.is_contained(new_field));
-		// Knightly : fetch a random field class desc based on spawn weights
+		// fetch a random field class desc based on spawn weights
 		const weighted_vector_tpl<uint16> &field_class_indices = fd->get_field_class_indices();
 		new_field.field_class_index = pick_any_weighted(field_class_indices);
 		const field_class_desc_t *const field_class = fd->get_field_class( new_field.field_class_index );
@@ -1055,7 +1049,7 @@ bool fabrik_t::add_random_field(uint16 probability)
 		grund_t *gr2 = new fundament_t(gr->get_pos(), gr->get_grund_hang());
 		welt->access(k)->boden_ersetzen(gr, gr2);
 		gr2->obj_add( new field_t(gr2->get_pos(), owner, field_class, this ) );
-		// Knightly : adjust production base and storage capacities
+		// adjust production base and storage capacities
 		set_base_production( prodbase + field_class->get_field_production() );
 		if(lt) {
 			gr2->obj_add( lt );
@@ -1074,7 +1068,7 @@ void fabrik_t::remove_field_at(koord pos)
 	field = fields[ fields.index_of(field) ];
 	const field_class_desc_t *const field_class = desc->get_field_group()->get_field_class( field.field_class_index );
 	fields.remove(field);
-	// Knightly : revert the field's effect on production base and storage capacities
+	// revert the field's effect on production base and storage capacities
 	set_base_production( prodbase - field_class->get_field_production() );
 }
 
@@ -1213,7 +1207,7 @@ DBG_DEBUG("fabrik_t::rdwr()","loading factory '%s'",s);
 					ware.menge = menge;
 				}
 
-				// Hajo: repair files that have 'insane' values
+				// repair files that have 'insane' values
 				const sint32 max = (sint32)((((sint64)FAB_MAX_INPUT << (precision_bits + DEFAULT_PRODUCTION_FACTOR_BITS)) + (sint64)(prod_factor - 1)) / (sint64)prod_factor);
 				if(  ware.menge < 0  ) {
 					ware.menge = 0;
@@ -1228,7 +1222,7 @@ DBG_DEBUG("fabrik_t::rdwr()","loading factory '%s'",s);
 							 pos_origin.get_fullstr(), i, ware_name, ware.get_typ()->get_name(), desc->get_supplier(i)->get_input_type()->get_name());
 				}
 			}
-			guarded_free(const_cast<char *>(ware_name));
+			free(const_cast<char *>(ware_name));
 		}
 	}
 	if(  desc  &&  input_count != desc->get_supplier_count() ) {
@@ -1306,7 +1300,7 @@ DBG_DEBUG("fabrik_t::rdwr()","loading factory '%s'",s);
 					ware.menge = menge;
 				}
 
-				// Hajo: repair files that have 'insane' values
+				// repair files that have 'insane' values
 				if(  ware.menge < 0  ) {
 					ware.menge = 0;
 				}
@@ -1317,7 +1311,7 @@ DBG_DEBUG("fabrik_t::rdwr()","loading factory '%s'",s);
 							 pos_origin.get_fullstr(), i, ware_name, ware.get_typ()->get_name(), desc->get_product(i)->get_output_type()->get_name());
 				}
 			}
-			guarded_free(const_cast<char *>(ware_name));
+			free(const_cast<char *>(ware_name));
 		}
 	}
 	if(  desc  &&  output_count != desc->get_product_count()) {
@@ -1354,7 +1348,7 @@ DBG_DEBUG("fabrik_t::rdwr()","loading factory '%s'",s);
 	file->rdwr_long(owner_n);
 	file->rdwr_long(prodbase);
 	if(  file->is_version_less(110, 5)  ) {
-		// TurfIt : prodfactor saving no longer required
+		// prodfactor saving no longer required
 		sint32 adjusted_value = (prodfactor_electric / 16) + 16;
 		file->rdwr_long(adjusted_value);
 	}
@@ -1378,7 +1372,7 @@ DBG_DEBUG("fabrik_t::rdwr()","loading factory '%s'",s);
 			// since we step from 86.01 per factory, not per tile!
 			prodbase *= k.x*k.y*2;
 		}
-		// Hajo: restore factory owner
+		// restore factory owner
 		// Due to a omission in Volkers changes, there might be savegames
 		// in which factories were saved without an owner. In this case
 		// set the owner to the default of player 1
@@ -1534,26 +1528,21 @@ DBG_DEBUG("fabrik_t::rdwr()","loading factory '%s'",s);
 
 /**
  * let the chimney smoke, if there is something to produce
- * @author Hj. Malthaner
  */
 void fabrik_t::smoke() const
 {
 	const smoke_desc_t *rada = desc->get_smoke();
 	if(rada) {
-		const koord size = desc->get_building()->get_size(0)-koord(1,1);
 		const uint8 rot = (4-rotate)%desc->get_building()->get_all_layouts();
-		koord ro = rada->get_pos_off(size,rot);
-		grund_t *gr = welt->lookup_kartenboden(pos_origin.get_2d()+ro);
-		// to get same random order on different compilers
-		const sint8 offsetx =  ((rada->get_xy_off(rot).x+sim_async_rand(7)-3)*OBJECT_OFFSET_STEPS)/16;
-		const sint8 offsety =  ((rada->get_xy_off(rot).y+sim_async_rand(7)-3)*OBJECT_OFFSET_STEPS)/16;
-		wolke_t *smoke =  new wolke_t(gr->get_pos(), offsetx, offsety, rada->get_images() );
+		grund_t *gr = welt->lookup_kartenboden(pos_origin.get_2d()+desc->get_smoketile( rot ));
+		const koord offset = ( desc->get_smokeoffset(rot)*OBJECT_OFFSET_STEPS)/16;
+		wolke_t *smoke =  new wolke_t(gr->get_pos(), offset.x, 0, offset.y, desc->get_smokelifetime(), desc->get_smokeuplift(), rada->get_images() );
 		gr->obj_add(smoke);
 		welt->sync_way_eyecandy.add( smoke );
 	}
 	// maybe sound?
 	if(  desc->get_sound()!=NO_SOUND  &&  welt->get_ticks()>last_sound_ms+desc->get_sound_interval_ms()  ) {
-		welt->play_sound_area_clipped( get_pos().get_2d(), desc->get_sound() );
+		welt->play_sound_area_clipped( get_pos().get_2d(), desc->get_sound(), FACTORY_SOUND );
 	}
 }
 
@@ -1729,7 +1718,7 @@ sint32 fabrik_t::liefere_an(const goods_desc_t *typ, sint32 menge)
 					}
 				}
 				else{
-					// Hajo: avoid overflow
+					// avoid overflow
 					const sint32 max = (sint32)((((sint64)FAB_MAX_INPUT << (precision_bits + DEFAULT_PRODUCTION_FACTOR_BITS)) + (sint64)(prod_factor - 1)) / (sint64)prod_factor);
 					if( ware.menge >= max ) {
 						menge -= (sint32)(((sint64)menge * (sint64)(ware.menge - max) + (sint64)(prod_delta >> 1)) / (sint64)prod_delta);
@@ -1893,7 +1882,7 @@ void fabrik_t::step(uint32 delta_t)
 							// to find out, if storage changed
 							delta_menge += p;
 							output[product].menge += p;
-							output[product].book_stat((sint64)p * (sint64)desc->get_product(0)->get_factor(), FAB_GOODS_PRODUCED);
+							output[product].book_stat((sint64)p * (sint64)desc->get_product(product)->get_factor(), FAB_GOODS_PRODUCED);
 							// if less than 3/4 filled we neary always consume power
 							currently_producing |= (output[product].menge*4 < output[product].max*3);
 						}
@@ -2388,7 +2377,7 @@ void fabrik_t::step(uint32 delta_t)
 			// we produced some real quantity => smoke
 			smoke();
 
-			// Knightly : chance to expand every 256 rounds of activities, after which activity count will return to 0 (overflow behaviour)
+			// chance to expand every 256 rounds of activities, after which activity count will return to 0 (overflow behaviour)
 			if(  (++activity_count)==0  ) {
 				if(  desc->get_field_group()  ) {
 					if(  fields.get_count()<desc->get_field_group()->get_max_fields()  ) {
@@ -2412,7 +2401,7 @@ void fabrik_t::step(uint32 delta_t)
 		}
 	}
 
-	/// Knightly : advance arrival slot at calculated interval and recalculate boost where necessary
+	/// advance arrival slot at calculated interval and recalculate boost where necessary
 	delta_slot += delta_t;
 	const sint32 periods = welt->get_settings().get_factory_arrival_periods();
 	const sint32 slot_interval = (1 << (PERIOD_BITS - SLOT_BITS)) * periods;
@@ -2463,7 +2452,6 @@ public:
 
 /**
  * distribute stuff to all best destination
- * @author Hj. Malthaner
  */
 void fabrik_t::verteile_waren(const uint32 product)
 {
@@ -2487,13 +2475,11 @@ void fabrik_t::verteile_waren(const uint32 product)
 	// to distribute to all target equally, we use this counter, for the source hald, and target factory, to try first
 	output[product].index_offset++;
 
-	/* prissi: distribute goods to factory
+	/* distribute goods to factory
 	 * that has not an overflowing input storage
 	 * also prevent stops from overflowing, if possible
 	 * Since we can called with menge>max/2 are at least 10 are there, we must first limit the amount we distribute
 	 */
-	//sint32 menge = min( (prodbase > 640 ? (prodbase>>6) : 10), output[product].menge >> precision_bits );
-
 	// We already know the distribution amount. However it has to be converted from factory units into real units.
 	const uint32 prod_factor = desc->get_product(product)->get_factor();
 	sint32 menge = (sint32)(((sint64)output[product].min_shipment * (sint64)(prod_factor)) >> (DEFAULT_PRODUCTION_FACTOR_BITS + precision_bits));
@@ -2507,9 +2493,8 @@ void fabrik_t::verteile_waren(const uint32 product)
 			continue;
 		}
 
-		// Über alle Ziele iterieren
 		for(  uint32 n=0;  n<lieferziele.get_count();  n++  ) {
-			// prissi: this way, the halt, that is tried first, will change. As a result, if all destinations are empty, it will be spread evenly
+			// this way, the halt, that is tried first, will change. As a result, if all destinations are empty, it will be spread evenly
 			const koord lieferziel = lieferziele[(n + output[product].index_offset) % lieferziele.get_count()];
 			fabrik_t * ziel_fab = get_fab(lieferziel);
 
@@ -2626,12 +2611,6 @@ void fabrik_t::verteile_waren(const uint32 product)
 				}
 			}
 			else {
-				// overflowed with our own ware and we have still nearly full stock
-//				if(  output[product].menge>= (3 * output[product].max) >> 2  ) {
-					/* Station too full, notify player */
-//					best_halt->bescheid_station_voll();
-//				}
-// for now report only serious overcrowding on transfer stops
 				return;
 			}
 		}

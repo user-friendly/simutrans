@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <allegro.h>
@@ -24,7 +23,6 @@ bool dr_init_midi(void)
 
 /**
  * sets midi playback volume
- * @author Hj. Malthaner
  */
 void dr_set_midi_volume(int vol)
 {
@@ -34,7 +32,6 @@ void dr_set_midi_volume(int vol)
 
 /**
  * Loads a MIDI file
- * @author Owen Rudge, changes by Hj. Malthaner
  */
 int dr_load_midi(const char *filename)
 {
@@ -56,7 +53,6 @@ int dr_load_midi(const char *filename)
 /**
  * Plays a MIDI file
  * Key: The index of the MIDI file to be played
- * By Owen Rudge
  */
 void dr_play_midi(int key)
 {
@@ -73,7 +69,6 @@ void dr_play_midi(int key)
 
 /**
  * Stops playing MIDI file
- * By Owen Rudge
  */
 void dr_stop_midi(void)
 {
@@ -83,7 +78,6 @@ void dr_stop_midi(void)
 
 /**
  * Returns the midi_pos variable
- * By Owen Rudge
  */
 sint32 dr_midi_pos(void)
 {
@@ -93,7 +87,6 @@ sint32 dr_midi_pos(void)
 
 /**
  * Midi shutdown/cleanup
- * By Owen Rudge
  */
 void dr_destroy_midi(void)
 {

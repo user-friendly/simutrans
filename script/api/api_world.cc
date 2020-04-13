@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include "api.h"
 
 /** @file api_world.cc exports world-map functions. */
@@ -112,7 +117,7 @@ SQInteger world_get_size(HSQUIRRELVM vm)
 	}
 }
 
-void export_world(HSQUIRRELVM vm)
+void export_world(HSQUIRRELVM vm, bool scenario)
 {
 	/**
 	 * Table with methods to access the world, the universe, and everything.
@@ -139,18 +144,21 @@ void export_world(HSQUIRRELVM vm)
 	 */
 	STATIC register_method(vm, &karte_t::get_season, "get_season");
 
-	/**
-	 * Removes player company: removes all assets. Use with care.
-	 *
-	 * If pl is the first player (nr == 0) it is restarted immediately.
-	 * Public player (nr == 1) cannot be removed.
-	 *
-	 * In network games, there will be a delay between the call to this function and the removal of the player.
-	 *
-	 * @param pl player to be removed
-	 * @returns whether operation was successful
-	 */
-	STATIC register_method(vm, &world_remove_player, "remove_player", true);
+	if (scenario) {
+		/**
+		* Removes player company: removes all assets. Use with care.
+		*
+		* If pl is the first player (nr == 0) it is restarted immediately.
+		* Public player (nr == 1) cannot be removed.
+		*
+		* In network games, there will be a delay between the call to this function and the removal of the player.
+		*
+		* @param pl player to be removed
+		* @ingroup scen_only
+		* @returns whether operation was successful
+		*/
+		STATIC register_method(vm, &world_remove_player, "remove_player", true);
+	}
 	/**
 	 * Returns player number @p pl. If player does not exist, returns null.
 	 * @param pl player number

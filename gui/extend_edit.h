@@ -1,5 +1,11 @@
-#ifndef gui_extend_edit_h
-#define gui_extend_edit_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef GUI_EXTEND_EDIT_H
+#define GUI_EXTEND_EDIT_H
+
 
 #include "gui_frame.h"
 #include "components/gui_textinput.h"
@@ -84,9 +90,10 @@ public:
 	/**
 	* Does this window need a min size button in the title bar?
 	* @return true if such a button is needed
-	* @author Hj. Malthaner
 	*/
 	bool has_min_sizer() const OVERRIDE {return true;}
+
+	void set_windowsize( scr_size s ) OVERRIDE;
 
 	bool infowin_event(event_t const*) OVERRIDE;
 

@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include "macros.h"
 #include "simmem.h"
 #include "simsys_w32_png.h"
@@ -160,7 +165,7 @@ bool dr_screenshot_png(char const* filename, int w, int h, int maxwidth, unsigne
 		free( newdata );
 	}
 
-	// Passenden Encoder für jpegs suchen:
+	// Get suitable encoder for png files:
 	// Genausogut kann man auch image/png benutzen um png's zu speichern ;D
 	// ...oder image/gif um gif's zu speichern, ...
 	bool ok = false;

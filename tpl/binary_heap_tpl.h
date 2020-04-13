@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 2006 prissi
- *
- * This file is part of the Simutrans project under the artistic license.
- * (see license.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef tpl_binary_heap_tpl_h
-#define tpl_binary_heap_tpl_h
+#ifndef TPL_BINARY_HEAP_TPL_H
+#define TPL_BINARY_HEAP_TPL_H
+
 
 #include "../simmem.h"
 
@@ -17,10 +16,7 @@
  * inspired by the pathfinder of OTTD written by kuDr
  *
  * For information about Binary Heap algorithm,
- *   see: http://www.policyalmanac.org/games/binaryHeaps.htm *
- *
- * @date September 2006
- * @author prissi
+ *   see: http://www.policyalmanac.org/games/binaryHeaps.htm
  */
 
 #include "../simtypes.h"
@@ -35,10 +31,10 @@ public:
 	uint32 node_count;
 	uint32 node_size;
 
-	binary_heap_tpl()
+	binary_heap_tpl(uint32 size = 4096)
 	{
-		nodes = MALLOCN(T, 4096);
-		node_size = 4096;
+		nodes = MALLOCN(T, size);
+		node_size = size;
 		node_count = 0;
 	}
 
@@ -127,7 +123,6 @@ public:
 	/**
 	* Recycles all nodes. Doesn't delete the objects.
 	* Leaves the list empty.
-	* @author Hj. Malthaner
 	*/
 	void clear()
 	{

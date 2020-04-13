@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2002 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "../simdebug.h"
@@ -42,10 +40,7 @@ bool goods_manager_t::successfully_loaded()
 		return false;
 	}
 
-	/**
-	* Put special items in front:
-	* Volker Meyer
-	*/
+	// Put special items in front
 	goods.insert_at(0,load_none);
 	goods.insert_at(0,load_mail);
 	goods.insert_at(0,load_passengers);

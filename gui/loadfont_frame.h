@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_loadsave_frame_h
-#define gui_loadsave_frame_h
+#ifndef GUI_LOADFONT_FRAME_H
+#define GUI_LOADFONT_FRAME_H
+
 
 #ifdef USE_FREETYPE
 #include "gui_theme.h"
@@ -46,7 +45,6 @@ protected:
 
 	/**
 	 * Action that's started with a button click
-	 * @author Hansjörg Malthaner
 	 */
 	bool item_action (const char *filename) OVERRIDE;
 	bool ok_action   (const char *fullpath) OVERRIDE;
@@ -66,7 +64,6 @@ public:
 	/**
 	* Set the window associated helptext
 	* @return the filename for the helptext, or NULL
-	* @author Hj. Malthaner
 	*/
 	const char *get_help_filename() const OVERRIDE { return "load_font.txt"; }
 

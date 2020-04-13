@@ -1,5 +1,11 @@
-#ifndef IMAGE_WRITER_H
-#define IMAGE_WRITER_H
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef DESCRIPTOR_WRITER_IMAGE_WRITER_H
+#define DESCRIPTOR_WRITER_IMAGE_WRITER_H
+
 
 #include <string>
 #include <stdio.h>
@@ -43,8 +49,6 @@ class image_writer_t : public obj_writer_t {
 		/**
 		 * Encodes an image into a sprite data structure, considers
 		 * special colors.
-		 *
-		 * @author Hj. Malthaner
 		 */
 		static uint16* encode_image(int x, int y, dimension* dim, int* len);
 };

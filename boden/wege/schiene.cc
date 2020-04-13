@@ -1,8 +1,6 @@
 /*
- * Rails for Simutrans
- *
- * Revised January 2001
- * Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -71,7 +69,6 @@ void schiene_t::info(cbuffer_t & buf) const
 
 /**
  * true, if this rail can be reserved
- * @author prissi
  */
 bool schiene_t::reserve(convoihandle_t c, ribi_t::ribi dir  )
 {
@@ -100,7 +97,6 @@ bool schiene_t::reserve(convoihandle_t c, ribi_t::ribi dir  )
 /**
 * releases previous reservation
 * only true, if there was something to release
-* @author prissi
 */
 bool schiene_t::unreserve(convoihandle_t c)
 {

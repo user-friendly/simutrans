@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic license.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdlib.h>
@@ -42,7 +41,6 @@
 
 /**
  * writes a debug message into the log.
- * @author Hj. Malthaner
  */
 void log_t::debug(const char *who, const char *format, ...)
 {
@@ -73,7 +71,7 @@ void log_t::debug(const char *who, const char *format, ...)
 		va_start( argptr, format );
 		if (  syslog  ) {
 			// Replace with dynamic memory allocation
-			char buffer[256];
+			char buffer[4096];
 			sprintf( buffer, "Debug: %s\t%s", who, format );
 			vsyslog( LOG_DEBUG, buffer, argptr );
 		}
@@ -85,7 +83,6 @@ void log_t::debug(const char *who, const char *format, ...)
 
 /**
  * writes a message into the log.
- * @author Hj. Malthaner
  */
 void log_t::message(const char *who, const char *format, ...)
 {
@@ -116,7 +113,7 @@ void log_t::message(const char *who, const char *format, ...)
 		va_start( argptr, format );
 		if (  syslog  ) {
 			// Replace with dynamic memory allocation
-			char buffer[256];
+			char buffer[4096];
 			sprintf( buffer, "Message: %s\t%s", who, format );
 			vsyslog( LOG_INFO, buffer, argptr );
 		}
@@ -128,7 +125,6 @@ void log_t::message(const char *who, const char *format, ...)
 
 /**
  * writes a warning into the log.
- * @author Hj. Malthaner
  */
 void log_t::warning(const char *who, const char *format, ...)
 {
@@ -159,7 +155,7 @@ void log_t::warning(const char *who, const char *format, ...)
 		va_start( argptr, format );
 		if (  syslog  ) {
 			// Replace with dynamic memory allocation
-			char buffer[256];
+			char buffer[4096];
 			sprintf( buffer, "Warning: %s\t%s", who, format );
 			vsyslog( LOG_WARNING, buffer, argptr );
 		}
@@ -171,7 +167,6 @@ void log_t::warning(const char *who, const char *format, ...)
 
 /**
  * writes an error into the log.
- * @author Hj. Malthaner
  */
 void log_t::error(const char *who, const char *format, ...)
 {
@@ -209,7 +204,7 @@ void log_t::error(const char *who, const char *format, ...)
 		if (  syslog  ) {
 
 			// Replace with dynamic memory allocation
-			char buffer[256];
+			char buffer[4096];
 			sprintf( buffer, "ERROR: %s\t%s", who, format );
 			vsyslog( LOG_ERR, buffer, argptr );
 		}
@@ -222,7 +217,6 @@ void log_t::error(const char *who, const char *format, ...)
 
 /**
  * writes a warning into the log.
- * @author Hj. Malthaner
  */
 void log_t::doubled(const char *what, const char *name )
 {
@@ -252,7 +246,6 @@ void log_t::doubled(const char *what, const char *name )
 
 /**
  * writes an error into the log, aborts the program.
- * @author Hj. Malthaner
  */
 void log_t::fatal(const char *who, const char *format, ...)
 {

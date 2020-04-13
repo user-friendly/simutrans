@@ -1,9 +1,15 @@
 /*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+/*
  * all defines that can change the compiling
  */
 
-#ifndef simconst_h
-#define simconst_h
+#ifndef SIMCONST_H
+#define SIMCONST_H
+
 
 // color depth (default assumes RGB565), undefine only for rgb555 builds!
 //#define RGB555

@@ -1,22 +1,17 @@
 /*
- * Copyright (c) 2001 Hansjörg Malthaner
- * Written (w) 2001 Markus Weber
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_components_gui_divider_h
-#define gui_components_gui_divider_h
+#ifndef GUI_COMPONENTS_GUI_DIVIDER_H
+#define GUI_COMPONENTS_GUI_DIVIDER_H
+
 
 #include "gui_component.h"
 #include "../gui_theme.h"
 
 /**
  * A horizontal divider line
- *
- * @date 30-Oct-01
- * @author Markus Weber
  */
 class gui_divider_t : public gui_component_t
 {

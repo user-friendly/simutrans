@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
@@ -60,7 +58,6 @@ password_frame_t::password_frame_t( player_t *player ) :
 
 /**
  * This method is called if an action is triggered
- * @author Hj. Malthaner
  */
 bool password_frame_t::action_triggered( gui_action_creator_t *comp, value_t p )
 {

@@ -1,16 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- * filtering added by Volker Meyer
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- */
-
-/*
- * Displays a scrollable list of all convois of a player
- *
- * @author Hj. Malthaner, Sort/Filtering by V. Meyer
- * @date 15-Jun-01
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <string.h>
@@ -280,6 +270,7 @@ convoi_frame_t::convoi_frame_t(player_t* player) :
 	end_table();
 
 	scrolly = new_component<gui_scrolled_convoy_list_t>(this);
+	scrolly->set_maximize( true );
 
 	fill_list();
 
@@ -305,9 +296,8 @@ bool convoi_frame_t::infowin_event(const event_t *ev)
 
 /**
  * This method is called if an action is triggered
- * @author Markus Weber
  */
-bool convoi_frame_t::action_triggered( gui_action_creator_t *comp, value_t /* */ )           // 28-Dec-01    Markus Weber    Added
+bool convoi_frame_t::action_triggered( gui_action_creator_t *comp, value_t /* */ )
 {
 	if(  comp == &filter_on  ) {
 		filter_is_on = !filter_is_on;

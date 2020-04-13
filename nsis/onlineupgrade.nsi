@@ -1,3 +1,8 @@
+;
+; This file is part of the Simutrans project under the Artistic License.
+; (see LICENSE.txt)
+;
+
 ; ************************************* Pakset downloader for simutrans *********************************************
 
 ; needs the following plugins:
@@ -7,6 +12,7 @@
 ; untgz
 ; ShellLink
 
+Unicode true
 
 !include "preparation-functions.nsh"
 

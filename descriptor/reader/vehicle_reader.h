@@ -1,5 +1,11 @@
-#ifndef __VEHICLE_READER_H
-#define __VEHICLE_READER_H
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef DESCRIPTOR_READER_VEHICLE_READER_H
+#define DESCRIPTOR_READER_VEHICLE_READER_H
+
 
 #include "obj_reader.h"
 
@@ -19,8 +25,8 @@ public:
 	obj_type get_type() const OVERRIDE { return obj_vehicle; }
 	char const* get_type_name() const OVERRIDE { return "vehicle"; }
 
-	/* Read a node. Does version check and compatibility transformations.
-	 * @author Hj. Malthaner
+	/**
+	 * Read a node. Does version check and compatibility transformations.
 	 */
 	obj_desc_t* read_node(FILE*, obj_node_info_t&) OVERRIDE;
 };

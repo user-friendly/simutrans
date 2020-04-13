@@ -1,12 +1,16 @@
-#ifndef boden_wege_strasse_h
-#define boden_wege_strasse_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef BODEN_WEGE_STRASSE_H
+#define BODEN_WEGE_STRASSE_H
+
 
 #include "weg.h"
 
 /**
  * Cars are able to drive on roads.
- *
- * @author Hj. Malthaner
  */
 class strasse_t : public weg_t
 {

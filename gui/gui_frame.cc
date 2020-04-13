@@ -1,13 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- */
-
-/*
- * The window frame all dialogs are based
- * [Mathew Hounsell] Min Size Button On Map Window 20030313
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -47,7 +40,6 @@ gui_frame_t::gui_frame_t(char const* const name, player_t const* const player)
 
 /**
  * Set the window size
- * @author Hj. Malthaner
  */
 void gui_frame_t::set_windowsize(scr_size size)
 {
@@ -99,7 +91,6 @@ void gui_frame_t::reset_min_windowsize()
 /**
  * get color information for the window title
  * -borders and -body background
- * @author Hj. Malthaner
  */
 FLAGGED_PIXVAL gui_frame_t::get_titlecolor() const
 {
@@ -110,12 +101,11 @@ FLAGGED_PIXVAL gui_frame_t::get_titlecolor() const
 /**
  * Events werden hiermit an die GUI-Komponenten
  * gemeldet
- * @author Hj. Malthaner
  */
 bool gui_frame_t::infowin_event(const event_t *ev)
 {
 	// %DB0 printf( "\nMessage: gui_frame_t::infowin_event( event_t const * ev ) : Fenster|Window %p : Event is %d", (void*)this, ev->ev_class );
-	if (ev->ev_code == SYSTEM_THEME_CHANGED) {
+	if (ev->ev_class==EVENT_SYSTEM  &&  ev->ev_code == SYSTEM_THEME_CHANGED) {
 		if (gui_aligned_container_t::is_table()) {
 			reset_min_windowsize();
 		}
@@ -146,8 +136,6 @@ bool gui_frame_t::infowin_event(const event_t *ev)
 
 /**
  * resize window in response to a resize event
- * @author Markus Weber, Hj. Malthaner
- * @date 11-may-02
  */
 void gui_frame_t::resize(const scr_coord delta)
 {
@@ -171,8 +159,6 @@ void gui_frame_t::resize(const scr_coord delta)
  * Draw new component. The values to be passed refer to the window
  * i.e. It's the screen coordinates of the window where the
  * component is displayed.
- *
- * @author Hj. Malthaner
  */
 void gui_frame_t::draw(scr_coord pos, scr_size size)
 {
@@ -201,4 +187,10 @@ void gui_frame_t::draw(scr_coord pos, scr_size size)
 		display_blend_wh_rgb( pos.x+size.w, pos.y+1, 2, size.h, color_idx_to_rgb(COL_BLACK), 50 );
 		display_blend_wh_rgb( pos.x+1, pos.y+size.h, size.w, 2, color_idx_to_rgb(COL_BLACK), 50 );
 	}
+}
+
+
+uint32 gui_frame_t::get_rdwr_id()
+{
+	return magic_reserved;
 }

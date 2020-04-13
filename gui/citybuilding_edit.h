@@ -1,9 +1,11 @@
 /*
- * The citybuilding editor (urban buildings builder)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_citybuilding_edit_h
-#define gui_citybuilding_edit_h
+#ifndef GUI_CITYBUILDING_EDIT_H
+#define GUI_CITYBUILDING_EDIT_H
+
 
 #include "extend_edit.h"
 
@@ -14,6 +16,9 @@ class building_desc_t;
 class tool_build_house_t;
 
 
+/*
+ * The citybuilding editor (urban buildings builder)
+ */
 class citybuilding_edit_frame_t : public extend_edit_gui_t
 {
 private:
@@ -38,14 +43,12 @@ public:
 	/**
 	* in top-level windows the name is displayed in titlebar
 	* @return the non-translated component name
-	* @author Hj. Malthaner
 	*/
 	const char* get_name() const { return "citybuilding builder"; }
 
 	/**
 	* Set the window associated helptext
 	* @return the filename for the helptext, or NULL
-	* @author Hj. Malthaner
 	*/
 	const char* get_help_filename() const OVERRIDE { return "citybuilding_build.txt"; }
 

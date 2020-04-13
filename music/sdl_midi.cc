@@ -1,10 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * SDL_Mixer music routine interfaces
- *
- * author: Kieron Green
- * date:   17-Jan-2007
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <SDL.h>
@@ -14,6 +10,8 @@
 #include "../utils/plainstring.h"
 #include "music.h"
 
+// SDL_Mixer music routine interfaces
+
 static int         midi_number = -1;
 static plainstring midi_filenames[MAX_MIDI];
 
@@ -22,7 +20,6 @@ Mix_Music *music = NULL;
 
 /**
  * sets midi playback volume
- * @author Kieron Green
  */
 void dr_set_midi_volume(int vol)
 {
@@ -32,7 +29,6 @@ void dr_set_midi_volume(int vol)
 
 /**
  * Loads a MIDI file
- * @author Kieron Green
  */
 int dr_load_midi(const char * filename)
 {
@@ -57,7 +53,6 @@ int dr_load_midi(const char * filename)
 
 /**
  * Plays a MIDI file
- * @author Kieron Green
  */
 void dr_play_midi(int key)
 {
@@ -71,7 +66,6 @@ void dr_play_midi(int key)
 
 /**
  * Stops playing MIDI file
- * @author Kieron Green
  */
 void dr_stop_midi(void)
 {
@@ -87,7 +81,6 @@ void dr_stop_midi(void)
  * Returns the midi_pos variable <- doesn't actually do this
  * Simutrans only needs to know whether file has finished (so that it can start the next music)
  * Returns -1 if current music has finished, else 0
- * @author Kieron Green
  */
 sint32 dr_midi_pos(void)
 {
@@ -102,7 +95,6 @@ sint32 dr_midi_pos(void)
 
 /**
  * Midi shutdown/cleanup
- * @author Kieron Green
  */
 void dr_destroy_midi(void)
 {
@@ -113,7 +105,6 @@ void dr_destroy_midi(void)
 
 /**
  * MIDI initialisation routines
- * @author Kieron Green
  */
 bool dr_init_midi(void)
 {

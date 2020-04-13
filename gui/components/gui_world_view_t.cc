@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjoerg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -58,7 +56,6 @@ world_view_t::~world_view_t()
 /**
  * Events werden hiermit an die GUI-components
  * gemeldet
- * @author Hj. Malthaner
  */
 bool world_view_t::infowin_event(const event_t* ev)
 {
@@ -235,7 +232,6 @@ void world_view_t::internal_draw(const scr_coord offset, obj_t const* const obj)
 
 /**
  * Resize the contents of the window
- * @author prissi
  */
 void world_view_t::set_size(scr_size size)
 {

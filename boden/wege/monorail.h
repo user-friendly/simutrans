@@ -1,12 +1,10 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef boden_wege_monorail_h
-#define boden_wege_monorail_h
+#ifndef BODEN_WEGE_MONORAIL_H
+#define BODEN_WEGE_MONORAIL_H
 
 
 #include "schiene.h"
@@ -16,8 +14,6 @@
  * Class for monorail tracks, derived from schiene.
  * Monorail trains can drive on this tracks.
  * Each track belongs to a section block
- *
- * @author Hj. Malthaner
  */
 class monorail_t : public schiene_t
 {
@@ -28,7 +24,6 @@ public:
 
 	/**
 	 * File loading constructor.
-	 * @author prissi
 	 */
 	monorail_t(loadsave_t *file);
 

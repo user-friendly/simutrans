@@ -1,12 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjoerg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- *
- * Ways (Roads, Railways, etc.)
- *
- * Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <algorithm>
@@ -65,7 +59,7 @@
 
 #include "../tpl/stringhashtable_tpl.h"
 
-#include "../gui/karte.h"	// for debugging
+#include "../gui/minimap.h" // for debugging
 #include "../gui/tool_selector.h"
 #include "../gui/messagebox.h"
 
@@ -166,7 +160,6 @@ const vector_tpl<const way_desc_t *>&  way_builder_t::get_way_list(const waytype
  *  - the slowest way, as fast as speed limit
  *  - if no way faster than speed limit, the fastest way.
  * The timeline is also respected.
- * @author prissi, gerw
  */
 const way_desc_t* way_builder_t::weg_search(const waytype_t wtyp, const sint32 speed_limit, const uint16 time, const systemtype_t system_type)
 {
@@ -295,7 +288,6 @@ static bool compare_ways(const way_desc_t* a, const way_desc_t* b)
 
 /**
  * Fill menu with icons of given waytype, return number of added entries
- * @author Hj. Malthaner/prissi/dariok
  */
 void way_builder_t::fill_menu(tool_selector_t *tool_selector, const waytype_t wtyp, const systemtype_t styp, sint16 /*ok_sound*/)
 {
@@ -325,8 +317,7 @@ void way_builder_t::fill_menu(tool_selector_t *tool_selector, const waytype_t wt
 }
 
 
-/* allow for railroad crossing
- * @author prissi
+/** allow for railroad crossing
  */
 bool way_builder_t::check_crossing(const koord zv, const grund_t *bd, waytype_t wtyp0, const player_t *player) const
 {
@@ -390,8 +381,7 @@ bool way_builder_t::check_crossing(const koord zv, const grund_t *bd, waytype_t 
 }
 
 
-/* crossing of powerlines, or no powerline
- * @author prissi
+/** crossing of powerlines, or no powerline
  */
 bool way_builder_t::check_powerline(const koord zv, const grund_t *bd) const
 {
@@ -501,11 +491,10 @@ bool way_builder_t::check_building( const grund_t *to, const koord dir ) const
 }
 
 
-/* This is the core routine for the way search
+/** This is the core routine for the way search
  * it will check
  * A) allowed step
  * B) if allowed, calculate the cost for the step from from to to
- * @author prissi
  */
 bool way_builder_t::is_allowed_step(const grund_t *from, const grund_t *to, sint32 *costs, bool is_upperlayer ) const
 {
@@ -851,7 +840,7 @@ bool way_builder_t::is_allowed_step(const grund_t *from, const grund_t *to, sint
 			}
 			break;
 
-		case luft: // hsiegeln: runway
+		case luft: // runway
 			{
 				const weg_t *w = to->get_weg(air_wt);
 				if(  w  &&  w->get_desc()->get_styp()==type_runway  &&  desc->get_styp()!=type_runway  &&  ribi_t::is_single(w->get_ribi_unmasked())  ) {
@@ -1177,7 +1166,6 @@ way_builder_t::way_builder_t(player_t* player) : next_gr(32)
 /**
  * If a way is built on top of another way, should the type
  * of the former way be kept or replaced (true == keep)
- * @author Hj. Malthaner
  */
 void way_builder_t::set_keep_existing_ways(bool yesno)
 {
@@ -1490,7 +1478,7 @@ DBG_DEBUG("insert to close","(%i,%i,%i)  f=%i",gr->get_pos().x,gr->get_pos().y,g
 			if((step&0x03)==0) {
 				INT_CHECK( "wegbauer 1347" );
 #ifdef DEBUG_ROUTES
-				if((step&1023)==0) {reliefkarte_t::get_karte()->calc_map();}
+				if((step&1023)==0) {minimap_t::get_karte()->calc_map();}
 #endif
 			}
 
@@ -1999,7 +1987,7 @@ DBG_DEBUG("insert to close","(%i,%i,%i)  f=%i",gr->get_pos().x,gr->get_pos().y,g
 			if((step&0x03)==0) {
 				INT_CHECK( "wegbauer 1347" );
 #ifdef DEBUG_ROUTES
-				if((step&1023)==0) {reliefkarte_t::get_karte()->calc_map();}
+				if((step&1023)==0) {minimap_t::get_karte()->calc_map();}
 #endif
 			}
 
@@ -2318,7 +2306,6 @@ void way_builder_t::build_tunnel_and_bridges()
 
 /*
  * returns the amount needed to built this way
- * author prissi
  */
 sint64 way_builder_t::calc_costs()
 {
@@ -2593,10 +2580,13 @@ void way_builder_t::build_road()
 		if(extend) {
 			weg_t * weg = gr->get_weg(road_wt);
 
-			// keep faster ways or if it is the same way ... (@author prissi)
-			if(weg->get_desc()==desc  ||  keep_existing_ways  ||  (keep_existing_city_roads  &&  weg->hat_gehweg())  ||  (keep_existing_faster_ways  &&  weg->get_desc()->get_topspeed()>desc->get_topspeed())  ||  (player_builder!=NULL  &&  weg->is_deletable(player_builder)!=NULL) || (gr->get_typ()==grund_t::monorailboden && (bautyp&elevated_flag)==0)) {
+			// keep faster ways or if it is the same way
+			if(weg->get_desc()==desc  ||  keep_existing_ways
+				||  (keep_existing_city_roads  &&  weg->hat_gehweg())
+				||  (keep_existing_faster_ways  &&  weg->get_desc()->get_topspeed()>desc->get_topspeed())
+				||  (player_builder!=NULL  &&  weg->is_deletable(player_builder)!=NULL)
+				||  (gr->get_typ()==grund_t::monorailboden && (bautyp&elevated_flag)==0)) {
 				//nothing to be done
-//DBG_MESSAGE("way_builder_t::build_road()","nothing to do at (%i,%i)",k.x,k.y);
 			}
 			else {
 				// we take ownership => we take care to maintain the roads completely ...
@@ -2625,14 +2615,14 @@ void way_builder_t::build_road()
 			str->set_gehweg(add_sidewalk);
 			cost = -gr->neuen_weg_bauen(str, route.get_short_ribi(i), player_builder)-desc->get_price();
 
-			// prissi: into UNDO-list, so we can remove it later
+			// into UNDO-list, so we can remove it later
 			if(player_builder!=NULL) {
 				// intercity roads have no owner, so we must check for an owner
 				player_builder->add_undo( route[i] );
 			}
 		}
 		gr->calc_image();	// because it may be a crossing ...
-		reliefkarte_t::get_karte()->calc_map_pixel(k);
+		minimap_t::get_instance()->calc_map_pixel(k);
 		player_t::book_construction_costs(player_builder, cost, k, road_wt);
 	} // for
 }
@@ -2667,7 +2657,7 @@ void way_builder_t::build_track()
 				bool change_desc = true;
 
 				// do not touch fences, tram way etc. if there is already same way with different type
-				// keep faster ways or if it is the same way ... (@author prissi)
+				// keep faster ways or if it is the same way
 				if (weg->get_desc() == desc                                                               ||
 						(desc->get_styp() == 0 && weg->get_desc()->get_styp() == type_tram  && gr->has_two_ways())     ||
 						keep_existing_ways                                                                      ||
@@ -2735,12 +2725,12 @@ void way_builder_t::build_track()
 					}
 				}
 
-				// prissi: into UNDO-list, so we can remove it later
+				// into UNDO-list, so we can remove it later
 				player_builder->add_undo( route[i] );
 			}
 
 			gr->calc_image();
-			reliefkarte_t::get_karte()->calc_map_pixel( gr->get_pos().get_2d() );
+			minimap_t::get_instance()->calc_map_pixel( gr->get_pos().get_2d() );
 			player_t::book_construction_costs(player_builder, cost, gr->get_pos().get_2d(), desc->get_finance_waytype());
 
 			if((i&3)==0) {
@@ -2776,7 +2766,7 @@ void way_builder_t::build_powerline()
 			lt = new leitung_t(route[i], player_builder );
 			gr->obj_add(lt);
 
-			// prissi: into UNDO-list, so we can remove it later
+			// into UNDO-list, so we can remove it later
 			player_builder->add_undo( route[i] );
 			build_powerline = true;
 		}
@@ -2792,7 +2782,7 @@ void way_builder_t::build_powerline()
 			player_t::book_construction_costs(player_builder, -desc->get_price(), gr->get_pos().get_2d(), powerline_wt);
 			// this adds maintenance
 			lt->leitung_t::finish_rd();
-			reliefkarte_t::get_karte()->calc_map_pixel( gr->get_pos().get_2d() );
+			minimap_t::get_instance()->calc_map_pixel( gr->get_pos().get_2d() );
 		}
 
 		if((i&3)==0) {

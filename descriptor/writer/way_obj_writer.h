@@ -1,5 +1,11 @@
-#ifndef WAY_OBJ_WRITER_H
-#define WAY_OBJ_WRITER_H
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef DESCRIPTOR_WRITER_WAY_OBJ_WRITER_H
+#define DESCRIPTOR_WRITER_WAY_OBJ_WRITER_H
+
 
 #include <string>
 #include "obj_writer.h"
@@ -18,7 +24,6 @@ class way_obj_writer_t : public obj_writer_t {
 	public:
 		/**
 		 * Write a way-object description node
-		 * @author Hj. Malthaner
 		 */
 		virtual void write_obj(FILE* fp, obj_node_t& parent, tabfileobj_t& obj);
 

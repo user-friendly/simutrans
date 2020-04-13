@@ -1,5 +1,11 @@
-#ifndef simversion_h
-#define simversion_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef SIMVERSION_H
+#define SIMVERSION_H
+
 
 #if defined(REVISION_FROM_FILE)  &&  !defined(REVISION)
 // include external generated revision file
@@ -10,19 +16,18 @@
 #define SIM_BUILD_RELEASE_CANDIDATE 1
 #define SIM_BUILD_RELEASE           2
 
-#define SIM_VERSION_MAJOR 120
-#define SIM_VERSION_MINOR   4
+#define SIM_VERSION_MAJOR 121
+#define SIM_VERSION_MINOR   0
 #define SIM_VERSION_PATCH   1
 #define SIM_VERSION_BUILD SIM_BUILD_NIGHTLY
 
 // Beware: SAVEGAME minor is often ahead of version minor when there were patches.
 // ==> These have no direct connection at all!
-#define SIM_SAVE_MINOR      8
-#define SIM_SERVER_MINOR    8
+#define SIM_SAVE_MINOR      0
+#define SIM_SERVER_MINOR    0
 // NOTE: increment before next release to enable save/load of new features
 
-#define MAKEOBJ_VERSION "60.2"
-// new factory locations and provisio
+#define MAKEOBJ_VERSION "60.4"
 
 #ifndef QUOTEME
 #	define QUOTEME_(x) #x

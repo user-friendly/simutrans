@@ -1,11 +1,11 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef __OBJ_NODE_INFO_H
-#define __OBJ_NODE_INFO_H
+#ifndef DESCRIPTOR_OBJ_NODE_INFO_H
+#define DESCRIPTOR_OBJ_NODE_INFO_H
+
 
 #include "../simtypes.h"
 
@@ -15,12 +15,8 @@
 #define EXT_OBJ_NODE_INFO_SIZE (12)
 #define LARGE_RECORD_SIZE (0xFFFFu)
 
-/*
- *  Author:
- *      Volker Meyer
- *
- *  Description:
- *      stored structure of a pak node inside the file.
+/**
+ * Stored structure of a pak node inside the file.
  */
 struct obj_node_info_t {
     uint32  type;

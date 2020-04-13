@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <algorithm>
 
 #include "freight_list_sorter.h"
@@ -5,6 +10,7 @@
 #include "simtypes.h"
 #include "simware.h"
 #include "simfab.h"
+#include "simmem.h"
 #include "simworld.h"
 
 #include "dataobj/translator.h"
@@ -120,7 +126,6 @@ void freight_list_sorter_t::sort_freight(vector_tpl<ware_t> const& warray, cbuff
 {
 	sortby = sort_mode;
 
-	// hsiegeln
 	// added sorting to ware's destination list
 	int pos = 0;
 	ware_t* wlist = MALLOCN( ware_t, warray.get_count() );

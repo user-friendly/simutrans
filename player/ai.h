@@ -1,14 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- *
- * Helper for all AIs
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef _AI_H
-#define _AI_H
+#ifndef PLAYER_AI_H
+#define PLAYER_AI_H
+
 
 #include "simplay.h"
 
@@ -19,11 +16,7 @@ class vehicle_desc_t;
 class goods_desc_t;
 
 /**
- * bauplatz_mit_strasse_sucher_t:
- *
  * Search for a free location using the function find_place().
- *
- * @author V. Meyer
  */
 class ai_building_place_with_road_finder : public building_placefinder_t  {
 public:
@@ -85,8 +78,7 @@ public:
 	/**
 	 * Find the first water tile using line algorithm
 	 * start MUST be on land!
-	 * @author Hajo
-	 **/
+	 */
 	koord find_shore(koord start, koord end) const;
 	bool find_harbour(koord &start, koord &size, koord target);
 

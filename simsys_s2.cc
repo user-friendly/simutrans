@@ -1,10 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic license.
- *
- * It contains the code to use the SDL2 backend for simutrans displayu
- *
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <SDL2/SDL.h>
@@ -368,7 +364,6 @@ unsigned short *dr_textur_init()
 /**
  * Transform a 24 bit RGB color into the system format.
  * @return converted color value
- * @author Hj. Malthaner
  */
 unsigned int get_system_color(unsigned int r, unsigned int g, unsigned int b)
 {
@@ -434,7 +429,6 @@ void set_pointer(int loading)
  * Some wrappers can save screenshots.
  * @return 1 on success, 0 if not implemented for a particular wrapper and -1
  *         in case of error.
- * @author Hj. Malthaner
  */
 int dr_screenshot(const char *filename, int x, int y, int w, int h)
 {

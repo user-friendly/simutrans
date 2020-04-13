@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_label_info_h
-#define gui_label_info_h
+#ifndef GUI_LABEL_INFO_H
+#define GUI_LABEL_INFO_H
+
 
 #include "gui_frame.h"
 #include "components/gui_textinput.h"
@@ -17,10 +16,7 @@ class label_t;
 
 /**
  * Label creation/edition window
- *
- * @author Hj. Malthaner
  */
-
 class label_info_t : public gui_frame_t, private action_listener_t
 {
 private:

@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2008 prissi
- *
- * This file is part of the Simutrans project under the artistic license.
- *
- * New configurable OOP tool system
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef simmenu_h
-#define simmenu_h
+/// New configurable OOP tool system
+
+#ifndef SIMMENU_H
+#define SIMMENU_H
+
 
 #include <string>
 #include "descriptor/sound_desc.h"
@@ -154,6 +154,8 @@ enum {
 	DIALOG_THEMES,
 	DIALOG_SCENARIO,
 	DIALOG_SCENARIO_INFO,
+	DIALOG_LIST_DEPOT,
+	DIALOG_LIST_VEHICLE,
 	DIALOGE_TOOL_COUNT,
 	DIALOGE_TOOL = 0x4000
 };
@@ -344,10 +346,10 @@ public:
 	char const* check_pos(player_t*, koord3d) OVERRIDE;
 };
 
-/*
+
+/**
  * Class for tools needing two clicks (e.g. building ways).
  * Dragging is also possible.
- * @author Gerd Wachsmuth
  */
 class two_click_tool_t : public tool_t {
 public:

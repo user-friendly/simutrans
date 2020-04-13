@@ -1,3 +1,8 @@
+#
+# This file is part of the Simutrans project under the Artistic License.
+# (see LICENSE.txt)
+#
+
 simutrans.ac
 
 AC_INIT(simutrans, version-0.2)
@@ -33,6 +38,11 @@ AC_CHECK_LIB(allegro, get_desktop_resolution)
 
 AC_CHECK_HEADERS(windows.h)
 AC_CHECK_HEADERS(LocaleRoster.h)
+
+# optional zstd
+AC_SEARCH_LIBS(ZSTD_CStreamInSize, zstd,
+	[AC_SUBST(zstd, 1)],
+	[AC_SUBST(zstd, 0)] )
 
 # hackish detection of OS ...
 if test "$ac_cv_header_windows_h" == yes

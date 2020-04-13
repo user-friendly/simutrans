@@ -1,5 +1,10 @@
-#ifndef headquarter_info_h
-#define headquarter_info_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef GUI_HEADQUARTER_INFO_H
+#define GUI_HEADQUARTER_INFO_H
 
 
 #include "base_info.h"

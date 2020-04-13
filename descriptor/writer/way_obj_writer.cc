@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <string>
 #include "../../dataobj/tabfile.h"
 #include "obj_node.h"
@@ -27,8 +32,8 @@ void way_obj_writer_t::write_obj(FILE* outfp, obj_node_t& parent, tabfileobj_t& 
 	obj_node_t node(this, 20, &parent);
 
 
-	// Hajo: Version needs high bit set as trigger -> this is required
-	//       as marker because formerly nodes were unversionend
+	// Version needs high bit set as trigger -> this is required
+	// as marker because formerly nodes were unversionend
 	uint16 version     = 0x8001;
 	uint32 price       = obj.get_int("cost",        100);
 	uint32 maintenance = obj.get_int("maintenance", 100);

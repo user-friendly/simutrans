@@ -1,7 +1,8 @@
 /*
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
+
 #include "scenario_info.h"
 #include "../simworld.h"
 #include "../display/viewport.h"
@@ -126,8 +127,8 @@ bool scenario_info_t::action_triggered( gui_action_creator_t *comp, value_t v)
 			}
 			else if (const char* func = strstart(link, "script:") ) {
 				const char* err = welt->get_scenario()->eval_string(func);
-				if (err) {
-					dbg->warning("scenario_info_t::action_triggered", "error when evaluating: %s", func);
+				if (err  &&  strcmp(err, "suspended") != 0) {
+					dbg->warning("scenario_info_t::action_triggered", "error `%s' when evaluating: %s", err, func);
 				}
 			}
 			else {

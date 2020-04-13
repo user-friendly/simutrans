@@ -1,5 +1,11 @@
-#ifndef scr_coord_h
-#define scr_coord_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef DISPLAY_SCR_COORD_H
+#define DISPLAY_SCR_COORD_H
+
 
 #include <assert.h>
 #include "../dataobj/loadsave.h"
@@ -338,9 +344,10 @@ public:
 		return RECT_RELATION_OUTSIDE;
 	}
 
-	/* reduces the current rect to the overlapping area of two rect
+	/**
+	 * reduces the current rect to the intersection area of two rects
 	 * in case of no overlap the new size is negative
-	 * (prissi: in my humble opinion this could rather return a new rect)
+	 * @note maybe this could rather return a new rect
 	 */
 	void clip( const scr_rect clip_rect ) {
 		x = max(x, clip_rect.x);

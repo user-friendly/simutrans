@@ -1,6 +1,6 @@
 /*
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "../simdebug.h"
@@ -36,7 +36,6 @@ ai_selector_t::ai_selector_t(uint8 plnr_) : savegame_frame_t(NULL, true, NULL, f
 
 /**
  * Action, started after button pressing.
- * @author Hansjörg Malthaner
  */
 bool ai_selector_t::item_action(const char *fullpath)
 {

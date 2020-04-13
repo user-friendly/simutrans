@@ -1,10 +1,11 @@
 /*
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef records_h
-#define records_h
+#ifndef DATAOBJ_RECORDS_H
+#define DATAOBJ_RECORDS_H
+
 
 #include "koord.h"
 #include "../convoihandle_t.h"

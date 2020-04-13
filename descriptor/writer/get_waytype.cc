@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <stdlib.h>
 #include "../../simdebug.h"
 #include "../../utils/simstring.h"	// for STRICMP
@@ -5,7 +10,6 @@
 
 /**
  * Convert waytype string to enum waytype_t
- * @author Hj. Malthaner
  */
 waytype_t get_waytype(const char* waytype)
 {

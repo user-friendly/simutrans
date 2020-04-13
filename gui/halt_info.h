@@ -1,17 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-/*
- * Window with destination information for a stop
- * @author Hj. Malthaner
- */
+#ifndef GUI_HALT_INFO_H
+#define GUI_HALT_INFO_H
 
-#ifndef gui_halt_info_h
-#define gui_halt_info_h
 
 #include "gui_frame.h"
 #include "components/gui_label.h"
@@ -50,6 +44,7 @@ public:
 
 /**
  * Main class: the station info window.
+ * Window with destination information for a stop
  */
 class halt_info_t : public gui_frame_t, private action_listener_t
 {
@@ -60,9 +55,9 @@ private:
 	gui_colorbox_t indicator_color;
 	gui_image_t img_enable[3];
 	gui_halt_type_images_t *img_types;
+
 	/**
 	* Buffer for freight info text string.
-	* @author Hj. Malthaner
 	*/
 	cbuffer_t freight_info;
 
@@ -80,7 +75,7 @@ private:
 	gui_textinput_t input;
 	gui_chart_t chart;
 	location_view_t view;
-	button_t sort_button;     // @author hsiegeln
+	button_t sort_button;
 
 	gui_button_to_chart_array_t button_to_chart;
 
@@ -101,7 +96,6 @@ public:
 	/**
 	 * Set the window associated helptext
 	 * @return the filename for the helptext, or NULL
-	 * @author Hj. Malthaner
 	 */
 	const char *get_help_filename() const OVERRIDE {return "station.txt";}
 
@@ -109,7 +103,6 @@ public:
 	 * Draw new component. The values to be passed refer to the window
 	 * i.e. It's the screen coordinates of the window where the
 	 * component is displayed.
-	 * @author Hj. Malthaner
 	 */
 	void draw(scr_coord pos, scr_size size) OVERRIDE;
 

@@ -1,22 +1,14 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-/*
- * Displays a scrollable list of all convois of a player
- *
- * @author Hj. Malthaner, Sort/Filtering by V. Meyer
- * @date 15-Jun-01
- */
+#ifndef GUI_CONVOI_FRAME_H
+#define GUI_CONVOI_FRAME_H
 
-#ifndef __convoi_frame_h
-#define __convoi_frame_h
 
 #include "gui_frame.h"
-#include "components/action_listener.h"  // 28-Dec-2001  Markus Weber    Added
+#include "components/action_listener.h"
 #include "components/gui_button.h"
 #include "../convoihandle_t.h"
 
@@ -24,9 +16,12 @@ class player_t;
 class goods_desc_t;
 class gui_scrolled_convoy_list_t;
 
+/**
+ * Displays a scrollable list of all convois of a player
+ */
 class convoi_frame_t :
 	public gui_frame_t,
-	private action_listener_t  //28-Dec-01     Markus Weber    Added , private action_listener_t
+	private action_listener_t
 {
 public:
 	enum sort_mode_t { nach_name=0, nach_gewinn=1, nach_typ=2, nach_id=3, SORT_MODES=4 };
@@ -77,9 +72,9 @@ public:
 	/**
 	 * Check all filters for one convoi.
 	 * returns true, if it is not filtered away.
-	 * @author V. Meyer
 	 */
 	bool passes_filter(convoihandle_t cnv);
+
 	/**
 	 * Resorts convois
 	 */
@@ -90,9 +85,7 @@ public:
 	~convoi_frame_t();
 
 	/**
-	 * Events werden hiermit an die GUI-Komponenten
-	 * gemeldet
-	 * @author V. Meyer
+	 * Events werden hiermit an die GUI-Komponenten gemeldet
 	 */
 	bool infowin_event(const event_t *ev) OVERRIDE;
 
@@ -100,14 +93,12 @@ public:
 	 * Draw new component. The values to be passed refer to the window
 	 * i.e. It's the screen coordinates of the window where the
 	 * component is displayed.
-	 * @author Hj. Malthaner
 	 */
 	void draw(scr_coord pos, scr_size size) OVERRIDE;
 
 	/**
 	 * Set the window associated helptext
 	 * @return the filename for the helptext, or NULL
-	 * @author V. Meyer
 	 */
 	const char * get_help_filename() const OVERRIDE {return "convoi.txt"; }
 
@@ -116,6 +107,8 @@ public:
 
 	static bool get_reverse() { return sortreverse; }
 	static void set_reverse(bool reverse) { sortreverse = reverse; }
+
+	bool has_min_sizer() const OVERRIDE {return true;}
 
 	bool action_triggered(gui_action_creator_t*, value_t) OVERRIDE;
 };

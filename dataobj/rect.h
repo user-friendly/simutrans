@@ -1,5 +1,11 @@
-#ifndef rect_h
-#define rect_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef DATAOBJ_RECT_H
+#define DATAOBJ_RECT_H
+
 
 #include "koord.h"
 #include <stddef.h>

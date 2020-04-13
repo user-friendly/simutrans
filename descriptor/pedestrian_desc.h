@@ -1,11 +1,11 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef __PEDESTRIAN_DESC_H
-#define __PEDESTRIAN_DESC_H
+#ifndef DESCRIPTOR_PEDESTRIAN_DESC_H
+#define DESCRIPTOR_PEDESTRIAN_DESC_H
+
 
 #include "obj_base_desc.h"
 #include "image_array.h"
@@ -13,11 +13,7 @@
 #include "../dataobj/ribi.h"
 #include "../network/checksum.h"
 
-/*
- *  Author:
- *      Volker Meyer
- *
- *  Description:
+/**
  *	Pedestrians.
  *
  *  Child nodes:
@@ -25,7 +21,7 @@
  *	1   Copyright
  *	2   Image-list or 2d
  */
-class pedestrian_desc_t : public obj_named_desc_t {
+class pedestrian_desc_t : public obj_desc_timelined_t {
 	friend class pedestrian_reader_t;
 
 	uint16 distribution_weight;

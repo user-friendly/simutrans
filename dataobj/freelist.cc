@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -226,7 +231,7 @@ void freelist_t::free_all_nodes()
 #ifdef USE_VALGRIND_MEMCHECK
 		VALGRIND_DESTROY_MEMPOOL( p );
 #endif
-		guarded_free( p );
+		free( p );
 	}
 	printf("freelist_t::free_all_nodes(): zeroing\n");
 	for( int i=0;  i<NUM_LIST;  i++  ) {

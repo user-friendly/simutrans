@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 /** @file zeiger.cc object to mark tiles */
@@ -41,7 +39,6 @@ zeiger_t::zeiger_t(koord3d pos, player_t *player) :
  * We want to be able to highlight the current tile.
  * Unmarks area around old and marks area around new position.
  * Use this routine to change position.
- * @author Hj. Malthaner
  */
 void zeiger_t::change_pos(koord3d k )
 {

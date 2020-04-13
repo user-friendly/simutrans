@@ -1,16 +1,11 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-/*
- * Traffic light phase buttons
- */
+#ifndef GUI_TRAFFICLIGHT_INFO_H
+#define GUI_TRAFFICLIGHT_INFO_H
 
-#ifndef trafficlight_info_t_h
-#define trafficlight_info_t_h
 
 #include "obj_info.h"
 #include "components/action_listener.h"
@@ -20,8 +15,7 @@
 class roadsign_t;
 
 /**
- * Info window for factories
- * @author Hj. Malthaner
+ * Traffic light phase buttons
  */
 class trafficlight_info_t : public obj_infowin_t, public action_listener_t
 {
@@ -32,10 +26,9 @@ private:
 public:
 	trafficlight_info_t(roadsign_t* s);
 
-	/*
+	/**
 	 * Set the window associated helptext
 	 * @return the filename for the helptext, or NULL
-	 * @author Hj. Malthaner
 	 */
 	const char *get_help_filename() const OVERRIDE {return "trafficlight_info.txt";}
 

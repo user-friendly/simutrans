@@ -1,23 +1,19 @@
 /*
- *  Copyright (c) 1997 - 2002 by Volker Meyer & Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef __GROUND_DESC_H
-#define __GROUND_DESC_H
+#ifndef DESCRIPTOR_GROUND_DESC_H
+#define DESCRIPTOR_GROUND_DESC_H
+
 
 #include "obj_base_desc.h"
 #include "image_array.h"
 #include "../simtypes.h"
 #include "../dataobj/ribi.h"
 
-/*
- *  Author:
- *      Volker Meyer
- *
- *  Description:
- *      Images of all possible surface tiles: slopes, climates, transitions, etc.
+/**
+ * Images of all possible surface tiles: slopes, climates, transitions, etc.
  *
  *  Child nodes:
  *	0   Name

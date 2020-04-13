@@ -1,12 +1,10 @@
 /*
- * Copyright (c) 1997 - 2001 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic license.
- * (see license.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef simdebug_h
-#define simdebug_h
+#ifndef SIMDEBUG_H
+#define SIMDEBUG_H
 
 
 // do not check assertions
@@ -24,14 +22,12 @@
 
 /**
  * Logger instance, this is a globally exported object.
- * @author Hj. Malthaner
  */
 extern log_t *dbg;
 
 
 /**
  * Inits logging facility.
- * @author Hj. Malthaner
  */
 void init_logging(const char *logname, bool force_flush, bool log_debug, const char *greeting, const char* syslogtag );
 

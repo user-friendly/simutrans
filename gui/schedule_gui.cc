@@ -1,9 +1,6 @@
 /*
- * Dialog window for defining a schedule
- *
- * Hj. Malthaner
- *
- * Juli 2000
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "../simline.h"
@@ -38,7 +35,7 @@
 #include "components/gui_button.h"
 #include "components/gui_image.h"
 #include "components/gui_textarea.h"
-#include "karte.h"
+#include "minimap.h"
 
 static karte_ptr_t welt;
 
@@ -288,7 +285,7 @@ schedule_gui_t::~schedule_gui_t()
 	if(  player  ) {
 		update_tool( false );
 		// hide schedule on minimap (may not current, but for safe)
-		reliefkarte_t::get_karte()->set_current_cnv( convoihandle_t() );
+		minimap_t::get_instance()->set_selected_cnv( convoihandle_t() );
 	}
 	delete schedule;
 	delete stats;
@@ -310,7 +307,7 @@ void schedule_gui_t::init(schedule_t* schedule_, player_t* player, convoihandle_
 	}
 	else {
 		// set this schedule as current to show on minimap if possible
-		reliefkarte_t::get_karte()->set_current_cnv( cnv );
+		minimap_t::get_instance()->set_selected_cnv( cnv );
 		old_line = new_line = cnv->get_line();
 	}
 	old_line_count = 0;
@@ -711,8 +708,6 @@ void schedule_gui_t::draw(scr_coord pos, scr_size size)
 
 /**
  * Set window size and adjust component sizes and/or positions accordingly
- * @author Hj. Malthaner
- * @date   16-Oct-2003
  */
 void schedule_gui_t::set_windowsize(scr_size size)
 {

@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic license.
- * (see license.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -37,9 +35,8 @@ protected:
 public:
 	oldsignal_t(loadsave_t *file, obj_t::typ type);
 
-	/*
+	/**
 	* return direction or the state of the traffic light
-	* @author Hj. Malthaner
 	*/
 	ribi_t::ribi get_dir() const { return dir; }
 

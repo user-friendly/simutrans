@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_theme_h
-#define gui_theme_h
+#ifndef GUI_GUI_THEME_H
+#define GUI_GUI_THEME_H
+
 
 #include "../dataobj/koord.h"
 #include "../simcolor.h"
@@ -108,6 +107,9 @@ class image_t;
 // space between two elements
 #define D_H_SPACE              (gui_theme_t::gui_hspace)
 #define D_V_SPACE              (gui_theme_t::gui_vspace)
+
+// bars of goods waiting in stations
+#define D_WAITINGBAR_WIDTH     (gui_theme_t::gui_waitingbar_width)
 
 // Button grid helpers
 #define BUTTON1_X     (D_MARGIN_LEFT)
@@ -269,6 +271,7 @@ public:
 	static KOORD_VAL gui_frame_bottom;
 	static KOORD_VAL gui_hspace;
 	static KOORD_VAL gui_vspace;
+	static KOORD_VAL gui_waitingbar_width;
 	/// @}
 
 	// those are the 3x3 images which are used for stretching
@@ -307,8 +310,7 @@ public:
 	/**
 	 * Reads theme configuration data, still not final
 	 * searches a theme.tab inside the specified folder
-	 * @author prissi
 	 */
-	static bool themes_init(const char *dir_name,bool init_font);
+	static bool themes_init(const char *dir_name,bool init_font,bool init_tools);
 };
 #endif

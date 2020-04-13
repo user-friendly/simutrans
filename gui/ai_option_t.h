@@ -1,10 +1,11 @@
 /*
- * AI behavior options from AI finance window
- * 2006 prissi
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef ai_option_h
-#define ai_option_h
+#ifndef GUI_AI_OPTION_T_H
+#define GUI_AI_OPTION_T_H
+
 
 #include "../simmesg.h"
 
@@ -18,6 +19,9 @@
 class player_t;
 class ai_t;
 
+/**
+ * AI behavior options from AI finance window
+ */
 class ai_option_t : public gui_frame_t, private action_listener_t
 {
 private:
@@ -31,7 +35,6 @@ public:
 	/**
 	 * Set the window associated helptext
 	 * @return the filename for the helptext, or NULL
-	 * @author Hj. Malthaner
 	 */
 	const char * get_help_filename() const OVERRIDE {return "players.txt";}
 

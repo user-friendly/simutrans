@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 2007 prissi
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -81,7 +79,6 @@ void crossing_t::state_changed()
 
 /**
  * Dient zur Neuberechnung des Bildes
- * @author Hj. Malthaner
  */
 void crossing_t::calc_image()
 {
@@ -162,12 +159,6 @@ void crossing_t::rdwr(loadsave_t *file)
 }
 
 
-/**
- * Wird nach dem Laden der Welt aufgerufen - üblicherweise benutzt
- * um das Aussehen des Dings an Boden und Umgebung anzupassen
- *
- * @author Hj. Malthaner
- */
 void crossing_t::finish_rd()
 {
 	grund_t *gr=welt->lookup(get_pos());

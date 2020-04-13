@@ -1,13 +1,6 @@
 /*
- * Copyright (c) 2008 Dwachs
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- */
-
-/*
- * An input field for integer numbers (with arrow buttons for dec/inc)
- * @author Dwachs 2008
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "gui_numberinput.h"
@@ -338,7 +331,6 @@ bool gui_numberinput_t::infowin_event(const event_t *ev)
 
 /**
  * Draw the component
- * @author Dwachs
  */
 void gui_numberinput_t::draw(scr_coord offset)
 {

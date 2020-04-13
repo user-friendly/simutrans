@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <string>
 #include "environment.h"
 #include "loadsave.h"
@@ -18,6 +23,7 @@ bool env_t::simple_drawing = false;
 bool env_t::simple_drawing_fast_forward = true;
 sint16 env_t::simple_drawing_normal = 4;
 sint16 env_t::simple_drawing_default = 24;
+uint8 env_t::follow_convoi_underground = 2;
 
 char env_t::program_dir[PATH_MAX];
 plainstring env_t::default_theme;
@@ -36,7 +42,7 @@ uint32 env_t::server_announce = 0;
 bool env_t::easy_server = false;
 // Minimum is every 60 seconds, default is every 15 minutes (900 seconds), maximum is 86400 (1 day)
 sint32 env_t::server_announce_interval = 900;
-int env_t::server_port = 13353;
+int env_t::server_port = env_t::server ? env_t::server : 13353;
 std::string env_t::server_dns;
 std::string env_t::server_alt_dns; // for dualstack systems
 std::string env_t::server_name;
@@ -62,8 +68,10 @@ std::string env_t::nickname = "";
 const char *env_t::language_iso = "en";
 sint16 env_t::scroll_multi = -1; // start with same scrool as mouse as nowadays standard
 sint16 env_t::global_volume = 127;
+uint32 env_t::sound_distance_scaling;
 sint16 env_t::midi_volume = 127;
-bool env_t::mute_sound = false;
+uint16 env_t::specific_volume[MAX_SOUND_TYPES];
+bool env_t::global_mute_sound = false;
 bool env_t::mute_midi = false;
 bool env_t::shuffle_midi = true;
 sint16 env_t::window_snap_distance = 8;
@@ -157,7 +165,7 @@ bool env_t::hide_keyboard = false;
 
 
 
-// Hajo: Define default settings.
+// Define default settings.
 void env_t::init()
 {
 	// settings for messages
@@ -187,6 +195,8 @@ void env_t::init()
 	ground_object_probability = 10; // every n-th tile
 	moving_object_probability = 1000; // every n-th tile
 
+	follow_convoi_underground = 2;  // slice through map
+
 	road_user_info = false;
 	tree_info = true;
 	ground_info = false;
@@ -213,7 +223,7 @@ void env_t::init()
 	river_types = 0;
 
 
-	/* prissi: autosave every x months (0=off) */
+	// autosave every x months (0=off)
 	autosave = 0;
 
 	// default: make 25 frames per second (if possible)
@@ -227,6 +237,8 @@ void env_t::init()
 #else
 	num_threads = 1;
 #endif
+
+	sound_distance_scaling = 10;
 
 	show_tooltips = true;
 	tooltip_color_rgb = 0x3964D0; // COL_SOFT_BLUE
@@ -248,9 +260,12 @@ void env_t::init()
 	// midi/sound option
 	global_volume = 127;
 	midi_volume = 127;
-	mute_sound = false;
+	global_mute_sound = false;
 	mute_midi = false;
 	shuffle_midi = true;
+	for( int i = 0; i < MAX_SOUND_TYPES; i++ ) {
+		specific_volume[ i ] = 255;
+	}
 
 	left_to_right_graphs = false;
 
@@ -382,7 +397,12 @@ void env_t::rdwr(loadsave_t *file)
 
 	file->rdwr_short( global_volume );
 	file->rdwr_short( midi_volume );
-	file->rdwr_bool( mute_sound );
+	file->rdwr_bool( global_mute_sound );
+	if(  file->is_version_atleast( 121, 1 )  ) {
+		for( int i = 0; i <= 5; i++ ) {
+			file->rdwr_short( specific_volume[ i ] );
+		}
+	}
 	file->rdwr_bool( mute_midi );
 	file->rdwr_bool( shuffle_midi );
 
@@ -476,6 +496,15 @@ void env_t::rdwr(loadsave_t *file)
 	if (file->is_version_atleast(120, 8)) {
 		rdwr_win_settings(file);
 	}
+
+	if (file->is_version_atleast(120, 9)) {
+		file->rdwr_byte(follow_convoi_underground);
+	}
+
+	if (file->is_version_atleast(121, 1)) {
+		file->rdwr_long(sound_distance_scaling);
+	}
+
 	// server settings are not saved, since they are server specific
 	// and could be different on different servers on the same computers
 }

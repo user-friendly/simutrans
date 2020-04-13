@@ -1,13 +1,10 @@
 /*
- * dialog for setting the climate border and other map related parameters
- *
- * prissi
- *
- * August 2006
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "climates.h"
-#include "karte.h"
+#include "minimap.h"
 #include "welt.h"
 
 #include "../descriptor/ground_desc.h"
@@ -23,7 +20,6 @@
 
 /**
  * set the climate borders
- * @author prissi
  */
 climate_gui_t::climate_gui_t(settings_t* const sets_par) :
 	gui_frame_t( translator::translate("Climate Control") )
@@ -114,7 +110,6 @@ climate_gui_t::climate_gui_t(settings_t* const sets_par) :
 
 /**
  * This method is called if an action is triggered
- * @author Hj. Malthaner
  */
 bool climate_gui_t::action_triggered( gui_action_creator_t *comp, value_t v)
 {

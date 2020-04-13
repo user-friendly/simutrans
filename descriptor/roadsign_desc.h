@@ -1,14 +1,11 @@
 /*
- *  Copyright (c) 2006 by prissi
- *
- * This file is part of the Simutrans project under the artistic licence.
- *
- *  Module description:
- *      signs on roads and other ways
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef __ROADSIGN_DESC_H
-#define __ROADSIGN_DESC_H
+#ifndef DESCRIPTOR_ROADSIGN_DESC_H
+#define DESCRIPTOR_ROADSIGN_DESC_H
+
 
 #include "obj_base_desc.h"
 #include "image_list.h"
@@ -18,11 +15,7 @@
 #include "../network/checksum.h"
 
 
-/*
- *  Author:
- *      prissi
- *
- *  Description:
+/**
  *	Road signs
  *
  *  Child nodes:
@@ -76,7 +69,12 @@ public:
 	bool is_choose_sign() const { return (flags & CHOOSE_SIGN) != 0; }
 
 	//  return true for signal
-	bool is_simple_signal() const { return (flags & (SIGN_SIGNAL|CHOOSE_SIGN)) == SIGN_SIGNAL; }
+	bool is_simple_signal() const { return (flags & (
+		SIGN_SIGNAL |
+		SIGN_PRE_SIGNAL |
+		SIGN_PRIORITY_SIGNAL |
+		SIGN_LONGBLOCK_SIGNAL |
+		CHOOSE_SIGN)) == SIGN_SIGNAL; }
 
 	//  return true for presignal
 	bool is_pre_signal() const { return (flags & SIGN_PRE_SIGNAL) != 0; }

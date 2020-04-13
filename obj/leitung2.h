@@ -1,12 +1,10 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef obj_leitung_t
-#define obj_leitung_t
+#ifndef OBJ_LEITUNG2_H
+#define OBJ_LEITUNG2_H
 
 
 #include "../ifc/sync_steppable.h"
@@ -17,6 +15,8 @@
 
 // bitshift for converting internal power values to MW for display
 extern const uint32 POWER_TO_MW;
+
+#define CREDIT_PER_MWS 2
 
 class powernet_t;
 class player_t;
@@ -36,7 +36,6 @@ protected:
 
 	/**
 	* We are part of this network
-	* @author Hj. Malthaner
 	*/
 	powernet_t * net;
 
@@ -45,7 +44,6 @@ protected:
 	/**
 	* Connect this piece of powerline to its neighbours
 	* -> this can merge power networks
-	* @author Hj. Malthaner
 	*/
 	void verbinde();
 
@@ -55,7 +53,6 @@ protected:
 
 	/**
 	* Dient zur Neuberechnung des Bildes
-	* @author Hj. Malthaner
 	*/
 	void calc_image() OVERRIDE;
 
@@ -95,11 +92,7 @@ public:
 	 */
 	waytype_t get_waytype() const OVERRIDE { return powerline_wt; }
 
-	/**
-	* @return Einen Beschreibungsstring für das Objekt, der z.B. in einem
-	* Beobachtungsfenster angezeigt wird.
-	* @author Hj. Malthaner
-	*/
+	/// @copydoc obj_t::info
 	void info(cbuffer_t & buf) const OVERRIDE;
 
 	ribi_t::ribi get_ribi() const { return ribi; }
@@ -111,8 +104,6 @@ public:
 	/**
 	* Recalculates the images of all neighbouring
 	* powerlines and the powerline itself
-	*
-	* @author Hj. Malthaner
 	*/
 	void calc_neighbourhood();
 
@@ -121,7 +112,6 @@ public:
 
 	/**
 	 * @return NULL if OK, otherwise an error message
-	 * @author Hj. Malthaner
 	 */
 	const char *is_deletable(const player_t *player) OVERRIDE;
 };

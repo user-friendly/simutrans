@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "labellist_frame_t.h"
@@ -43,6 +41,7 @@ labellist_frame_t::labellist_frame_t() :
 	end_table();
 
 	add_component(&scrolly);
+	scrolly.set_maximize(true);
 
 	fill_list();
 
@@ -70,7 +69,6 @@ void labellist_frame_t::fill_list()
 
 /**
  * This method is called if an action is triggered
- * @author Markus Weber/Volker Meyer
  */
 bool labellist_frame_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 {

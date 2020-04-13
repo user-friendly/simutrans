@@ -1,10 +1,11 @@
 /*
- * Dialog for language change
- * @author Hj. Maltahner, Niels Roest, prissi
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef gui_sprachen_h
-#define gui_sprachen_h
+#ifndef GUI_SPRACHEN_H
+#define GUI_SPRACHEN_H
+
 
 #include "gui_frame.h"
 #include "components/action_listener.h"
@@ -14,6 +15,9 @@
 
 #include "../tpl/vector_tpl.h"
 
+/**
+ * Dialog for language change
+ */
 class sprachengui_t : public gui_frame_t, private action_listener_t
 {
 private:
@@ -32,7 +36,6 @@ public:
 	/**
 	 * Causes the required fonts for currently selected
 	 * language to be loaded if true
-	 * @author Hj. Malthaner
 	 */
 	static void init_font_from_lang(bool font);
 
@@ -41,7 +44,6 @@ public:
 	/**
 	 * Set the window associated helptext
 	 * @return the filename for the helptext, or NULL
-	 * @author Hj. Malthaner
 	 */
 	const char *get_help_filename() const OVERRIDE {return "language.txt";}
 

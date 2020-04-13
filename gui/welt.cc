@@ -1,20 +1,10 @@
 /*
- * dialog to enter values ??for map generation
- *
- * Hj. Malthaner
- *
- * April 2000
- *
- * Max Kielland 2013
- * Added theme support
- */
-
-/*
- * Dialog to configure the generation of a new map
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "welt.h"
-#include "karte.h"
+#include "minimap.h"
 
 #include "../simdebug.h"
 #include "../simworld.h"
@@ -279,7 +269,6 @@ welt_gui_t::welt_gui_t(settings_t* const sets_par) :
 /**
  * Calculates preview from height map
  * @param filename name of heightfield file
- * @author Hajo/prissi
  */
 bool welt_gui_t::update_from_heightfield(const char *filename)
 {
@@ -302,7 +291,7 @@ bool welt_gui_t::update_from_heightfield(const char *filename)
 		const int my = sets->get_size_y()/map_size.h;
 		for(  int y=0;  y<map_size.h;  y++  ) {
 			for(  int x=0;  x<map_size.w;  x++  ) {
-				map.at(x,y) = reliefkarte_t::calc_hoehe_farbe( h_field[x*mx+y*my*w], sets->get_groundwater()-1 );
+				map.at(x,y) = minimap_t::calc_height_color( h_field[x*mx+y*my*w], sets->get_groundwater()-1 );
 			}
 		}
 		map_preview.set_map_data(&map);
@@ -361,7 +350,6 @@ void welt_gui_t::update_memory(gui_label_buf_t *label, const settings_t* sets)
 
 /**
  * Calculate the new Map-Preview. Initialize the new RNG!
- * @author Hj. Malthaner
  */
 void welt_gui_t::update_preview(bool load_heightfield)
 {
@@ -378,7 +366,7 @@ void welt_gui_t::update_preview(bool load_heightfield)
 		const int my = sets->get_size_y()/map_size.h;
 		for(  int y=0;  y<map_size.h;  y++  ) {
 			for(  int x=0;  x<map_size.w;  x++  ) {
-				map.at(x,y) = reliefkarte_t::calc_hoehe_farbe(karte_t::perlin_hoehe( sets, koord(x*mx,y*my), koord::invalid ), sets->get_groundwater());
+				map.at(x,y) = minimap_t::calc_height_color(karte_t::perlin_hoehe( sets, koord(x*mx,y*my), koord::invalid ), sets->get_groundwater());
 			}
 		}
 		sets->heightfield = "";
@@ -405,7 +393,6 @@ void welt_gui_t::resize_preview()
 
 /**
  * This method is called if an action is triggered
- * @author Hj. Malthaner
  */
 bool welt_gui_t::action_triggered( gui_action_creator_t *comp,value_t v)
 {
@@ -536,7 +523,7 @@ bool welt_gui_t::action_triggered( gui_action_creator_t *comp,value_t v)
 		welt->set_pause(false);
 		// save setting ...
 		loadsave_t file;
-		if(file.wr_open("default.sve",loadsave_t::binary,"settings only",SAVEGAME_VER_NR)) {
+		if(file.wr_open("default.sve",loadsave_t::binary,0,"settings only",SAVEGAME_VER_NR)) {
 			// save default setting
 			env_t::default_settings.rdwr(&file);
 			file.close();

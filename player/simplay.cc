@@ -1,11 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- *
- * Renovation in dec 2004 for other vehicles, timeline
- * @author prissi
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -40,6 +35,8 @@
 #include "../dataobj/loadsave.h"
 #include "../dataobj/translator.h"
 #include "../dataobj/environment.h"
+
+#include "../network/network_socket_list.h"
 
 #include "../obj/bruecke.h"
 #include "../obj/gebaeude.h"
@@ -130,7 +127,7 @@ void player_t::add_money_message(const sint64 amount, const koord pos)
 
 			// and same for sound too ...
 			if(  amount>=10000  &&  !welt->is_fast_forward()  ) {
-				welt->play_sound_area_clipped(pos, SFX_CASH);
+				welt->play_sound_area_clipped(pos, SFX_CASH, CASH_SOUND );
 			}
 		}
 	}
@@ -374,6 +371,11 @@ bool player_t::new_month()
 			}
 			// never changed convoi, never built => abandoned
 			if(  abandoned  ) {
+				if (env_t::server) {
+					// server: unlock this player for all clients
+					socket_list_t::unlock_player_all(player_nr, true);
+				}
+				// clients: local unlock
 				pwd_hash.clear();
 				locked = false;
 				unlock_pending = false;
@@ -401,7 +403,7 @@ void player_t::calc_assets()
 		if(  cnv->get_owner() == this  ) {
 			sint64 restwert = cnv->calc_restwert();
 			assets[TT_ALL] += restwert;
-			assets[finance->translate_waytype_to_tt(cnv->front()->get_waytype())] += restwert;
+			assets[finance->translate_waytype_to_tt(cnv->front()->get_desc()->get_waytype())] += restwert;
 		}
 	}
 
@@ -411,7 +413,7 @@ void player_t::calc_assets()
 			FOR(slist_tpl<vehicle_t*>, const veh, depot->get_vehicle_list()) {
 				sint64 restwert = veh->calc_sale_value();
 				assets[TT_ALL] += restwert;
-				assets[finance->translate_waytype_to_tt(veh->get_waytype())] += restwert;
+				assets[finance->translate_waytype_to_tt(veh->get_desc()->get_waytype())] += restwert;
 			}
 		}
 	}
@@ -807,7 +809,7 @@ DBG_MESSAGE("player_t::report_vehicle_problem","Vehicle %s, state %i!", cnv->get
 void player_t::init_undo( waytype_t wtype, unsigned short max )
 {
 	// only human player
-	// prissi: allow for UNDO for real player
+	// allow for UNDO for real player
 DBG_MESSAGE("player_t::int_undo()","undo tiles %i",max);
 	last_built.clear();
 	last_built.resize(max+1);
@@ -909,12 +911,12 @@ void player_t::tell_tool_result(tool_t *tool, koord3d, const char *err)
 	if (welt->get_active_player()==this) {
 		if(err==NULL) {
 			if(tool->ok_sound!=NO_SOUND) {
-				sound_play(tool->ok_sound);
+				sound_play(tool->ok_sound,255,TOOL_SOUND);
 			}
 		}
 		else if(*err!=0) {
 			// something went really wrong
-			sound_play(SFX_FAILURE);
+			sound_play( SFX_FAILURE, 255, TOOL_SOUND );
 			// look for coordinate in error message
 			// syntax: either @x,y or (x,y)
 			open_error_msg_win(err);

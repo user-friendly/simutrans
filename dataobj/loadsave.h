@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef loadsave_h
-#define loadsave_h
+#ifndef DATAOBJ_LOADSAVE_H
+#define DATAOBJ_LOADSAVE_H
+
 
 #include <stdio.h>
 #include <string>
@@ -17,22 +16,15 @@ class plainstring;
 struct file_descriptors_t;
 
 /**
- * loadsave_t:
- *
  * This class replaces the FILE when loading and saving games.
- * <p>
- * Hj. Malthaner, 16-Feb-2002, added zlib compression support
  * </p>
  * Can now read and write 3 formats: text, binary and zipped
  * Input format is automatically detected.
  * Output format has a default, changeable with set_savemode, but can be
  * overwritten in wr_open.
- *
- * @author V. Meyer, Hj. Malthaner
  */
-
-
-class loadsave_t {
+class loadsave_t
+{
 public:
 	enum mode_t {
 		binary=0,
@@ -41,7 +33,9 @@ public:
 		zipped=4,
 		xml_zipped=6,
 		bzip2=8,
-		xml_bzip2=10
+		xml_bzip2=10,
+		zstd=16,
+		xml_zstd=18
 	};
 
 	enum file_error_t {
@@ -50,7 +44,8 @@ public:
 		FILE_ERROR_BZ_CORRUPT,
 		FILE_ERROR_GZ_CORRUPT,
 		FILE_ERROR_NO_VERSION,
-		FILE_ERROR_FUTURE_VERSION
+		FILE_ERROR_FUTURE_VERSION,
+		FILE_ERROR_UNSUPPORTED_COMPRESSION
 	};
 
 private:
@@ -70,11 +65,12 @@ private:
 
 	file_descriptors_t *fd;
 
-	// Hajo: putc got a name clash on my system
+	/// @sa putc
 	inline void lsputc(int c);
 
-	// Hajo: getc got a name clash on my system
+	/// @sa getc
 	inline int lsgetc();
+
 	size_t write(const void * buf, size_t len);
 	size_t read(void *buf, size_t len);
 
@@ -97,6 +93,8 @@ private:
 public:
 	static mode_t save_mode;     ///< default to use for saving
 	static mode_t autosave_mode; ///< default to use for autosaves and network mode client temp saves
+	static int save_level;    ///< default to use for compression (various libraries allow for szie/speed settings)
+	static int autosave_level;
 
 	/**
 	 * Parses the version information from @p version_text to a version number.
@@ -111,17 +109,18 @@ public:
 	~loadsave_t();
 
 	bool rd_open(const char *filename);
-	bool wr_open(const char *filename, mode_t mode, const char *pak_extension, const char *savegame_version );
+	bool wr_open(const char *filename, mode_t mode, int level, const char *pak_extension, const char *savegame_version );
 	const char *close();
 
 	file_error_t get_last_error() { return last_error; }
 
 	static void set_savemode(mode_t mode) { save_mode = mode; }
 	static void set_autosavemode(mode_t mode) { autosave_mode = mode; }
+	static void set_savelevel(int level) { save_level = level;  }
+	static void set_autosavelevel(int level) { autosave_level = level;  }
 
 	/**
 	 * Checks end-of-file
-	 * @author Hj. Malthaner
 	 */
 	bool is_eof();
 
@@ -131,6 +130,7 @@ public:
 	bool is_saving() const { return saving; }
 	bool is_zipped() const { return mode&zipped; }
 	bool is_bzip2() const { return mode&bzip2; }
+	bool is_zstd() const { return mode&zstd; }
 	bool is_xml() const { return mode&xml; }
 	const char *get_pak_extension() const { return pak_extension; }
 

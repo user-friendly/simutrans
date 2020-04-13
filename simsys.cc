@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -110,7 +115,6 @@ char const PATH_SEPARATOR[] = "/";
 
 /**
  * Get Mouse X-Position
- * @author Hj. Malthaner
  */
 int get_mouse_x()
 {
@@ -120,7 +124,6 @@ int get_mouse_x()
 
 /**
  * Get Mouse y-Position
- * @author Hj. Malthaner
  */
 int get_mouse_y()
 {
@@ -979,8 +982,10 @@ bool dr_download_pakset( const char *path_to_program, bool portable )
 	}
 	return true;
 #else
+	(void)portable;
+
 	char command[2048];
-	sprintf(command, "%s/get_pak.sh %i", path_to_program, portable);
+	sprintf(command, "%s/get_pak.sh", path_to_program);
 	system( command );
 	return true;
 #endif

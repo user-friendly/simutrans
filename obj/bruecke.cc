@@ -1,7 +1,6 @@
 /*
- * Brueckenteile (sichtbar)
- *
- * Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "../simworld.h"
@@ -10,7 +9,6 @@
 #include "../boden/grund.h"
 #include "../player/simplay.h"
 #include "../display/simimg.h"
-#include "../simmem.h"
 #include "../bauer/brueckenbauer.h"
 #include "../dataobj/loadsave.h"
 #include "../dataobj/translator.h"
@@ -68,7 +66,9 @@ void bruecke_t::calc_image()
 			}
 			weg0->set_image( display_image );
 
-			weg0->set_yoff(-gr->get_weg_yoff() );
+			// must always set both offsets, because after roation the xoffset contains the yoffset
+			weg0->set_yoff( -gr->get_weg_yoff() );
+			weg0->set_xoff( 0 );
 
 			weg0->set_foreground_image(IMG_EMPTY);
 			weg0->set_flag(obj_t::dirty);
@@ -80,13 +80,15 @@ void bruecke_t::calc_image()
 #ifdef MULTI_THREAD
 				weg1->lock_mutex();
 #endif
-				weg1->set_yoff(-gr->get_weg_yoff() );
+				weg1->set_yoff( -gr->get_weg_yoff() );
+				weg1->set_xoff( 0 );
 #ifdef MULTI_THREAD
 				weg1->unlock_mutex();
 #endif
 			}
 		}
 		set_yoff( -gr->get_weg_yoff() );
+		set_xoff( 0 );
 	}
 }
 
@@ -129,7 +131,7 @@ void bruecke_t::rdwr(loadsave_t *file)
 			dbg->warning( "bruecke_t::rdwr()", "unknown bridge \"%s\" at (%i,%i) will be replaced with best match!", s, get_pos().x, get_pos().y );
 			welt->add_missing_paks( s, karte_t::MISSING_BRIDGE );
 		}
-		guarded_free(const_cast<char *>(s));
+		free(const_cast<char *>(s));
 
 		if(  file->is_version_less(112, 7)  &&  env_t::pak_height_conversion_factor==2  ) {
 			switch(img) {
@@ -217,19 +219,20 @@ void bruecke_t::cleanup( player_t *player2 )
 {
 	player_t *player = get_owner();
 	// change maintenance, reset max-speed and y-offset
-	const grund_t *gr = welt->lookup(get_pos());
-	if(gr) {
-		weg_t *weg = gr->get_weg( desc->get_waytype() );
-		if(weg) {
-			weg->set_max_speed( weg->get_desc()->get_topspeed() );
-			player_t::add_maintenance( player,  weg->get_desc()->get_maintenance(), weg->get_desc()->get_finance_waytype());
+	if(  const grund_t *gr = welt->lookup(get_pos())  ) {
+		if(  weg_t *weg0 = gr->get_weg( desc->get_waytype() )  ) {
+			weg0->set_max_speed( weg0->get_desc()->get_topspeed() );
+			player_t::add_maintenance( player,  weg0->get_desc()->get_maintenance(), weg0->get_desc()->get_finance_waytype());
 			// reset offsets
-			weg->set_yoff(0);
-			if (gr->get_weg_nr(1)) {
-				gr->get_weg_nr(1)->set_yoff(0);
+			weg0->set_xoff(0);
+			weg0->set_yoff(0);
+			if(  weg_t *weg1 = gr->get_weg_nr(1)  ) {
+				weg1->set_xoff(0);
+				weg1->set_yoff(0);
 			}
 		}
 	}
+
 	player_t::add_maintenance( player,  -desc->get_maintenance(), desc->get_finance_waytype() );
 	player_t::book_construction_costs( player2, -desc->get_price(), get_pos().get_2d(), desc->get_waytype() );
 }

@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hj. Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef obj_baum_h
-#define obj_baum_h
+#ifndef OBJ_BAUM_H
+#define OBJ_BAUM_H
+
 
 #include <string>
 #include "../tpl/stringhashtable_tpl.h"
@@ -18,8 +17,6 @@
 
 /**
  * Simulated trees for Simutrans.
- *
- * @author Hj. Malthaner
  */
 class baum_t : public obj_t
 {
@@ -81,7 +78,6 @@ public:
 
 	/**
 	 * Calculates tree image dependent on tree age
-	 * @author Hj. Malthaner
 	 */
 	void calc_image() OVERRIDE;
 

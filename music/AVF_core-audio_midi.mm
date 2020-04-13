@@ -39,6 +39,11 @@ void dr_play_midi(int const key)
 {
 	// Play the file referenced by the supplied key.
 	AVMIDIPlayer* const player = [players objectAtIndex: key];
+	double duration = [player duration];
+	double currentPosition = [player currentPosition];
+	if (currentPosition >= duration) {
+		[player setCurrentPosition: 0.0];
+	}
 	[player play: ^{}];
 	nowPlaying = key;
 }
@@ -46,9 +51,11 @@ void dr_play_midi(int const key)
 
 void dr_stop_midi()
 {
-	// We assume the 'nowPlaying' key holds the most recently started track.
-	AVMIDIPlayer* const player = [players objectAtIndex: nowPlaying];
-	[player stop];
+	if(  nowPlaying!= -1  ) {
+		// We assume the 'nowPlaying' key holds the most recently started track.
+		AVMIDIPlayer* const player = [players objectAtIndex: nowPlaying];
+		[player stop];
+	}
 }
 
 

@@ -1,8 +1,6 @@
 /*
- * Copyright (c) 2007 prissi
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include <stdio.h>
@@ -37,7 +35,6 @@ crossing_logic_t::crossing_logic_t( const crossing_desc_t *desc )
 
 /**
  * @return string; currently unused but useful for debugging
- * @author prissi
  */
 void crossing_logic_t::info(cbuffer_t & buf) const
 {
@@ -159,7 +156,7 @@ void crossing_logic_t::set_state( crossing_state_t new_state )
 {
 	// play sound (if there and closing)
 	if(new_state==CROSSING_CLOSED  &&  desc->get_sound()>=0  &&  !welt->is_fast_forward()) {
-		welt->play_sound_area_clipped(crossings[0]->get_pos().get_2d(), desc->get_sound());
+		welt->play_sound_area_clipped(crossings[0]->get_pos().get_2d(), desc->get_sound(), CROSSING_SOUND );
 	}
 
 	if(new_state!=state) {

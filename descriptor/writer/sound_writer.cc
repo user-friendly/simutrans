@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include <string>
 #include "../../dataobj/tabfile.h"
 #include "obj_node.h"
@@ -16,9 +21,8 @@ void sound_writer_t::write_obj(FILE* fp, obj_node_t& parent, tabfileobj_t& obj)
 
 	write_head(fp, node, obj);
 
-	// Hajo: version number
-	// Hajo: Version needs high bit set as trigger -> this is required
-	//       as marker because formerly nodes were unversioned
+	// Version needs high bit set as trigger -> this is required
+	// as marker because formerly nodes were unversioned
 	uint16 uv16 = 0x8002;
 	node.write_uint16(fp, uv16, 0);
 

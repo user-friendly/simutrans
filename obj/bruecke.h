@@ -1,5 +1,11 @@
-#ifndef obj_bruecke_h
-#define obj_bruecke_h
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
+#ifndef OBJ_BRUECKE_H
+#define OBJ_BRUECKE_H
+
 
 class karte_t;
 
@@ -7,11 +13,8 @@ class karte_t;
 #include "../simobj.h"
 
 /**
- * Brueckenteile (sichtbar)
- *
- * Hj. Malthaner
+ * Bridges (visible)
  */
-
 class bruecke_t : public obj_no_info_t
 {
 private:
@@ -56,7 +59,6 @@ public:
 
 	/**
 	 * @return NULL wenn OK, ansonsten eine Fehlermeldung
-	 * @author Hj. Malthaner
 	 */
 	const char *is_deletable(const player_t *player) OVERRIDE;
 };

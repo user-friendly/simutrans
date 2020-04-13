@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #if defined(_M_X64)  ||  defined(__x86_64__)
 #if   __GNUC__
 #warning "Simutrans is preferably compiled as 32 bit binary!"
@@ -52,6 +57,7 @@
 #include "gui/scenario_frame.h"
 
 #include "obj/baum.h"
+#include "obj/wolke.h"
 
 #include "utils/simstring.h"
 #include "utils/searchfolder.h"
@@ -96,6 +102,7 @@ static void show_sizes()
 	DBG_MESSAGE("sizes", "obj_t: %d", sizeof(obj_t));
 	DBG_MESSAGE("sizes", "gebaeude_t: %d", sizeof(gebaeude_t));
 	DBG_MESSAGE("sizes", "baum_t: %d", sizeof(baum_t));
+	DBG_MESSAGE("sizes", "wolke_t: %d", sizeof(wolke_t));
 	DBG_MESSAGE("sizes", "weg_t: %d", sizeof(weg_t));
 	DBG_MESSAGE("sizes", "private_car_t: %d\n", sizeof(private_car_t));
 
@@ -264,8 +271,7 @@ void modal_dialogue( gui_frame_t *gui, ptrdiff_t magic, karte_t *welt, bool (*qu
 	}
 	else {
 		display_show_pointer(true);
-		show_pointer(1);
-		set_pointer(0);
+		display_show_load_pointer(0);
 		display_fillbox_wh_rgb( 0, 0, display_get_width(), display_get_height(), color_idx_to_rgb(COL_BLACK), true );
 		while(  win_is_open(gui)  &&  !env_t::quit_simutrans  &&  !quit()  ) {
 			// do not move, do not close it!
@@ -285,6 +291,7 @@ void modal_dialogue( gui_frame_t *gui, ptrdiff_t magic, karte_t *welt, bool (*qu
 					simgraph_resize( ev.size_x, ev.size_y );
 					dr_prepare_flush();
 					display_fillbox_wh_rgb( 0, 0, ev.size_x, ev.size_y, color_idx_to_rgb(COL_BLACK), true );
+					gui->draw(win_get_pos(gui), gui->get_windowsize());
 					dr_flush();
 				}
 				else if (ev.ev_code == SYSTEM_QUIT) {
@@ -297,7 +304,7 @@ void modal_dialogue( gui_frame_t *gui, ptrdiff_t magic, karte_t *welt, bool (*qu
 				check_pos_win(&ev);
 			}
 		}
-		set_pointer(1);
+		display_show_load_pointer(1);
 		dr_prepare_flush();
 		display_fillbox_wh_rgb( 0, 0, display_get_width(), display_get_height(), color_idx_to_rgb(COL_BLACK), true );
 		dr_flush();
@@ -437,7 +444,7 @@ int simu_main(int argc, char** argv)
 			"  <markus@pristovsek.de>\n"
 			"\n"
 			"  Based on Simutrans 0.84.21.2\n"
-			"  by Hansjörg Malthaner et. al.\n"
+			"  by HansjÃ¶rg Malthaner et. al.\n"
 			"---------------------------------------\n"
 			"command line parameters available: \n"
 			" -addons             loads also addons (with -objects)\n"
@@ -867,29 +874,29 @@ int simu_main(int argc, char** argv)
 	if(  const char *themestr = gimme_arg(argc, argv, "-theme", 1)  ) {
 		dr_chdir( env_t::user_dir );
 		dr_chdir( "themes" );
-		themes_ok = gui_theme_t::themes_init(themestr, true);
+		themes_ok = gui_theme_t::themes_init(themestr, true, false);
 		if(  !themes_ok  ) {
 			dr_chdir( env_t::program_dir );
 			dr_chdir( "themes" );
-			themes_ok = gui_theme_t::themes_init(themestr, true);
+			themes_ok = gui_theme_t::themes_init(themestr, true, false);
 		}
 	}
 	// next try the last used theme
 	if(  !themes_ok  &&  env_t::default_theme.c_str()!=NULL  ) {
 		dr_chdir( env_t::user_dir );
 		dr_chdir( "themes" );
-		themes_ok = gui_theme_t::themes_init( env_t::default_theme, true );
+		themes_ok = gui_theme_t::themes_init( env_t::default_theme, true, false );
 		if(  !themes_ok  ) {
 			dr_chdir( env_t::program_dir );
 			dr_chdir( "themes" );
-			themes_ok = gui_theme_t::themes_init( env_t::default_theme, true );
+			themes_ok = gui_theme_t::themes_init( env_t::default_theme, true, false );
 		}
 	}
 	// specified themes not found => try default themes
 	if(  !themes_ok  ) {
 		dr_chdir( env_t::program_dir );
 		dr_chdir( "themes" );
-		themes_ok = gui_theme_t::themes_init("themes.tab",true);
+		themes_ok = gui_theme_t::themes_init("themes.tab",true,false);
 	}
 	if(  !themes_ok  ) {
 		dbg->fatal( "simmain()", "No GUI themes found! Please re-install!" );
@@ -897,7 +904,7 @@ int simu_main(int argc, char** argv)
 	dr_chdir( env_t::program_dir );
 
 	// The loading screen needs to be initialized
-	show_pointer(1);
+	display_show_pointer(1);
 
 	// if no object files given, we ask the user
 	if(  env_t::objfilename.empty()  ) {
@@ -1059,7 +1066,7 @@ int simu_main(int argc, char** argv)
 		translator::set_language( env_t::language_iso );
 	}
 
-	// Hajo: simgraph init loads default fonts, now we need to load (if not set otherwise)
+	// simgraph_init loads default fonts, now we need to load (if not set otherwise)
 	sprachengui_t::init_font_from_lang( strcmp(env_t::fontname.c_str(), FONT_PATH_X "prop.fnt")==0 );
 	dr_chdir(env_t::program_dir);
 
@@ -1109,6 +1116,18 @@ int simu_main(int argc, char** argv)
 
 	dbg->message("simmain()","Reading menu configuration ...");
 	tool_t::read_menu(env_t::objfilename);
+
+	// reread theme
+	dr_chdir( env_t::user_dir );
+	dr_chdir( "themes" );
+	themes_ok = gui_theme_t::themes_init( env_t::default_theme, true, false );
+	if(  !themes_ok  ) {
+		dr_chdir( env_t::program_dir );
+		dr_chdir( "themes" );
+		themes_ok = gui_theme_t::themes_init( env_t::default_theme, true, false );
+	}
+	dr_chdir( env_t::program_dir );
+
 
 	if(  translator::get_language()==-1  ) {
 		ask_language();
@@ -1179,14 +1198,15 @@ int simu_main(int argc, char** argv)
 	// still nothing to be loaded => search for demo games
 	if(  new_world  ) {
 		dr_chdir( env_t::program_dir );
-		char buffer[PATH_MAX];
-		sprintf(buffer, "%s%sdemo.sve", (const char*)env_t::program_dir, env_t::objfilename.c_str());
+
+		const std::string path = env_t::program_dir + env_t::objfilename + "demo.sve";
+
 		// access did not work!
-		if (FILE* const f = dr_fopen(buffer, "rb")) {
+		if(  FILE *const f = dr_fopen(path.c_str(), "rb")  ) {
 			// there is a demo game to load
-			loadgame = buffer;
+			loadgame = path;
 			fclose(f);
-DBG_MESSAGE("simmain","loadgame file found at %s",buffer);
+DBG_MESSAGE("simmain","loadgame file found at %s",path.c_str());
 		}
 	}
 
@@ -1210,9 +1230,13 @@ DBG_MESSAGE("simmain","loadgame file found at %s",buffer);
 	// init midi before loading sounds
 	if(  dr_init_midi()  ) {
 		dbg->message("simmain()","Reading midi data ...");
-		if(!midi_init(env_t::user_dir)) {
-			if(!midi_init(env_t::program_dir)) {
-				dbg->message("simmain()","Midi disabled ...");
+		char pak_dir[PATH_MAX];
+		sprintf( pak_dir, "%s%s", env_t::program_dir, env_t::objfilename.c_str() );
+		if(  !midi_init(pak_dir)  ) {
+			if(  !midi_init(env_t::user_dir)  ) {
+				if(  !midi_init(env_t::program_dir)  ) {
+					dbg->message("simmain()","Midi disabled ...");
+				}
 			}
 		}
 		if(gimme_arg(argc, argv, "-nomidi", 0)) {
@@ -1231,7 +1255,7 @@ DBG_MESSAGE("simmain","loadgame file found at %s",buffer);
 
 	// restore previous sound settings ...
 	sound_set_shuffle_midi( env_t::shuffle_midi!=0 );
-	sound_set_mute(  env_t::mute_sound  ||  sound_get_mute() );
+	sound_set_mute(  env_t::global_mute_sound  ||  sound_get_mute() );
 	midi_set_mute(  env_t::mute_midi  ||  midi_get_mute() );
 	sound_set_global_volume( env_t::global_volume );
 	sound_set_midi_volume( env_t::midi_volume );
@@ -1372,19 +1396,18 @@ DBG_MESSAGE("simmain","loadgame file found at %s",buffer);
 
 
 #ifdef USE_SOFTPOINTER
-	// Hajo: give user a mouse to work with
+	// give user a mouse to work with
 	if (skinverwaltung_t::mouse_cursor != NULL) {
 		// we must use our softpointer (only Allegro!)
 		display_set_pointer(skinverwaltung_t::mouse_cursor->get_image_id(0));
 	}
 #endif
 	display_show_pointer(true);
-	show_pointer(1);
-	set_pointer(0);
+	display_show_load_pointer(0);
 
 	welt->set_dirty();
 
-	// Hajo: simgraph init loads default fonts, now we need to load
+	// simgraph_init loads default fonts, now we need to load
 	// the real fonts for the current language, if not set otherwise
 	sprachengui_t::init_font_from_lang( strcmp(env_t::fontname.c_str(), FONT_PATH_X "prop.fnt")==0 );
 
@@ -1444,7 +1467,7 @@ DBG_MESSAGE("simmain","loadgame file found at %s",buffer);
 
 	// save setting ...
 	dr_chdir( env_t::user_dir );
-	if(  file.wr_open("settings.xml",loadsave_t::xml,"settings only/",SAVEGAME_VER_NR)  ) {
+	if(  file.wr_open("settings.xml",loadsave_t::xml,0,"settings only/",SAVEGAME_VER_NR)  ) {
 		env_t::rdwr(&file);
 		env_t::default_settings.rdwr(&file);
 		file.close();

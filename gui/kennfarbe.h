@@ -1,16 +1,11 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-/*
- * Company colors window
- */
+#ifndef GUI_KENNFARBE_H
+#define GUI_KENNFARBE_H
 
-#ifndef gui_kennfarbe_h
-#define gui_kennfarbe_h
 
 #include "../utils/cbuffer_t.h"
 #include "gui_frame.h"
@@ -19,12 +14,11 @@
 #include "components/gui_button.h"
 
 class choose_color_button_t;
-/**
- * Dialog to set the player's color
- *
- * @author Hj. Malthaner, Max Kielland 2013
- */
 
+/**
+ * Company colors window
+ * Dialog to set the player's color
+ */
 class farbengui_t : public gui_frame_t, action_listener_t
 {
 	private:
@@ -41,7 +35,6 @@ class farbengui_t : public gui_frame_t, action_listener_t
 		/**
 		 * Set the window associated helptext
 		 * @return the filename for the helptext, or NULL
-		 * @author Hj. Malthaner
 		 */
 		const char * get_help_filename() const OVERRIDE { return "color.txt"; }
 

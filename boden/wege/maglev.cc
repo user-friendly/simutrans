@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
+ */
+
 #include "../../simtypes.h"
 #include "../../bauer/wegbauer.h"
 #include "../../descriptor/way_desc.h"
@@ -10,7 +15,6 @@ const way_desc_t *maglev_t::default_maglev=NULL;
 
 /**
  * File loading constructor.
- * @author prissi
  */
 maglev_t::maglev_t(loadsave_t *file) : schiene_t()
 {

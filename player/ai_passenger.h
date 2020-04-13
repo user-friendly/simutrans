@@ -1,16 +1,17 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- *
- * Simple passenger transport AI
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
+
+#ifndef PLAYER_AI_PASSENGER_H
+#define PLAYER_AI_PASSENGER_H
+
 
 #include "ai.h"
 
 class marker_t;
 
+/// Simple passenger transport AI
 class ai_passenger_t : public ai_t
 {
 private:
@@ -55,8 +56,7 @@ private:
 	koord find_area_for_hub( const koord lo, const koord ru, const koord basis ) const;
 	koord find_place_for_hub( const stadt_t *s ) const;
 
-	/* builds harbours and ferries
-	 * @author prissi
+	/** builds harbours and ferries
 	 */
 	koord find_harbour_pos(karte_t* welt, const stadt_t *s );
 	bool create_water_transport_vehikel(const stadt_t* start_stadt, const koord target_pos);
@@ -64,8 +64,7 @@ private:
 	// builds a simple 3x3 three stop airport with town connection road
 	halthandle_t build_airport(const stadt_t* city, koord pos, int rotate);
 
-	/* build airports and planes
-	 * @author prissi
+	/** build airports and planes
 	 */
 	bool create_air_transport_vehikel(const stadt_t *start_stadt, const stadt_t *end_stadt);
 
@@ -96,3 +95,5 @@ public:
 
 	void step() OVERRIDE;
 };
+
+#endif

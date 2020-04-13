@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 2007 prissi
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-#ifndef crossing_logic_h
-#define crossing_logic_h
+#ifndef DATAOBJ_CROSSING_LOGIC_H
+#define DATAOBJ_CROSSING_LOGIC_H
+
 
 #include "../simtypes.h"
 #include "../tpl/minivec_tpl.h"
@@ -20,7 +19,6 @@ class vehicle_base_t;
 
 /**
  * road sign for traffic (one way minimum speed, traffic lights)
- * @author Hj. Malthaner
  */
 class crossing_logic_t
 {
@@ -47,7 +45,6 @@ public:
 
 	/**
 	 * @return string (only used for debug at the moment)
-	 * @author prissi
 	 */
 	void info(cbuffer_t & buf) const;
 

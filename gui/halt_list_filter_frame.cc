@@ -1,15 +1,6 @@
 /*
- * Copyright (c) 1997 - 2001 Hansjörg Malthaner
- * written by Volker Meyer
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- */
-
-/*
- * Stations/stops list filter dialog
- * Displays filter settings for the halt list
- * @author V. Meyer
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "halt_list_filter_frame.h"
@@ -177,7 +168,6 @@ halt_list_filter_frame_t::~halt_list_filter_frame_t()
 
 /**
  * This method is called if an action is triggered
- * @author V. Meyer
  */
 bool halt_list_filter_frame_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 {

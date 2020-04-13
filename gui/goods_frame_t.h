@@ -1,16 +1,11 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
-/*
- * Goods list dialog
- */
+#ifndef GUI_GOODS_FRAME_T_H
+#define GUI_GOODS_FRAME_T_H
 
-#ifndef goods_frame_t_h
-#define goods_frame_t_h
 
 #include "gui_frame.h"
 #include "components/gui_button.h"
@@ -28,7 +23,6 @@ class goods_desc_t;
 
 /**
  * Shows statistics. Only goods so far.
- * @author Hj. Malthaner
  */
 class goods_frame_t : public gui_frame_t, private action_listener_t
 {
@@ -117,7 +111,6 @@ public:
 	/**
 	 * Set the window associated helptext
 	 * @return the filename for the helptext, or NULL
-	 * @author V. Meyer
 	 */
 	const char * get_help_filename() const OVERRIDE {return "goods_filter.txt"; }
 

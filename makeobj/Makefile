@@ -1,3 +1,8 @@
+#
+# This file is part of the Simutrans project under the Artistic License.
+# (see LICENSE.txt)
+#
+
 CFG ?= default
 -include ../config.$(CFG)
 
@@ -39,6 +44,11 @@ endif
 ifeq ($(OSTYPE),mac)
   CFLAGS   += -DUSE_HW -DUSE_C  -Os -fast
   CXXFLAGS   += -DUSE_HW -DUSE_C
+endif
+
+ifeq ($(OSTYPE),freebsd)
+  CFLAGS   += -I/usr/local/include
+  CXXFLAGS += -I/usr/local/include
 endif
 
 ifdef OPTIMISE

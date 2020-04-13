@@ -1,16 +1,10 @@
 /*
- * Copyright (c) 1997 - 2003 Hansjörg Malthaner
- *
- * This file is part of the Simutrans project under the artistic licence.
- * (see licence.txt)
- */
-
-/*
- * Factory list window
- * @author Hj. Malthaner
+ * This file is part of the Simutrans project under the Artistic License.
+ * (see LICENSE.txt)
  */
 
 #include "factorylist_frame_t.h"
+#include "gui_theme.h"
 #include "../dataobj/translator.h"
 
 
@@ -43,14 +37,14 @@ factorylist_frame_t::factorylist_frame_t() :
 	add_component(&scrolly);
 	fill_list();
 
-	reset_min_windowsize();
 	set_resizemode(diagonal_resize);
+	scrolly.set_maximize(true);
+	reset_min_windowsize();
 }
 
 
 /**
  * This method is called if an action is triggered
- * @author Markus Weber/Volker Meyer
  */
 bool factorylist_frame_t::action_triggered( gui_action_creator_t *comp,value_t /* */)
 {
@@ -75,7 +69,7 @@ void factorylist_frame_t::fill_list()
 		scrolly.new_component<factorylist_stats_t>(fab) ;
 	}
 	scrolly.sort(0);
-	scrolly.set_size( scrolly.get_size());
+	scrolly.set_size(scrolly.get_size());
 }
 
 
